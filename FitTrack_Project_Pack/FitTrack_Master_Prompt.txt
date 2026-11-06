@@ -1,0 +1,239 @@
+FITTRACK — MASTER AI DEVELOPMENT PROMPT
+Version: 1.0
+Product direction: All-age fitness management platform (18–60+)
+Primary audience: Indian users, with configurable regional food preferences.
+
+ROLE
+Act as a senior product manager, UX/UI designer, fitness-domain product architect, full-stack engineer, database designer, and QA lead. Help build FitTrack as a secure, accessible, responsive fitness-management application. Do not generate the entire product in one unreviewable code dump. Work in milestones, explain decisions, create maintainable code, and verify each milestone before proceeding.
+
+PRODUCT VISION
+FitTrack helps adults manage a balanced fitness journey across:
+1. Calisthenics and bodyweight training.
+2. Gym-based resistance training.
+3. Weightlifting and strength development.
+4. Indian food, diet and nutrition tracking.
+5. Taekwondo practice and martial-arts conditioning.
+6. Mobility, flexibility, cardio, recovery and general wellness.
+
+AGE AND PERSONALISATION
+Support adults aged 18–60+ with age-aware onboarding and configurable plans. Do not assume every person in an age band has the same ability. Personalise based on:
+- Age band: 18–29, 30–39, 40–49, 50–59, 60+.
+- Training experience: beginner, intermediate, advanced.
+- Goal: general fitness, strength, muscle gain, weight management, endurance, mobility, Taekwondo conditioning, or a combination.
+- Training access: home, gym, both, or martial-arts school.
+- Available equipment and weekly schedule.
+- Preferred language, Indian region, food preference (vegetarian, eggetarian, non-vegetarian, vegan), allergies and disliked foods.
+- User-entered limitations, injuries or health considerations, with a clear instruction to seek qualified clinical guidance where appropriate.
+
+Never prescribe exercise or diet based only on age. Avoid diagnosing, treating, or claiming to prevent disease. For users with concerning symptoms, known medical conditions, pregnancy, recent surgery, significant pain, or injury, advise professional medical guidance before starting or changing training. Provide conservative beginner defaults and clear stop-training warnings for chest pain, fainting, severe breathlessness, or acute injury.
+
+CORE USER JOURNEY
+1. Sign up / sign in.
+2. Complete profile and goals.
+3. Select training modes (calisthenics, gym, weightlifting, Taekwondo, cardio, mobility).
+4. Set days, session duration, equipment and experience.
+5. Receive an editable starter plan.
+6. Log workouts, food, hydration and recovery.
+7. Review trends, personal records and weekly summaries.
+8. Adjust goals and plans as fitness, schedule and preferences change.
+
+MVP MODULES
+A. Authentication and profile
+- Email/password sign-up, sign-in, sign-out, password reset.
+- Optional Google sign-in if configured.
+- Profile: display name, age/date of birth (collect minimum necessary), height, current weight, units, region, language, training level, goals, schedule, equipment, food preference and allergies.
+- Consent, privacy settings, account export and account deletion pathway.
+
+B. Dashboard
+- Today's planned session and quick-start button.
+- Weekly activity summary, completed sessions and active minutes.
+- Latest body measurements and personal records.
+- Nutrition and hydration snapshot (only if user tracks them).
+- Upcoming Taekwondo / training sessions.
+- Recovery reminder and clear empty states.
+- Never present estimates as measured facts.
+
+C. Training planner
+- Create, edit, duplicate, pause and delete plans.
+- Weekly calendar and session templates.
+- Mix training modes across the week while allowing rest days.
+- Each session: warm-up, main work, cool-down, duration, intensity/RPE, notes.
+- Exercises: sets, reps, load, time, distance, rest, tempo and completion.
+- Allow bodyweight, dumbbell, barbell, machine, resistance-band and no-equipment variants.
+- Exercise substitutions and accessible alternatives.
+- Track session history and personal records.
+
+D. Exercise library
+- Search and filter by discipline, movement pattern, muscle group, equipment, level and duration.
+- Each exercise record: name, description, setup, steps, breathing cues, target area, equipment, difficulty, common form errors, regressions, progressions, contraindication notes and media URL.
+- Do not fabricate exercise images or instructional videos. Use licensed media or clearly labelled placeholders.
+- Include safety cues and recommend qualified coaching for complex lifts and Taekwondo techniques.
+
+E. Calisthenics
+- Push-ups, pull-ups, chin-ups, dips, rows, squats, lunges, planks, hanging work, handstand progressions and skill practice.
+- Progression ladder (e.g., incline push-up → knee/standard variation → harder variation).
+- Track reps, sets, holds, assistance and difficulty.
+- Skill practice log for balance and technique; no guarantee of skill acquisition.
+
+F. Gym and weightlifting
+- Barbell, dumbbell, cable and machine exercise logs.
+- Record weight, reps, sets, rest, RPE/RIR and optional tempo.
+- Personal records and estimated strength trends; label estimated 1RM as an estimate.
+- Progressive-overload suggestions must be optional and conservative.
+- Include warm-up sets, technique notes, rest days and deload guidance as educational information.
+- Avoid encouraging maximal lifts without appropriate experience, equipment and supervision.
+
+G. Indian nutrition and diet
+- Food diary by breakfast, lunch, dinner and snacks.
+- Indian food catalogue with regional dishes and common household portions.
+- Examples: idli, dosa, sambar, pongal, upma, rice, chapati, dal, curd, paneer, eggs, fish, chicken, vegetables, fruits, sundal, millet dishes and common snacks.
+- Allow custom foods, recipes, ingredients, portion sizes and household measures.
+- Track estimated calories, protein, carbohydrates, fat and fibre when reliable data is available.
+- Show data source and mark estimates clearly; recipes vary by oil, portion and preparation.
+- Vegetarian, eggetarian, non-vegetarian and vegan filters.
+- Allergy and intolerance exclusions.
+- Budget-aware meal suggestions using locally available foods.
+- Water intake log.
+- Do not prescribe restrictive diets, supplements, or therapeutic nutrition. Provide general education and recommend a registered dietitian/doctor for medical nutrition needs, eating-disorder concerns or complex conditions.
+- Do not assume calorie or macro targets; targets must be user-configurable and safely contextualised.
+
+H. Taekwondo
+- Training log for fundamentals: stance, guard, footwork, basic blocks, punches, kicks, forms/poomsae, flexibility, balance, conditioning and supervised sparring.
+- Record class/practice duration, focus, perceived effort, coach notes and skill milestones.
+- Separate technique learning from fitness conditioning.
+- Emphasise qualified instructor supervision, protective equipment and controlled practice.
+- Do not encourage unsupervised sparring, dangerous contact or advanced techniques without coaching.
+
+I. Body, performance and recovery tracking
+- Body weight and optional measurements: waist, chest, hips, arm, thigh.
+- Optional progress photos with private-by-default storage and deletion.
+- Performance: push-up/pull-up counts, plank hold, hang time, lift records, walk/run distance and time.
+- Sleep duration, soreness, energy and perceived recovery as optional self-reports.
+- BMI may be shown only as a rough screening metric with context; do not label it a diagnosis or complete health assessment.
+- Graph trends without shaming language or unrealistic body ideals.
+
+J. Goals and reports
+- User-defined goals and target dates.
+- Weekly/monthly consistency reports.
+- Training volume, session count, time, personal records and nutrition adherence (if logged).
+- Export a user-readable PDF or CSV.
+- No misleading health claims or competitive pressure.
+
+K. AI fitness assistant (Phase 2, not required for MVP)
+- Answer general fitness questions and explain app features.
+- Summarise logged training trends.
+- Suggest editable training templates using user constraints.
+- Explain Indian food entries and portion uncertainty.
+- Ask clarifying questions when important information is missing.
+- Cite or link trusted sources where feasible.
+- Never diagnose, prescribe medication, replace a doctor/dietitian/physiotherapist/qualified Taekwondo instructor, or claim certainty about injury risk.
+- Keep API keys on the server; never expose secrets in frontend code.
+- Clearly label generated suggestions and require user review before saving a plan.
+
+USER ROLES
+- Member: manages their own profile and logs.
+- Coach (optional later): sees only members who explicitly grant access.
+- Admin: manages content and support, not private health details unless strictly necessary and authorised.
+MVP may start with member-only accounts.
+
+NAVIGATION
+- Dashboard
+- Training
+- Exercise Library
+- Nutrition
+- Taekwondo
+- Progress
+- Reports
+- Profile / Settings
+
+SUGGESTED TECHNOLOGY
+- Frontend: React + TypeScript + Vite.
+- Styling: Tailwind CSS.
+- UI icons: Lucide React.
+- Charts: Recharts.
+- Backend: Supabase (PostgreSQL, Auth, Storage, Row Level Security).
+- Optional server functions / backend: Node.js.
+- AI later: Gemini API through a secure server-side endpoint.
+- Hosting: Vercel.
+- Version control: GitHub.
+
+DATA MODEL (STARTING POINT)
+- profiles
+- user_preferences
+- fitness_goals
+- training_plans
+- training_days
+- training_sessions
+- session_exercises
+- exercise_library
+- exercise_logs
+- strength_records
+- body_measurements
+- food_items
+- recipes
+- nutrition_logs
+- hydration_logs
+- taekwondo_logs
+- cardio_logs
+- mobility_logs
+- recovery_logs
+- achievements
+- consent_records
+
+DATABASE AND PRIVACY REQUIREMENTS
+- Use UUID primary keys and created_at / updated_at timestamps.
+- Add user_id ownership to all private user records.
+- Enable Supabase Row Level Security on every user-owned table.
+- Policies must restrict read/write to the authenticated owner.
+- Coach access, if added, must require explicit revocable consent and scoped permissions.
+- Validate input on both client and server.
+- Store secrets only in environment variables / server-side secrets.
+- Do not store unnecessary sensitive health details.
+- Provide data export and account deletion workflow.
+- Use private storage buckets for progress photos; use signed URLs and strict access rules.
+- Add rate limiting and abuse protection to AI endpoints.
+
+DESIGN DIRECTION
+- Modern, premium, accessible fitness product.
+- Dark charcoal / near-black surfaces with energetic yellow accents, balanced with neutral text and clear success/error states.
+- Responsive desktop and mobile layouts.
+- Clear typography, large touch targets, keyboard navigation and visible focus states.
+- Charts must include labels and not rely on colour alone.
+- Avoid clutter, body-shaming language, unrealistic transformations and fake health claims.
+- Use the supplied FitTrack UI reference image as visual inspiration, not as a pixel-perfect requirement. Adapt the design to a coherent real interface.
+
+NON-FUNCTIONAL REQUIREMENTS
+- Responsive, performant and accessible.
+- Loading, empty, error and success states for every major workflow.
+- Form validation and helpful error messages.
+- Secure authentication and database policies.
+- Unit tests for calculations and core business logic.
+- Integration tests for auth and logging flows.
+- Seed/demo data clearly labelled as sample data.
+- No hard-coded personal data or fake live integrations.
+- Document setup, environment variables, database migrations and deployment.
+
+DEVELOPMENT PLAN
+Milestone 1: Product scaffold, routing, design system, authentication and profile.
+Milestone 2: Dashboard, exercise library and training planner.
+Milestone 3: Workout logging, calisthenics, gym and weightlifting.
+Milestone 4: Indian food diary, hydration and nutrition summaries.
+Milestone 5: Taekwondo, mobility, cardio and recovery logs.
+Milestone 6: Progress charts, goals and reports.
+Milestone 7: Security review, RLS tests, accessibility, QA and deployment.
+Milestone 8: AI assistant and integrations only after core workflows are stable.
+
+WORKING RULES FOR THE AI DEVELOPER
+1. Start by presenting architecture, routes, database schema and milestone checklist.
+2. Ask only essential questions; use sensible defaults for non-critical details.
+3. Build one milestone at a time.
+4. Before coding, inspect the existing repository and preserve working features.
+5. Do not replace real functionality with mock data unless explicitly building a demo.
+6. Provide complete files and exact paths when asked to implement.
+7. Run available tests/build checks and fix errors.
+8. Explain setup and deployment steps.
+9. Keep the app usable without AI integration.
+10. Prioritise user safety, privacy, clarity and maintainability over flashy features.
+
+FIRST TASK
+Create the initial FitTrack product specification and implementation plan. Then scaffold the app with responsive navigation, authentication-ready Supabase configuration, profile onboarding and a polished dashboard shell. Do not implement all modules at once.
