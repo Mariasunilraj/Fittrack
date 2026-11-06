@@ -3,7 +3,12 @@ import { neon } from '@neondatabase/serverless';
 let sqlClient = null;
 
 export function getNeonSql() {
-  const dbUrl = process.env.DATABASE_URL;
+  const dbUrl =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.STORAGE_URL ||
+    process.env.NEON_DATABASE_URL;
+
   if (!dbUrl || dbUrl.includes('YOUR_NEON_PASSWORD')) {
     return null;
   }
@@ -21,11 +26,16 @@ export function getNeonSql() {
 }
 
 export async function testNeonConnection() {
-  const dbUrl = process.env.DATABASE_URL;
+  const dbUrl =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.STORAGE_URL ||
+    process.env.NEON_DATABASE_URL;
+
   if (!dbUrl || dbUrl.includes('YOUR_NEON_PASSWORD')) {
     return {
       connected: false,
-      message: 'DATABASE_URL is not set or contains placeholder credentials in .env',
+      message: 'DATABASE_URL (or POSTGRES_URL / STORAGE_URL) is not set or contains placeholder credentials',
       configured: false
     };
   }

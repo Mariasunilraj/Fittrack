@@ -340,7 +340,11 @@ export async function handleVaultStatus(req, res) {
   const geminiKey = process.env.GEMINI_API_KEY;
   const calKey = process.env.CALISTHENICS_API_KEY;
   const gymKey = process.env.RAPIDAPI_GYM_KEY;
-  const dbUrl = process.env.DATABASE_URL;
+  const dbUrl =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.STORAGE_URL ||
+    process.env.NEON_DATABASE_URL;
 
   const neonHealth = await testNeonConnection();
 
