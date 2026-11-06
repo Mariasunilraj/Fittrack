@@ -9,7 +9,8 @@ import {
   Sparkles,
   Info,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Trash2
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -33,7 +34,15 @@ const WEIGHT_HISTORY = [
 ];
 
 export const ProgressAnalytics: React.FC = () => {
-  const { profile, personalRecords, addPersonalRecord, recoveryLogs, logRecovery, showToast } = useApp();
+  const {
+    profile,
+    personalRecords,
+    addPersonalRecord,
+    deletePersonalRecord,
+    recoveryLogs,
+    logRecovery,
+    showToast
+  } = useApp();
   const [showPrModal, setShowPrModal] = useState(false);
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
 
@@ -66,6 +75,12 @@ export const ProgressAnalytics: React.FC = () => {
     setShowPrModal(false);
     setExName('');
     setPrValue('');
+  };
+
+  const handleDeletePr = (id: string, name: string, value: string) => {
+    if (window.confirm(`Delete personal record "${name}" (${value})?`)) {
+      deletePersonalRecord(id);
+    }
   };
 
   const handleSaveRecovery = (e: React.FormEvent) => {
@@ -226,31 +241,73 @@ export const ProgressAnalytics: React.FC = () => {
             </span>
             <h3 className="text-lg font-bold text-white tracking-tight">Personal Records & Milestones</h3>
           </div>
-          <span className="text-xs text-slate-400">{personalRecords.length} records documented</span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-slate-400">{personalRecords.length} records documented</span>
+            <button
+              onClick={() => setShowPrModal(true)}
+              className="py-1 px-3 rounded-lg bg-brand-yellow text-slate-950 font-bold text-xs flex items-center gap-1 hover:bg-brand-yellowDark transition cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Log PR</span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {personalRecords.map(pr => (
-            <div
-              key={pr.id}
-              className="p-4 rounded-xl bg-brand-card border border-brand-border flex flex-col justify-between hover:border-slate-600 transition"
+        {personalRecords.length === 0 ? (
+          <div className="p-8 text-center rounded-xl bg-brand-dark/50 border border-brand-border space-y-2">
+            <Award className="w-8 h-8 text-slate-500 mx-auto" />
+            <p className="text-xs text-slate-400">No personal records documented yet.</p>
+            <button
+              onClick={() => setShowPrModal(true)}
+              className="py-1.5 px-4 rounded-xl bg-brand-yellow text-slate-950 font-bold text-xs cursor-pointer"
             >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-brand-dark text-brand-yellow">
-                    {pr.recordType}
-                  </span>
-                  <span className="text-[10px] text-slate-500">{pr.date}</span>
+              + Log First PR
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {personalRecords.map(pr => (
+              <div
+                key={pr.id}
+                className="p-4 rounded-xl bg-brand-card border border-brand-border flex flex-col justify-between hover:border-slate-500 transition group relative"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-brand-dark text-brand-yellow">
+                      {pr.recordType}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-[10px] text-slate-500">{pr.date}</span>
+                      {/* DELETE PERSONAL RECORD BUTTON */}
+                      <button
+                        type="button"
+                        onClick={() => handleDeletePr(pr.id, pr.exerciseName, pr.value)}
+                        className="p-1 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+                        title={`Delete PR for "${pr.exerciseName}" (${pr.value})`}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="text-xl font-black text-white font-mono tracking-tight">{pr.value}</div>
+                  <p className="text-xs text-slate-300 font-semibold mt-1 truncate">{pr.exerciseName}</p>
                 </div>
-                <div className="text-xl font-black text-white font-mono tracking-tight">{pr.value}</div>
-                <p className="text-xs text-slate-300 font-semibold mt-1 truncate">{pr.exerciseName}</p>
+
+                <div className="mt-3 pt-2 border-t border-brand-border/60 flex items-center justify-between text-[10px] uppercase font-bold text-slate-500">
+                  <span>{pr.discipline}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleDeletePr(pr.id, pr.exerciseName, pr.value)}
+                    className="text-slate-500 hover:text-rose-400 font-bold text-[10px] lowercase flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    <span>delete</span>
+                  </button>
+                </div>
               </div>
-              <div className="mt-3 pt-2 border-t border-brand-border/60 text-[10px] uppercase font-bold text-slate-500">
-                {pr.discipline}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Add PR Modal */}

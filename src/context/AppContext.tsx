@@ -39,6 +39,7 @@ interface AppContextType {
   logRecovery: (recovery: Omit<RecoveryLog, 'id' | 'userId' | 'date'>) => void;
   personalRecords: PersonalRecord[];
   addPersonalRecord: (pr: Omit<PersonalRecord, 'id' | 'date'>) => void;
+  deletePersonalRecord: (id: string) => void;
   taekwondoSessions: TaekwondoSession[];
   addTaekwondoSession: (session: Omit<TaekwondoSession, 'id' | 'userId'>) => void;
   aiChatHistory: AIChatMessage[];
@@ -216,6 +217,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`🔥 New Personal Record logged: ${newPr.value} in ${newPr.exerciseName}!`);
   };
 
+  const deletePersonalRecord = (id: string) => {
+    const targetPr = personalRecords.find(p => p.id === id);
+    const updated = personalRecords.filter(p => p.id !== id);
+    setPersonalRecords(updated);
+    storageService.savePRs(updated);
+    showToast(`🗑️ Personal Record ${targetPr ? `"${targetPr.exerciseName}" (${targetPr.value})` : ''} deleted.`);
+  };
+
   const addTaekwondoSession = (sessionData: Omit<TaekwondoSession, 'id' | 'userId'>) => {
     const newSession: TaekwondoSession = {
       ...sessionData,
@@ -306,6 +315,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         logRecovery,
         personalRecords,
         addPersonalRecord,
+        deletePersonalRecord,
         taekwondoSessions,
         addTaekwondoSession,
         aiChatHistory,
