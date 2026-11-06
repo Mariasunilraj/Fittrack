@@ -375,7 +375,7 @@ export const TrainingPlanner: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+        <div className="flex sm:grid sm:grid-cols-7 gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
           {daysOfWeek.map(day => {
             const isSelected = selectedDay.toLowerCase() === day.toLowerCase();
             const isToday = day.toLowerCase() === todayDayName.toLowerCase();
@@ -384,7 +384,7 @@ export const TrainingPlanner: React.FC = () => {
                 key={day}
                 type="button"
                 onClick={() => setSelectedDay(day)}
-                className={`py-2.5 px-2 rounded-xl text-center text-xs font-bold transition cursor-pointer border ${
+                className={`py-2.5 px-2.5 sm:px-2 rounded-xl text-center text-xs font-bold transition cursor-pointer border flex-shrink-0 min-w-[58px] sm:min-w-0 flex-1 sm:flex-initial ${
                   isSelected
                     ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-md shadow-brand-yellow/15'
                     : 'bg-brand-card text-slate-300 border-brand-border hover:border-slate-500'
@@ -407,33 +407,33 @@ export const TrainingPlanner: React.FC = () => {
       </div>
 
       {/* 3. Sub-Heads Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-nowrap sm:flex-wrap items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         <button
           onClick={() => setActiveSubheadFilter('all')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border ${
+          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex-shrink-0 ${
             activeSubheadFilter === 'all'
               ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
               : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
           }`}
         >
-          All 3 Sub-Heads (Full View)
+          All 3 Sub-Heads
         </button>
 
         <button
           onClick={() => setActiveSubheadFilter('calisthenics')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 ${
+          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 ${
             activeSubheadFilter === 'calisthenics'
               ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
               : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
           }`}
         >
           <span>🤸</span>
-          <span>1. Calisthenics (Calis)</span>
+          <span>1. Calis</span>
         </button>
 
         <button
           onClick={() => setActiveSubheadFilter('taekwondo')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 ${
+          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 ${
             activeSubheadFilter === 'taekwondo'
               ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
               : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
@@ -445,7 +445,7 @@ export const TrainingPlanner: React.FC = () => {
 
         <button
           onClick={() => setActiveSubheadFilter('gym')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 ${
+          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 ${
             activeSubheadFilter === 'gym'
               ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
               : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
@@ -462,7 +462,7 @@ export const TrainingPlanner: React.FC = () => {
         {/* SUB-HEAD 1: CALISTHENICS (CALIS) SCHEDULE               */}
         {/* ======================================================== */}
         {(activeSubheadFilter === 'all' || activeSubheadFilter === 'calisthenics') && (
-          <div className="p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5 animate-fadeIn">
+          <div className="p-4 sm:p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5 animate-fadeIn">
             {/* Subhead Header with Delete Workout Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
               <div className="flex items-center gap-3">
@@ -620,7 +620,7 @@ export const TrainingPlanner: React.FC = () => {
         {/* SUB-HEAD 2: TAEKWONDO SCHEDULE                          */}
         {/* ======================================================== */}
         {(activeSubheadFilter === 'all' || activeSubheadFilter === 'taekwondo') && (
-          <div className="p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5 animate-fadeIn">
+          <div className="p-4 sm:p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5 animate-fadeIn">
             {/* Subhead Header with Delete Workout Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
               <div className="flex items-center gap-3">
@@ -778,7 +778,7 @@ export const TrainingPlanner: React.FC = () => {
         {/* SUB-HEAD 3: GYM SCHEDULE                                */}
         {/* ======================================================== */}
         {(activeSubheadFilter === 'all' || activeSubheadFilter === 'gym') && (
-          <div className="p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5 animate-fadeIn">
+          <div className="p-4 sm:p-6 rounded-2xl bg-brand-surface border border-brand-border shadow-xl space-y-5 animate-fadeIn">
             {/* Subhead Header with Delete Workout Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
               <div className="flex items-center gap-3">

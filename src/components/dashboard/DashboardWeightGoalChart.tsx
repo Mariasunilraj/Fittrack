@@ -73,7 +73,7 @@ export const DashboardWeightGoalChart: React.FC = () => {
         </div>
 
         {/* Current vs Target Value Badges */}
-        <div className="flex items-center gap-3">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
           <div className="p-2.5 px-3.5 rounded-xl bg-brand-card border border-brand-border text-center">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
               Current Weight
@@ -94,11 +94,11 @@ export const DashboardWeightGoalChart: React.FC = () => {
 
           <button
             onClick={() => setShowLogInput(!showLogInput)}
-            className="p-2.5 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1 transition cursor-pointer"
+            className="col-span-2 sm:col-auto p-2.5 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1 transition cursor-pointer"
             title="Log new weigh-in"
           >
             <Plus className="w-4 h-4 text-brand-yellow" />
-            <span className="hidden sm:inline">Log Weigh-in</span>
+            <span>Log Weigh-in</span>
           </button>
         </div>
       </div>

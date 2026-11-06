@@ -65,10 +65,10 @@ export const DashboardProfileHeader: React.FC = () => {
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2.5 self-start sm:self-center">
+        <div className="w-full md:w-auto flex items-center gap-2.5 pt-2 md:pt-0">
           <button
             onClick={() => setShowOnboarding(true)}
-            className="py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-xs font-bold text-slate-200 flex items-center gap-1.5 transition cursor-pointer hover:border-slate-500 shadow-sm"
+            className="flex-1 md:flex-initial py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-xs font-bold text-slate-200 flex items-center justify-center gap-1.5 transition cursor-pointer hover:border-slate-500 shadow-sm"
           >
             <Edit3 className="w-3.5 h-3.5 text-brand-yellow" />
             <span>Edit Profile</span>
@@ -76,7 +76,7 @@ export const DashboardProfileHeader: React.FC = () => {
 
           <button
             onClick={() => setCurrentView('ai-coach')}
-            className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-extrabold text-xs flex items-center gap-1.5 shadow-md shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.02]"
+            className="flex-1 md:flex-initial py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.02]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>AI Coach</span>

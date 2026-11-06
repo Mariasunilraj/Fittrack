@@ -59,31 +59,33 @@ export const ExerciseLibrary: React.FC = () => {
           />
         </div>
 
-        {/* Discipline Filters */}
-        <div className="flex flex-wrap items-center gap-2">
-          {[
-            { id: 'all', label: 'All Movements' },
-            { id: 'calisthenics', label: 'Calisthenics' },
-            { id: 'gym', label: 'Gym Resistance' },
-            { id: 'weightlifting', label: 'Weightlifting' },
-            { id: 'taekwondo', label: 'Taekwondo' },
-            { id: 'mobility', label: 'Mobility' }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedDiscipline(tab.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
-                selectedDiscipline === tab.id
-                  ? 'bg-brand-yellow text-slate-950 border-brand-yellow font-bold shadow-sm'
-                  : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white hover:border-slate-600'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Discipline Filters & Difficulty */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+            {[
+              { id: 'all', label: 'All Movements' },
+              { id: 'calisthenics', label: 'Calisthenics' },
+              { id: 'gym', label: 'Gym Resistance' },
+              { id: 'weightlifting', label: 'Weightlifting' },
+              { id: 'taekwondo', label: 'Taekwondo' },
+              { id: 'mobility', label: 'Mobility' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedDiscipline(tab.id)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer flex-shrink-0 ${
+                  selectedDiscipline === tab.id
+                    ? 'bg-brand-yellow text-slate-950 border-brand-yellow font-bold shadow-sm'
+                    : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white hover:border-slate-600'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
 
           {/* Difficulty Dropdown */}
-          <div className="ml-auto">
+          <div className="self-end sm:self-auto flex-shrink-0">
             <select
               value={selectedDifficulty}
               onChange={e => setSelectedDifficulty(e.target.value)}

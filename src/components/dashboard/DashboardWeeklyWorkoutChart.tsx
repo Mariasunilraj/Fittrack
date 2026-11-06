@@ -123,8 +123,8 @@ export const DashboardWeeklyWorkoutChart: React.FC = () => {
       </div>
 
       {/* Discipline Breakdown Summary Pills */}
-      <div className="grid grid-cols-3 gap-2.5">
-        <div className="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
+        <div className="p-2.5 sm:p-3 rounded-xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs">
             <span className="w-2.5 h-2.5 rounded-sm bg-[#e2f163]" />
             <span className="font-semibold text-slate-300">Calisthenics:</span>
@@ -132,7 +132,7 @@ export const DashboardWeeklyWorkoutChart: React.FC = () => {
           <span className="font-mono font-bold text-white text-xs">{calisMinutes} mins</span>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
+        <div className="p-2.5 sm:p-3 rounded-xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs">
             <span className="w-2.5 h-2.5 rounded-sm bg-[#f43f5e]" />
             <span className="font-semibold text-slate-300">Taekwondo:</span>
@@ -140,7 +140,7 @@ export const DashboardWeeklyWorkoutChart: React.FC = () => {
           <span className="font-mono font-bold text-white text-xs">{tkdMinutes} mins</span>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
+        <div className="p-2.5 sm:p-3 rounded-xl bg-brand-dark/70 border border-brand-border flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs">
             <span className="w-2.5 h-2.5 rounded-sm bg-[#38bdf8]" />
             <span className="font-semibold text-slate-300">Gym & Lifts:</span>

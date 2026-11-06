@@ -104,10 +104,10 @@ export const LiveWorkoutModal: React.FC<LiveWorkoutModalProps> = ({ session, onC
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/90 backdrop-blur-md animate-fadeIn">
       <div className="relative w-full max-w-3xl bg-brand-surface border border-brand-border rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-slate-100">
         {/* Header with Stopwatch */}
-        <div className="px-6 py-4 border-b border-brand-border bg-brand-card flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-yellow/15 border border-brand-yellow/30 text-brand-yellow flex items-center justify-center">
-              <Dumbbell className="w-5 h-5 animate-pulse" />
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-brand-border bg-brand-card flex items-center justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-yellow/15 border border-brand-yellow/30 text-brand-yellow flex items-center justify-center">
+              <Dumbbell className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -116,20 +116,20 @@ export const LiveWorkoutModal: React.FC<LiveWorkoutModalProps> = ({ session, onC
                 </span>
                 <span className="text-xs text-slate-400 capitalize">{currentSession.discipline}</span>
               </div>
-              <h2 className="text-lg font-bold text-white tracking-tight">{currentSession.title}</h2>
+              <h2 className="text-base sm:text-lg font-bold text-white tracking-tight truncate max-w-[180px] sm:max-w-none">{currentSession.title}</h2>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <div className="text-right">
-              <div className="text-xs font-semibold text-slate-400">Duration</div>
-              <div className="text-xl font-black font-mono text-brand-yellow">
+              <div className="text-[10px] sm:text-xs font-semibold text-slate-400">Duration</div>
+              <div className="text-lg sm:text-xl font-black font-mono text-brand-yellow">
                 {formatStopwatch(elapsedSeconds)}
               </div>
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-brand-hover transition cursor-pointer"
+              className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-white hover:bg-brand-hover transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -137,7 +137,7 @@ export const LiveWorkoutModal: React.FC<LiveWorkoutModalProps> = ({ session, onC
         </div>
 
         {/* Exercises List */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-6">
+        <div className="p-3.5 sm:p-6 overflow-y-auto flex-1 space-y-4 sm:space-y-6">
           {currentSession.exercises.map((ex, exIdx) => {
             const completedSets = ex.completedSets || Array.from({ length: ex.sets }, (_, i) => ({
               setNumber: i + 1,
@@ -203,7 +203,7 @@ export const LiveWorkoutModal: React.FC<LiveWorkoutModalProps> = ({ session, onC
                           value={setItem.loadKg || ''}
                           placeholder="BW"
                           onChange={e => updateSetValues(exIdx, setIdx, 'loadKg', Number(e.target.value))}
-                          className="w-16 px-2 py-1 bg-brand-surface border border-brand-border rounded-lg text-xs font-mono text-center text-white focus:outline-none focus:border-brand-yellow"
+                          className="w-14 sm:w-16 px-1.5 sm:px-2 py-1 bg-brand-surface border border-brand-border rounded-lg text-xs font-mono text-center text-white focus:outline-none focus:border-brand-yellow"
                         />
                         <span className="text-[10px] text-slate-400">kg</span>
                       </div>
@@ -214,7 +214,7 @@ export const LiveWorkoutModal: React.FC<LiveWorkoutModalProps> = ({ session, onC
                           value={setItem.reps || ''}
                           placeholder="8"
                           onChange={e => updateSetValues(exIdx, setIdx, 'reps', Number(e.target.value))}
-                          className="w-16 px-2 py-1 bg-brand-surface border border-brand-border rounded-lg text-xs font-mono text-center text-white focus:outline-none focus:border-brand-yellow"
+                          className="w-14 sm:w-16 px-1.5 sm:px-2 py-1 bg-brand-surface border border-brand-border rounded-lg text-xs font-mono text-center text-white focus:outline-none focus:border-brand-yellow"
                         />
                         <span className="text-[10px] text-slate-400">reps</span>
                       </div>
