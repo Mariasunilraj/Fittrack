@@ -11,6 +11,7 @@ import {
   AIChatMessage
 } from '../types';
 import { storageService } from '../services/storage';
+import { DEFAULT_GUEST_PROFILE, DEMO_ATHLETE_PROFILE } from '../data/defaultUserData';
 import { askGeminiFitnessCoach } from '../services/geminiAI';
 
 export type AppView = 'dashboard' | 'training' | 'exercises' | 'nutrition' | 'taekwondo' | 'progress' | 'ai-coach' | 'settings' | 'auth';
@@ -59,8 +60,8 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentView, setCurrentView] = useState<AppView>('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => storageService.isAuthenticated());
+  const [currentView, setCurrentView] = useState<AppView>(() => storageService.isAuthenticated() ? 'dashboard' : 'auth');
   const [profile, setProfile] = useState<UserProfile>(() => storageService.getProfile());
   const [workoutPlans, setWorkoutPlans] = useState<WorkoutSession[]>(() => storageService.getWorkoutPlans());
   const [activeWorkoutSession, setActiveWorkoutSession] = useState<WorkoutSession | null>(null);
@@ -81,41 +82,61 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, 3500);
   };
 
-  const loginUser = (email: string, _password?: string, customName?: string) => {
-    const existingProfile = storageService.getProfile();
-    const updated: UserProfile = {
-      ...existingProfile,
-      email: email || existingProfile.email,
-      displayName: customName || (email ? email.split('@')[0] : existingProfile.displayName)
-    };
-    setProfile(updated);
-    storageService.saveProfile(updated);
+  const loginUser = (email: string, password?: string, customName?: string) => {
+    const cleanEmail = (email || '').trim().toLowerCase();
+    let userProfile: UserProfile;
+
+    if (cleanEmail === 'athlete@fittrack.in' || cleanEmail === 'demo@fittrack.in') {
+      userProfile = { ...DEMO_ATHLETE_PROFILE };
+    } else {
+      const existing = storageService.findRegisteredUser(cleanEmail);
+      if (existing) {
+        userProfile = existing.profile;
+      } else {
+        const name = customName || (cleanEmail ? cleanEmail.split('@')[0] : 'Athlete');
+        userProfile = {
+          ...DEFAULT_GUEST_PROFILE,
+          id: `usr_${Date.now()}`,
+          email: cleanEmail,
+          displayName: name.charAt(0).toUpperCase() + name.slice(1)
+        };
+        storageService.saveRegisteredUser(cleanEmail, password || 'default', userProfile);
+      }
+    }
+
     storageService.setAuthenticated(true);
+    storageService.saveProfile(userProfile);
+    setProfile(userProfile);
     setIsAuthenticated(true);
-    showToast(`Welcome back, ${updated.displayName}!`);
+    showToast(`Welcome back, ${userProfile.displayName}!`);
     setCurrentView('dashboard');
   };
 
   const registerUser = (data: Partial<UserProfile> & { displayName: string; email: string }) => {
-    const existingProfile = storageService.getProfile();
+    const cleanEmail = (data.email || '').trim().toLowerCase();
     const newProfile: UserProfile = {
-      ...existingProfile,
+      ...DEFAULT_GUEST_PROFILE,
       ...data,
-      id: `usr_${Date.now()}`
+      email: cleanEmail,
+      id: `usr_${Date.now()}`,
+      createdAt: new Date().toISOString()
     };
-    setProfile(newProfile);
-    storageService.saveProfile(newProfile);
+
+    storageService.saveRegisteredUser(cleanEmail, 'registered', newProfile);
     storageService.setAuthenticated(true);
+    storageService.saveProfile(newProfile);
+    setProfile(newProfile);
     setIsAuthenticated(true);
     showToast(`Welcome to FitTrack, ${newProfile.displayName}!`);
     setCurrentView('dashboard');
   };
 
   const logoutUser = () => {
-    storageService.setAuthenticated(false);
+    storageService.clearSession();
     setIsAuthenticated(false);
-    showToast('Signed out of FitTrack');
+    setProfile(DEFAULT_GUEST_PROFILE);
     setCurrentView('auth');
+    showToast('Signed out of FitTrack');
   };
 
   const updateProfile = (newProfile: UserProfile) => {

@@ -10,6 +10,8 @@ import {
 } from '../types';
 import {
   INITIAL_USER_PROFILE,
+  DEFAULT_GUEST_PROFILE,
+  DEMO_ATHLETE_PROFILE,
   INITIAL_WORKOUT_PLANS,
   INITIAL_MEAL_LOGS,
   INITIAL_WATER_LOG,
@@ -21,6 +23,7 @@ import {
 const STORAGE_KEYS = {
   USER_PROFILE: 'fittrack_profile',
   IS_AUTHENTICATED: 'fittrack_is_authenticated',
+  REGISTERED_USERS: 'fittrack_registered_users',
   WORKOUT_PLANS: 'fittrack_workout_plans',
   MEAL_LOGS: 'fittrack_meal_logs',
   WATER_LOG: 'fittrack_water_log',
@@ -33,41 +36,6 @@ const STORAGE_KEYS = {
 };
 
 export const storageService = {
-  getProfile(): UserProfile {
-    const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
-    if (!data) {
-      localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(INITIAL_USER_PROFILE));
-      return INITIAL_USER_PROFILE;
-    }
-    try {
-      const parsed = JSON.parse(data);
-      // Ensure deprecated demo profile for 'Arjun Sharma' is permanently purged
-      if (parsed.displayName === 'Arjun Sharma' || parsed.email?.includes('arjun')) {
-        localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(INITIAL_USER_PROFILE));
-        return INITIAL_USER_PROFILE;
-      }
-      return {
-        ...INITIAL_USER_PROFILE,
-        ...parsed,
-        primaryGoals: Array.isArray(parsed.primaryGoals) && parsed.primaryGoals.length > 0
-          ? parsed.primaryGoals
-          : INITIAL_USER_PROFILE.primaryGoals,
-        preferredDisciplines: Array.isArray(parsed.preferredDisciplines) && parsed.preferredDisciplines.length > 0
-          ? parsed.preferredDisciplines
-          : INITIAL_USER_PROFILE.preferredDisciplines,
-        equipment: Array.isArray(parsed.equipment)
-          ? parsed.equipment
-          : INITIAL_USER_PROFILE.equipment
-      };
-    } catch {
-      return INITIAL_USER_PROFILE;
-    }
-  },
-
-  saveProfile(profile: UserProfile): void {
-    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
-  },
-
   isAuthenticated(): boolean {
     const status = localStorage.getItem(STORAGE_KEYS.IS_AUTHENTICATED);
     return status === 'true';
@@ -75,6 +43,70 @@ export const storageService = {
 
   setAuthenticated(status: boolean): void {
     localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, status ? 'true' : 'false');
+  },
+
+  clearSession(): void {
+    localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, 'false');
+    localStorage.removeItem(STORAGE_KEYS.USER_PROFILE);
+  },
+
+  getRegisteredUsers(): Record<string, { profile: UserProfile; passwordHash: string }> {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.REGISTERED_USERS);
+      return data ? JSON.parse(data) : {};
+    } catch {
+      return {};
+    }
+  },
+
+  saveRegisteredUser(email: string, passwordHash: string, profile: UserProfile): void {
+    const users = this.getRegisteredUsers();
+    users[email.toLowerCase().trim()] = { profile, passwordHash };
+    localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(users));
+  },
+
+  findRegisteredUser(email: string): { profile: UserProfile; passwordHash: string } | null {
+    const users = this.getRegisteredUsers();
+    return users[email.toLowerCase().trim()] || null;
+  },
+
+  getProfile(): UserProfile {
+    // If not authenticated, always return guest profile
+    if (!this.isAuthenticated()) {
+      return DEFAULT_GUEST_PROFILE;
+    }
+
+    const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+    if (!data) {
+      return DEFAULT_GUEST_PROFILE;
+    }
+    try {
+      const parsed = JSON.parse(data);
+      // Ensure deprecated demo profile for 'Arjun Sharma' is permanently purged
+      if (parsed.displayName === 'Arjun Sharma' || parsed.email?.includes('arjun')) {
+        this.clearSession();
+        return DEFAULT_GUEST_PROFILE;
+      }
+      return {
+        ...DEMO_ATHLETE_PROFILE,
+        ...parsed,
+        primaryGoals: Array.isArray(parsed.primaryGoals) && parsed.primaryGoals.length > 0
+          ? parsed.primaryGoals
+          : DEMO_ATHLETE_PROFILE.primaryGoals,
+        preferredDisciplines: Array.isArray(parsed.preferredDisciplines) && parsed.preferredDisciplines.length > 0
+          ? parsed.preferredDisciplines
+          : DEMO_ATHLETE_PROFILE.preferredDisciplines,
+        equipment: Array.isArray(parsed.equipment)
+          ? parsed.equipment
+          : DEMO_ATHLETE_PROFILE.equipment
+      };
+    } catch {
+      return DEFAULT_GUEST_PROFILE;
+    }
+  },
+
+  saveProfile(profile: UserProfile): void {
+    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
   },
 
   getWorkoutPlans(): WorkoutSession[] {

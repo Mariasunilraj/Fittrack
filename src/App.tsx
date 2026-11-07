@@ -20,6 +20,7 @@ import { CheckCircle2 } from 'lucide-react';
 const AppContent: React.FC = () => {
   const {
     currentView,
+    isAuthenticated,
     activeWorkoutSession,
     cancelActiveWorkout,
     showOnboarding,
@@ -28,6 +29,24 @@ const AppContent: React.FC = () => {
   } = useApp();
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // If user is not authenticated or explicitly on the auth view, render the focused AuthPage with NO sidebars or dashboards
+  if (!isAuthenticated || currentView === 'auth') {
+    return (
+      <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
+        <Navbar onOpenAuth={() => setShowAuthModal(true)} />
+        <main className="flex-1 p-3 sm:p-6 overflow-y-auto max-w-7xl w-full mx-auto">
+          <AuthPage />
+        </main>
+        {toastMessage && (
+          <div className="fixed top-20 right-6 z-50 p-3.5 rounded-2xl bg-brand-surface border border-brand-yellow/40 text-slate-100 text-xs font-semibold shadow-2xl flex items-center gap-2.5 animate-slideUp">
+            <CheckCircle2 className="w-4 h-4 text-brand-yellow flex-shrink-0" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
@@ -49,7 +68,6 @@ const AppContent: React.FC = () => {
           {currentView === 'progress' && <ProgressAnalytics />}
           {currentView === 'ai-coach' && <AICoachChat />}
           {currentView === 'settings' && <SettingsView />}
-          {currentView === 'auth' && <AuthPage />}
         </main>
       </div>
 

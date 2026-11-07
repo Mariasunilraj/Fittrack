@@ -1,6 +1,27 @@
 import { UserProfile, WorkoutSession, WorkoutLogEntry, MealLogItem, WaterLog, RecoveryLog, PersonalRecord, TaekwondoSession } from '../types';
 
-export const INITIAL_USER_PROFILE: UserProfile = {
+export const DEFAULT_GUEST_PROFILE: UserProfile = {
+  id: 'guest',
+  email: '',
+  displayName: 'Athlete',
+  ageBand: '18-29',
+  heightCm: 175,
+  currentWeightKg: 70.0,
+  targetWeightKg: 68.0,
+  experienceLevel: 'beginner',
+  primaryGoals: ['Build Functional Strength'],
+  trainingAccess: 'both',
+  equipment: ['Bodyweight'],
+  preferredDisciplines: ['calisthenics', 'gym'],
+  region: 'south-indian',
+  foodPreference: 'vegetarian',
+  allergies: [],
+  medicalNotes: '',
+  hasAcceptedDisclaimer: false,
+  createdAt: ''
+};
+
+export const DEMO_ATHLETE_PROFILE: UserProfile = {
   id: 'usr_demo_001',
   email: 'athlete@fittrack.in',
   displayName: 'Sunil Raj',
@@ -20,6 +41,8 @@ export const INITIAL_USER_PROFILE: UserProfile = {
   hasAcceptedDisclaimer: true,
   createdAt: '2026-11-01'
 };
+
+export const INITIAL_USER_PROFILE: UserProfile = DEFAULT_GUEST_PROFILE;
 
 export const INITIAL_WORKOUT_PLANS: WorkoutSession[] = [
   {
