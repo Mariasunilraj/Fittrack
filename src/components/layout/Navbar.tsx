@@ -17,7 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
     taekwondo: 'Taekwondo Martial Arts',
     progress: 'Progress & Recovery Analytics',
     'ai-coach': 'FitTrack AI Assistant',
-    settings: 'Settings & Cloud Database',
+    settings: 'Account Settings',
     auth: 'Sign In / Register'
   };
 

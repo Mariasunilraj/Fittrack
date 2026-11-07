@@ -10,7 +10,8 @@ import {
   Zap,
   HelpCircle,
   Key,
-  ChevronRight
+  ChevronRight,
+  Settings
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { storageService } from '../../services/storage';
@@ -52,8 +53,8 @@ export const AICoachChat: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-extrabold text-white tracking-tight">FitTrack AI Coach</h1>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
-                Gemini AI • Vault Shield Active
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-brand-yellow/10 text-brand-yellow border-brand-yellow/30">
+                Gemini Pro AI
               </span>
             </div>
             <p className="text-xs text-slate-400">
@@ -66,10 +67,10 @@ export const AICoachChat: React.FC = () => {
           <button
             onClick={() => setCurrentView('settings')}
             className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-brand-hover text-xs flex items-center gap-1.5 transition cursor-pointer"
-            title="Inspect Protected API Vault"
+            title="Settings"
           >
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="hidden sm:inline text-xs">Security Vault</span>
+            <Settings className="w-4 h-4 text-slate-400" />
+            <span className="hidden sm:inline text-xs">Settings</span>
           </button>
           <button
             onClick={clearAiChat}

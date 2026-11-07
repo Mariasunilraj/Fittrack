@@ -407,11 +407,11 @@ export const AIFoodScannerModal: React.FC<AIFoodScannerModalProps> = ({ isOpen, 
             </div>
           )}
 
-          {/* Security & Disclaimer Footer Notice */}
+          {/* Nutrition Data & Disclaimer Footer Notice */}
           <div className="p-3 rounded-xl bg-brand-dark/60 border border-brand-border/60 flex items-center justify-between text-[11px] text-slate-500">
             <span className="flex items-center gap-1 text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Protected Server-Side Vault • Keys Isolated & Masked</span>
+              <Sparkles className="w-3.5 h-3.5 text-brand-yellow" />
+              <span>AI Nutrition Engine • Multimodal Analysis</span>
             </span>
             <span>ICMR-NIN Food Composition Data</span>
           </div>

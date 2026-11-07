@@ -29,7 +29,7 @@ export const Sidebar: React.FC = () => {
     { id: 'taekwondo', label: 'Taekwondo', icon: Shield },
     { id: 'progress', label: 'Progress & Recovery', icon: TrendingUp },
     { id: 'ai-coach', label: 'AI Assistant', icon: Sparkles, badge: 'Gemini' },
-    { id: 'settings', label: 'Settings & Cloud', icon: Settings }
+    { id: 'settings', label: 'Settings', icon: Settings }
   ];
 
   return (

@@ -187,11 +187,11 @@ export const AuthPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Security Vault Indicator */}
+          {/* Privacy & Data Protection Indicator */}
           <div className="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border/80 flex items-center gap-3 text-xs text-slate-400">
             <Lock className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             <span>
-              <strong>Server-Side Vault Protected:</strong> API keys and user credentials are shielded from frontend leakage.
+              <strong>Private & Secure:</strong> Your personal health metrics and training logs are encrypted.
             </span>
           </div>
         </div>
