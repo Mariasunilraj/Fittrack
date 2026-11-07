@@ -118,20 +118,21 @@ CREATE TABLE IF NOT EXISTS personal_records (
     achieved_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 9. SEED DEFAULT DEMO USER
+-- 9. DELETE ALL PREVIOUS ACCOUNTS & SEED SOLE OFFICIAL ACCOUNT (F.MARIA SUNIL RAJ)
+DELETE FROM user_profiles;
+
 INSERT INTO user_profiles (id, full_name, age, birth_year, current_weight_kg, target_weight_kg, fitness_level)
-VALUES ('usr_demo_001', 'Sunil Raj', 28, 1998, 74.5, 70.0, 'intermediate')
+VALUES ('usr_sunilraj_001', 'F.MARIA SUNIL RAJ', 20, 2006, 74.5, 70.0, 'intermediate')
 ON CONFLICT (id) DO UPDATE SET
     full_name = EXCLUDED.full_name,
     age = EXCLUDED.age,
+    birth_year = EXCLUDED.birth_year,
     current_weight_kg = EXCLUDED.current_weight_kg,
     target_weight_kg = EXCLUDED.target_weight_kg;
 
 -- 10. SEED INITIAL WEIGHT TREND DATA
 INSERT INTO weight_history (user_id, recorded_date, weight_kg, target_goal_kg, notes)
 VALUES
-    ('usr_demo_001', CURRENT_DATE - INTERVAL '21 days', 76.2, 70.0, 'Starting baseline weigh-in'),
-    ('usr_demo_001', CURRENT_DATE - INTERVAL '14 days', 75.6, 70.0, 'Consistent deficit & morning cardio'),
-    ('usr_demo_001', CURRENT_DATE - INTERVAL '7 days', 74.9, 70.0, 'Steady fat loss progress'),
-    ('usr_demo_001', CURRENT_DATE, 74.5, 70.0, 'Current weight check-in')
+    ('usr_sunilraj_001', '2026-11-01', 76.0, 70.0, 'Account Start (Initial Weight)'),
+    ('usr_sunilraj_001', '2026-11-03', 74.5, 70.0, 'Weekly Monday Weigh-In')
 ON CONFLICT DO NOTHING;

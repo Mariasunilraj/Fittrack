@@ -23,9 +23,9 @@ export const DEFAULT_GUEST_PROFILE: UserProfile = {
 };
 
 export const DEMO_ATHLETE_PROFILE: UserProfile = {
-  id: 'usr_demo_001',
-  email: 'athlete@fittrack.in',
-  displayName: 'Sunil Raj',
+  id: 'usr_sunilraj_001',
+  email: 'mariasunilraj8@gmail.com',
+  displayName: 'F.MARIA SUNIL RAJ',
   ageBand: '18-29',
   heightCm: 175,
   startingWeightKg: 76.0,
@@ -39,7 +39,7 @@ export const DEMO_ATHLETE_PROFILE: UserProfile = {
   region: 'south-indian',
   foodPreference: 'non-vegetarian',
   allergies: [],
-  medicalNotes: 'No acute medical conditions. Ready for hybrid training.',
+  medicalNotes: 'Age 20. Peak athletic conditioning, ready for hybrid athletic training.',
   hasAcceptedDisclaimer: true,
   createdAt: '2026-11-01'
 };
@@ -49,7 +49,7 @@ export const INITIAL_USER_PROFILE: UserProfile = DEFAULT_GUEST_PROFILE;
 export const INITIAL_WORKOUT_PLANS: WorkoutSession[] = [
   {
     id: 'ws_today',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     title: 'Upper Body Strength & Pull-Up Ladder',
     discipline: 'calisthenics',
     scheduledDay: 'Today',
@@ -116,7 +116,7 @@ export const INITIAL_WORKOUT_PLANS: WorkoutSession[] = [
   },
   {
     id: 'ws_tomorrow',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     title: 'Legs, Core & Barbell Squat Session',
     discipline: 'weightlifting',
     scheduledDay: 'Tomorrow',
@@ -146,7 +146,7 @@ export const INITIAL_WORKOUT_PLANS: WorkoutSession[] = [
   },
   {
     id: 'ws_tkd',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     title: 'Taekwondo Poomsae & Dynamic Kick Drills',
     discipline: 'taekwondo',
     scheduledDay: 'Saturday',
@@ -177,7 +177,7 @@ export const INITIAL_WORKOUT_PLANS: WorkoutSession[] = [
 export const INITIAL_MEAL_LOGS: MealLogItem[] = [
   {
     id: 'ml-1',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     foodId: 'food-idli-1',
     foodName: 'Steamed Idli (2 pieces)',
     mealType: 'breakfast',
@@ -191,7 +191,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
   },
   {
     id: 'ml-2',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     foodId: 'food-sambar-1',
     foodName: 'Vegetable Sambar',
     mealType: 'breakfast',
@@ -205,7 +205,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
   },
   {
     id: 'ml-3',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     foodId: 'food-boiled-egg',
     foodName: 'Hard Boiled Eggs (2)',
     mealType: 'breakfast',
@@ -219,7 +219,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
   },
   {
     id: 'ml-4',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     foodId: 'food-roti-chapati',
     foodName: 'Whole Wheat Roti',
     mealType: 'lunch',
@@ -233,7 +233,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
   },
   {
     id: 'ml-5',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     foodId: 'food-paneer-bhurji',
     foodName: 'Paneer Bhurji',
     mealType: 'lunch',
@@ -247,7 +247,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
   },
   {
     id: 'ml-6',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     foodId: 'food-curd-dahi',
     foodName: 'Fresh Homemade Curd',
     mealType: 'lunch',
@@ -262,7 +262,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
 ];
 
 export const INITIAL_WATER_LOG: WaterLog = {
-  userId: 'usr_demo_001',
+  userId: 'usr_sunilraj_001',
   date: '2026-11-05',
   amountMl: 2250,
   targetMl: 3200
@@ -270,7 +270,7 @@ export const INITIAL_WATER_LOG: WaterLog = {
 
 export const INITIAL_RECOVERY_LOG: RecoveryLog = {
   id: 'rec_01',
-  userId: 'usr_demo_001',
+  userId: 'usr_sunilraj_001',
   date: '2026-11-05',
   sleepHours: 7.5,
   sorenessRating: 3, // Low-mild soreness
@@ -316,7 +316,7 @@ export const INITIAL_PRS: PersonalRecord[] = [
 export const INITIAL_TKD_SESSIONS: TaekwondoSession[] = [
   {
     id: 'tkd_s1',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     date: '2026-11-02',
     durationMinutes: 60,
     focusArea: 'poomsae',

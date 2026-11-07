@@ -40,7 +40,7 @@ const STORAGE_KEYS = {
 export const INITIAL_DEMO_WEIGHT_HISTORY: WeightLogEntry[] = [
   {
     id: 'wh_init_demo',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     date: '2026-11-01',
     weightKg: 76.0,
     notes: 'Account Start (Initial Weight)',
@@ -48,7 +48,7 @@ export const INITIAL_DEMO_WEIGHT_HISTORY: WeightLogEntry[] = [
   },
   {
     id: 'wh_demo_w1',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     date: '2026-11-03',
     weightKg: 74.5,
     notes: 'Weekly Monday Weigh-In',
@@ -74,9 +74,27 @@ export const storageService = {
   getRegisteredUsers(): Record<string, { profile: UserProfile; passwordHash: string }> {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.REGISTERED_USERS);
-      return data ? JSON.parse(data) : {};
+      let users: Record<string, { profile: UserProfile; passwordHash: string }> = data ? JSON.parse(data) : {};
+
+      // Purge all deprecated / outdated test accounts
+      delete users['athlete@fittrack.in'];
+      delete users['demo@fittrack.in'];
+      delete users['arjun@fittrack.in'];
+
+      // Ensure the official primary account for F.MARIA SUNIL RAJ is permanently registered
+      users['mariasunilraj8@gmail.com'] = {
+        profile: { ...DEMO_ATHLETE_PROFILE },
+        passwordHash: 'REDACTED_SECRET'
+      };
+
+      return users;
     } catch {
-      return {};
+      return {
+        'mariasunilraj8@gmail.com': {
+          profile: { ...DEMO_ATHLETE_PROFILE },
+          passwordHash: 'REDACTED_SECRET'
+        }
+      };
     }
   },
 
@@ -87,8 +105,15 @@ export const storageService = {
   },
 
   findRegisteredUser(email: string): { profile: UserProfile; passwordHash: string } | null {
+    const cleanEmail = (email || '').toLowerCase().trim();
+    if (cleanEmail === 'mariasunilraj8@gmail.com') {
+      return {
+        profile: { ...DEMO_ATHLETE_PROFILE },
+        passwordHash: 'REDACTED_SECRET'
+      };
+    }
     const users = this.getRegisteredUsers();
-    return users[email.toLowerCase().trim()] || null;
+    return users[cleanEmail] || null;
   },
 
   getProfile(): UserProfile {
@@ -99,14 +124,19 @@ export const storageService = {
 
     const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
     if (!data) {
-      return DEFAULT_GUEST_PROFILE;
+      return DEMO_ATHLETE_PROFILE;
     }
     try {
       const parsed = JSON.parse(data);
-      // Ensure deprecated demo profile for 'Arjun Sharma' is permanently purged
-      if (parsed.displayName === 'Arjun Sharma' || parsed.email?.includes('arjun')) {
-        this.clearSession();
-        return DEFAULT_GUEST_PROFILE;
+      // Ensure deprecated demo profile for 'Arjun Sharma' or old 'athlete@fittrack.in' is upgraded to official F.MARIA SUNIL RAJ
+      if (
+        parsed.displayName === 'Arjun Sharma' ||
+        parsed.email?.includes('arjun') ||
+        parsed.email === 'athlete@fittrack.in' ||
+        parsed.displayName === 'Sunil Raj'
+      ) {
+        this.saveProfile(DEMO_ATHLETE_PROFILE);
+        return DEMO_ATHLETE_PROFILE;
       }
       return {
         ...DEMO_ATHLETE_PROFILE,

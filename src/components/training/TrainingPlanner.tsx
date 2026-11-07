@@ -63,7 +63,7 @@ export const TrainingPlanner: React.FC = () => {
     if (discipline === 'calisthenics') {
       const defaultSession: WorkoutSession = {
         id: `calis_${selectedDay.toLowerCase()}`,
-        userId: 'usr_demo_001',
+        userId: 'usr_sunilraj_001',
         title: `${selectedDay} Calisthenics: Pull-Up & Core Ladder`,
         discipline: 'calisthenics',
         scheduledDay: selectedDay,
@@ -113,7 +113,7 @@ export const TrainingPlanner: React.FC = () => {
     if (discipline === 'taekwondo') {
       const defaultSession: WorkoutSession = {
         id: `tkd_${selectedDay.toLowerCase()}`,
-        userId: 'usr_demo_001',
+        userId: 'usr_sunilraj_001',
         title: `${selectedDay} Taekwondo: Poomsae & Kicking Mechanics`,
         discipline: 'taekwondo',
         scheduledDay: selectedDay,
@@ -163,7 +163,7 @@ export const TrainingPlanner: React.FC = () => {
     // Default Gym
     const defaultSession: WorkoutSession = {
       id: `gym_${selectedDay.toLowerCase()}`,
-      userId: 'usr_demo_001',
+      userId: 'usr_sunilraj_001',
       title: `${selectedDay} Gym: Barbell Squat & Deadlift Strength`,
       discipline: 'gym',
       scheduledDay: selectedDay,
@@ -301,7 +301,7 @@ export const TrainingPlanner: React.FC = () => {
 
     const newSession: WorkoutSession = {
       id: `ws_${Date.now()}`,
-      userId: 'usr_demo_001',
+      userId: 'usr_sunilraj_001',
       title: newTitle,
       discipline: addDisciplineTarget,
       scheduledDay: selectedDay,

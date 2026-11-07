@@ -118,12 +118,15 @@ CREATE TABLE IF NOT EXISTS personal_records (
     achieved_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 9. SEED DEFAULT DEMO USER
+-- 9. DELETE ALL PREVIOUS ACCOUNTS & SEED SOLE OFFICIAL ACCOUNT (F.MARIA SUNIL RAJ)
+DELETE FROM user_profiles;
+
 INSERT INTO user_profiles (id, full_name, age, birth_year, current_weight_kg, target_weight_kg, fitness_level)
-VALUES ('usr_demo_001', 'Sunil Raj', 28, 1998, 74.5, 70.0, 'intermediate')
+VALUES ('usr_sunilraj_001', 'F.MARIA SUNIL RAJ', 20, 2006, 74.5, 70.0, 'intermediate')
 ON CONFLICT (id) DO UPDATE SET
     full_name = EXCLUDED.full_name,
     age = EXCLUDED.age,
+    birth_year = EXCLUDED.birth_year,
     current_weight_kg = EXCLUDED.current_weight_kg,
     target_weight_kg = EXCLUDED.target_weight_kg;
 `;

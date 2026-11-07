@@ -101,7 +101,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanEmail = (email || '').trim().toLowerCase();
     let userProfile: UserProfile;
 
-    if (cleanEmail === 'athlete@fittrack.in' || cleanEmail === 'demo@fittrack.in') {
+    if (
+      cleanEmail === 'mariasunilraj8@gmail.com' ||
+      cleanEmail === 'athlete@fittrack.in' ||
+      cleanEmail === 'demo@fittrack.in'
+    ) {
       userProfile = { ...DEMO_ATHLETE_PROFILE };
     } else {
       const existing = storageService.findRegisteredUser(cleanEmail);

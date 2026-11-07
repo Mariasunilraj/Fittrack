@@ -32,7 +32,7 @@ export const DashboardTodayWorkoutPlan: React.FC = () => {
   // Find or provide rich sessions for each of the 3 disciplines for today
   const calisSession: WorkoutSession = workoutPlans.find(p => p.discipline === 'calisthenics') || {
     id: 'ws_today_calis',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     title: 'Calisthenics Strength & Pull-Up Ladder',
     discipline: 'calisthenics',
     scheduledDay: 'Today',
@@ -47,7 +47,7 @@ export const DashboardTodayWorkoutPlan: React.FC = () => {
 
   const tkdSession: WorkoutSession = workoutPlans.find(p => p.discipline === 'taekwondo') || {
     id: 'ws_today_tkd',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     title: 'Taekwondo Poomsae & Dynamic Kick Drills',
     discipline: 'taekwondo',
     scheduledDay: 'Today',
@@ -62,7 +62,7 @@ export const DashboardTodayWorkoutPlan: React.FC = () => {
 
   const gymSession: WorkoutSession = workoutPlans.find(p => p.discipline === 'gym' || p.discipline === 'weightlifting') || {
     id: 'ws_today_gym',
-    userId: 'usr_demo_001',
+    userId: 'usr_sunilraj_001',
     title: 'Gym Resistance & Barbell Power',
     discipline: 'gym',
     scheduledDay: 'Today',

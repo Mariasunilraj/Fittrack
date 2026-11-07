@@ -117,12 +117,12 @@ export const AuthPage: React.FC = () => {
     }, 700);
   };
 
-  // Demo Fast Track Login
+  // Demo Fast Track Login as Official F.MARIA SUNIL RAJ
   const handleQuickDemoAccess = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      loginUser('athlete@fittrack.in', 'demo123', 'Sunil Raj');
+      loginUser('mariasunilraj8@gmail.com', 'REDACTED_SECRET', 'F.MARIA SUNIL RAJ');
       try {
         confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
       } catch (err) {}
@@ -259,6 +259,22 @@ export const AuthPage: React.FC = () => {
                   <p className="text-xs text-slate-400 mt-1">
                     Enter your email credentials to access your daily workouts, nutrition tracker, and analytics.
                   </p>
+
+                  {/* Primary Account One-Click Autofill Pill */}
+                  <div
+                    onClick={() => {
+                      setLoginEmail('mariasunilraj8@gmail.com');
+                      setLoginPassword('REDACTED_SECRET');
+                      setErrorMessage(null);
+                    }}
+                    className="mt-3 p-2.5 rounded-xl bg-brand-yellow/10 border border-brand-yellow/30 flex items-center justify-between text-xs text-brand-yellow cursor-pointer hover:bg-brand-yellow/20 transition group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 flex-shrink-0 animate-pulse" />
+                      <span><strong>F.MARIA SUNIL RAJ</strong> • mariasunilraj8@gmail.com</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase underline group-hover:text-white">Autofill</span>
+                  </div>
                 </div>
 
                 <form onSubmit={handleLoginSubmit} className="space-y-4">
@@ -271,7 +287,7 @@ export const AuthPage: React.FC = () => {
                       <input
                         type="email"
                         required
-                        placeholder="athlete@fittrack.in"
+                        placeholder="mariasunilraj8@gmail.com"
                         value={loginEmail}
                         onChange={e => setLoginEmail(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
@@ -356,7 +372,7 @@ export const AuthPage: React.FC = () => {
                   className="w-full py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer hover:border-slate-500"
                 >
                   <Sparkles className="w-4 h-4 text-brand-yellow" />
-                  <span>⚡ Instant Demo Access (Guest Mode)</span>
+                  <span>⚡ Instant Fast Track: F.MARIA SUNIL RAJ</span>
                 </button>
 
                 {/* Switch to Register link on same page */}
@@ -399,7 +415,7 @@ export const AuthPage: React.FC = () => {
                         <input
                           type="text"
                           required
-                          placeholder="e.g. Sunil Raj"
+                          placeholder="e.g. F.MARIA SUNIL RAJ"
                           value={regFullName}
                           onChange={e => setRegFullName(e.target.value)}
                           className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"

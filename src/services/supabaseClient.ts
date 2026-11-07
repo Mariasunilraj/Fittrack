@@ -159,4 +159,35 @@ CREATE POLICY "Users can only access own recovery logs"
   ON public.recovery_logs FOR ALL
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
+
+-- 10. Purge All Outdated Accounts & Seed Sole Official Account: F.MARIA SUNIL RAJ (Age: 20)
+DELETE FROM public.profiles;
+
+INSERT INTO public.profiles (
+  id,
+  user_id,
+  display_name,
+  age_band,
+  height_cm,
+  current_weight_kg,
+  target_weight_kg,
+  experience_level,
+  region,
+  food_preference
+) VALUES (
+  '00000000-0000-0000-0000-000000000001'::uuid,
+  '00000000-0000-0000-0000-000000000001'::uuid,
+  'F.MARIA SUNIL RAJ',
+  '18-29',
+  175.0,
+  74.5,
+  70.0,
+  'intermediate',
+  'south-indian',
+  'non-vegetarian'
+) ON CONFLICT (user_id) DO UPDATE SET
+  display_name = EXCLUDED.display_name,
+  age_band = EXCLUDED.age_band,
+  current_weight_kg = EXCLUDED.current_weight_kg,
+  target_weight_kg = EXCLUDED.target_weight_kg;
 `;
