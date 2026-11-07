@@ -24,18 +24,10 @@ import {
 import { useApp } from '../../context/AppContext';
 import { PersonalRecord, TrainingDiscipline } from '../../types';
 
-const WEIGHT_HISTORY = [
-  { date: '10/01', weight: 75.2 },
-  { date: '10/08', weight: 74.8 },
-  { date: '10/15', weight: 74.4 },
-  { date: '10/22', weight: 74.0 },
-  { date: '10/29', weight: 73.8 },
-  { date: '11/05', weight: 73.5 }
-];
-
 export const ProgressAnalytics: React.FC = () => {
   const {
     profile,
+    weightHistory,
     personalRecords,
     addPersonalRecord,
     deletePersonalRecord,
@@ -96,6 +88,21 @@ export const ProgressAnalytics: React.FC = () => {
 
   const latestRec = recoveryLogs[0] || { sleepHours: 7.5, sorenessRating: 3, energyRating: 8 };
 
+  const analyticsWeightData = React.useMemo(() => {
+    if (!weightHistory || weightHistory.length === 0) {
+      return [
+        {
+          date: profile.createdAt ? profile.createdAt.slice(5) : 'Start',
+          weight: profile.startingWeightKg || profile.currentWeightKg || 74.5
+        }
+      ];
+    }
+    return weightHistory.map(entry => ({
+      date: entry.date ? entry.date.slice(5) : 'Log',
+      weight: entry.weightKg
+    }));
+  }, [weightHistory, profile]);
+
   return (
     <div className="space-y-6 pb-12 animate-fadeIn">
       {/* Header */}
@@ -149,7 +156,7 @@ export const ProgressAnalytics: React.FC = () => {
 
           <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={WEIGHT_HISTORY} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <LineChart data={analyticsWeightData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#252e3e" vertical={false} />
                 <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
                 <YAxis domain={['dataMin - 1', 'dataMax + 1']} stroke="#94a3b8" fontSize={11} tickLine={false} />

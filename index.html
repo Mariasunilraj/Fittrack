@@ -9,25 +9,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <script>
-      window.addEventListener('error', function(e) {
-        var el = document.getElementById('debug-banner');
-        if (!el) {
-          el = document.createElement('div');
-          el.id = 'debug-banner';
-          el.style = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#991b1b;color:#fff;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;border-bottom:3px solid #ef4444;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
-          document.body.prepend(el);
+      function showEarlyError(msg) {
+        function display() {
+          var el = document.getElementById('debug-banner');
+          if (!el) {
+            el = document.createElement('div');
+            el.id = 'debug-banner';
+            el.style = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#991b1b;color:#fff;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;border-bottom:3px solid #ef4444;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
+            if (document.body) {
+              document.body.prepend(el);
+            } else {
+              document.documentElement.appendChild(el);
+            }
+          }
+          el.textContent = msg;
         }
-        el.textContent = 'FitTrack Error: ' + (e.message || e.error) + '\nLocation: ' + (e.filename || '') + ':' + (e.lineno || '');
+        if (document.body) {
+          display();
+        } else {
+          window.addEventListener('DOMContentLoaded', display);
+        }
+      }
+      window.addEventListener('error', function(e) {
+        showEarlyError('FitTrack Error: ' + (e.message || e.error) + '\nLocation: ' + (e.filename || '') + ':' + (e.lineno || ''));
       });
       window.addEventListener('unhandledrejection', function(e) {
-        var el = document.getElementById('debug-banner');
-        if (!el) {
-          el = document.createElement('div');
-          el.id = 'debug-banner';
-          el.style = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#991b1b;color:#fff;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;border-bottom:3px solid #ef4444;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
-          document.body.prepend(el);
-        }
-        el.textContent = 'FitTrack Unhandled Rejection: ' + (e.reason ? (e.reason.stack || e.reason) : e);
+        showEarlyError('FitTrack Unhandled Rejection: ' + (e.reason ? (e.reason.stack || e.reason) : e));
       });
     </script>
   </head>

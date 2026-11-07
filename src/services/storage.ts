@@ -6,7 +6,8 @@ import {
   RecoveryLog,
   PersonalRecord,
   TaekwondoSession,
-  AIChatMessage
+  AIChatMessage,
+  WeightLogEntry
 } from '../types';
 import {
   INITIAL_USER_PROFILE,
@@ -31,9 +32,29 @@ const STORAGE_KEYS = {
   PRS: 'fittrack_prs',
   TKD_SESSIONS: 'fittrack_tkd_sessions',
   AI_CHAT_HISTORY: 'fittrack_ai_chat',
+  WEIGHT_HISTORY: 'fittrack_weight_history',
   SUPABASE_CONFIG: 'fittrack_supabase_config',
   GEMINI_API_KEY: 'fittrack_gemini_key'
 };
+
+export const INITIAL_DEMO_WEIGHT_HISTORY: WeightLogEntry[] = [
+  {
+    id: 'wh_init_demo',
+    userId: 'usr_demo_001',
+    date: '2026-11-01',
+    weightKg: 76.0,
+    notes: 'Account Start (Initial Weight)',
+    isMondayWeighIn: false
+  },
+  {
+    id: 'wh_demo_w1',
+    userId: 'usr_demo_001',
+    date: '2026-11-03',
+    weightKg: 74.5,
+    notes: 'Weekly Monday Weigh-In',
+    isMondayWeighIn: true
+  }
+];
 
 export const storageService = {
   isAuthenticated(): boolean {
@@ -247,6 +268,69 @@ export const storageService = {
 
   saveGeminiApiKey(key: string): void {
     localStorage.setItem(STORAGE_KEYS.GEMINI_API_KEY, key);
+  },
+
+  getWeightHistory(userId?: string): WeightLogEntry[] {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.WEIGHT_HISTORY);
+      if (!data) {
+        return INITIAL_DEMO_WEIGHT_HISTORY;
+      }
+      const parsed: WeightLogEntry[] = JSON.parse(data);
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        return INITIAL_DEMO_WEIGHT_HISTORY;
+      }
+      if (userId) {
+        const userSpecific = parsed.filter(entry => entry.userId === userId);
+        return userSpecific.length > 0 ? userSpecific : parsed;
+      }
+      return parsed;
+    } catch {
+      return INITIAL_DEMO_WEIGHT_HISTORY;
+    }
+  },
+
+  saveWeightHistory(history: WeightLogEntry[]): void {
+    localStorage.setItem(STORAGE_KEYS.WEIGHT_HISTORY, JSON.stringify(history));
+  },
+
+  addWeightEntry(weightKg: number, date?: string, userId?: string, notes?: string): WeightLogEntry[] {
+    const history = this.getWeightHistory(userId);
+    const effectiveDate = date || new Date().toISOString().split('T')[0];
+    const d = new Date(effectiveDate);
+    const isMonday = d.getDay() === 1;
+
+    const newEntry: WeightLogEntry = {
+      id: `wh_${Date.now()}`,
+      userId: userId || 'current',
+      date: effectiveDate,
+      weightKg: Number(weightKg.toFixed(1)),
+      notes: notes || (isMonday ? 'Weekly Monday Weigh-In' : 'Weekly Weigh-In'),
+      isMondayWeighIn: isMonday
+    };
+
+    const updated = [...history.filter(e => e.date !== effectiveDate), newEntry].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    this.saveWeightHistory(updated);
+    return updated;
+  },
+
+  seedInitialWeightForUser(profile: UserProfile): WeightLogEntry[] {
+    const startDate = profile.createdAt || new Date().toISOString().split('T')[0];
+    const startWeight = profile.startingWeightKg || profile.currentWeightKg || 74.5;
+    const initialEntry: WeightLogEntry = {
+      id: `wh_start_${profile.id || Date.now()}`,
+      userId: profile.id,
+      date: startDate,
+      weightKg: Number(startWeight.toFixed(1)),
+      notes: 'Account Start (Initial Weight)',
+      isMondayWeighIn: new Date(startDate).getDay() === 1
+    };
+    const initialList = [initialEntry];
+    this.saveWeightHistory(initialList);
+    return initialList;
   },
 
   exportAllData(): string {

@@ -8,7 +8,8 @@ import {
   RecoveryLog,
   PersonalRecord,
   TaekwondoSession,
-  AIChatMessage
+  AIChatMessage,
+  WeightLogEntry
 } from '../types';
 import { storageService } from '../services/storage';
 import { DEFAULT_GUEST_PROFILE, DEMO_ATHLETE_PROFILE } from '../data/defaultUserData';
@@ -53,6 +54,8 @@ interface AppContextType {
   clearAiChat: () => void;
   showOnboarding: boolean;
   setShowOnboarding: (show: boolean) => void;
+  weightHistory: WeightLogEntry[];
+  logWeight: (weightKg: number, date?: string, notes?: string) => void;
   toastMessage: string | null;
   showToast: (msg: string) => void;
 }
@@ -85,6 +88,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isAiThinking, setIsAiThinking] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [weightHistory, setWeightHistory] = useState<WeightLogEntry[]>(() => storageService.getWeightHistory());
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -123,6 +127,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     storageService.saveProfile(userProfile);
     setProfile(userProfile);
     setIsAuthenticated(true);
+    const userHistory = storageService.getWeightHistory(userProfile.id);
+    setWeightHistory(userHistory);
     showToast(`Welcome back, ${userProfile.displayName}!`);
     setCurrentView('dashboard');
   };
@@ -131,7 +137,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanEmail = (data.email || '').trim().toLowerCase();
     const initialWeight = data.currentWeightKg || 74.5;
     const goalWeight = data.targetWeightKg || 70.0;
-    const createdDate = data.createdAt || '2026-11-01';
+    const createdDate = data.createdAt || new Date().toISOString().split('T')[0];
 
     const newProfile: UserProfile = {
       ...DEFAULT_GUEST_PROFILE,
@@ -147,6 +153,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     storageService.saveRegisteredUser(cleanEmail, 'registered', newProfile);
     storageService.setAuthenticated(true);
     storageService.saveProfile(newProfile);
+    const initialHistory = storageService.seedInitialWeightForUser(newProfile);
+    setWeightHistory(initialHistory);
     setProfile(newProfile);
     setIsAuthenticated(true);
     showToast(`Welcome to FitTrack, ${newProfile.displayName}!`);
@@ -157,8 +165,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     storageService.clearSession();
     setIsAuthenticated(false);
     setProfile(DEFAULT_GUEST_PROFILE);
+    setWeightHistory(storageService.getWeightHistory());
     setCurrentView('auth');
     showToast('Signed out of FitTrack');
+  };
+
+  const logWeight = (weightKg: number, date?: string, notes?: string) => {
+    const updatedHistory = storageService.addWeightEntry(weightKg, date, profile.id, notes);
+    setWeightHistory(updatedHistory);
+    const updatedProfile: UserProfile = {
+      ...profile,
+      currentWeightKg: Number(weightKg.toFixed(1))
+    };
+    setProfile(updatedProfile);
+    storageService.saveProfile(updatedProfile);
+    const effectiveDate = date || new Date().toISOString().split('T')[0];
+    const isMonday = new Date(effectiveDate).getDay() === 1;
+    showToast(`Weekly weigh-in saved: ${weightKg.toFixed(1)} kg ${isMonday ? '(Monday Check-In)' : ''}`);
   };
 
   const updateProfile = (newProfile: UserProfile) => {
@@ -413,6 +436,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         clearAiChat,
         showOnboarding,
         setShowOnboarding,
+        weightHistory,
+        logWeight,
         toastMessage,
         showToast
       }}

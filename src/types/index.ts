@@ -150,6 +150,15 @@ export interface TaekwondoSession {
   gearChecklistCompleted: boolean;
 }
 
+export interface WeightLogEntry {
+  id: string;
+  userId: string;
+  date: string; // ISO format 'YYYY-MM-DD'
+  weightKg: number;
+  notes?: string;
+  isMondayWeighIn?: boolean;
+}
+
 export interface BodyMeasurement {
   id: string;
   userId: string;
