@@ -61,7 +61,18 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => storageService.isAuthenticated());
-  const [currentView, setCurrentView] = useState<AppView>(() => storageService.isAuthenticated() ? 'dashboard' : 'auth');
+  const [currentView, setCurrentViewState] = useState<AppView>(() => storageService.isAuthenticated() ? 'dashboard' : 'auth');
+
+  const setCurrentView = (view: AppView) => {
+    setCurrentViewState(view);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const mainEl = document.querySelector('main');
+    if (mainEl) {
+      mainEl.scrollTop = 0;
+    }
+  };
   const [profile, setProfile] = useState<UserProfile>(() => storageService.getProfile());
   const [workoutPlans, setWorkoutPlans] = useState<WorkoutSession[]>(() => storageService.getWorkoutPlans());
   const [activeWorkoutSession, setActiveWorkoutSession] = useState<WorkoutSession | null>(null);

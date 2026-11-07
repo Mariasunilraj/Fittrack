@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
@@ -29,13 +29,29 @@ const AppContent: React.FC = () => {
   } = useApp();
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+  const authMainRef = useRef<HTMLElement>(null);
+
+  // Scroll to absolute top whenever the view changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+    if (authMainRef.current) {
+      authMainRef.current.scrollTop = 0;
+    }
+  }, [currentView]);
 
   // If user is not authenticated or explicitly on the auth view, render the focused AuthPage with NO sidebars or dashboards
   if (!isAuthenticated || currentView === 'auth') {
     return (
       <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
         <Navbar onOpenAuth={() => setShowAuthModal(true)} />
-        <main className="flex-1 p-3 sm:p-6 overflow-y-auto max-w-7xl w-full mx-auto">
+        <main ref={authMainRef} className="flex-1 p-3 sm:p-6 overflow-y-auto max-w-7xl w-full mx-auto">
           <AuthPage />
         </main>
         {toastMessage && (
@@ -59,7 +75,7 @@ const AppContent: React.FC = () => {
         <Sidebar />
 
         {/* View Switcher Main Content Area */}
-        <main className="flex-1 p-3 sm:p-5 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto pb-24 md:pb-8">
+        <main ref={mainRef} className="flex-1 p-3 sm:p-5 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto pb-24 md:pb-8">
           {currentView === 'dashboard' && <DashboardView />}
           {currentView === 'training' && <TrainingPlanner />}
           {currentView === 'exercises' && <ExerciseLibrary />}

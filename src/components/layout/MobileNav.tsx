@@ -22,7 +22,12 @@ export const MobileNav: React.FC = () => {
         return (
           <button
             key={item.id}
-            onClick={() => setCurrentView(item.id)}
+            onClick={() => {
+              setCurrentView(item.id);
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              const mainEl = document.querySelector('main');
+              if (mainEl) mainEl.scrollTop = 0;
+            }}
             className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition cursor-pointer min-w-[50px] ${
               isActive ? 'text-brand-yellow font-bold' : 'text-slate-400 hover:text-slate-200'
             }`}

@@ -45,7 +45,12 @@ export const Sidebar: React.FC = () => {
           return (
             <button
               key={item.id}
-              onClick={() => setCurrentView(item.id)}
+              onClick={() => {
+                setCurrentView(item.id);
+                window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                const mainEl = document.querySelector('main');
+                if (mainEl) mainEl.scrollTop = 0;
+              }}
               title={item.label}
               className={`w-full flex items-center justify-center lg:justify-between p-3 lg:px-3.5 lg:py-3 rounded-xl text-sm font-semibold transition group cursor-pointer relative ${
                 isActive
