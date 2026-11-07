@@ -8,9 +8,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+      window.addEventListener('error', function(e) {
+        var el = document.getElementById('debug-banner');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'debug-banner';
+          el.style = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#991b1b;color:#fff;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;border-bottom:3px solid #ef4444;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
+          document.body.prepend(el);
+        }
+        el.textContent = 'FitTrack Error: ' + (e.message || e.error) + '\nLocation: ' + (e.filename || '') + ':' + (e.lineno || '');
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        var el = document.getElementById('debug-banner');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'debug-banner';
+          el.style = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#991b1b;color:#fff;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;border-bottom:3px solid #ef4444;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
+          document.body.prepend(el);
+        }
+        el.textContent = 'FitTrack Unhandled Rejection: ' + (e.reason ? (e.reason.stack || e.reason) : e);
+      });
+    </script>
   </head>
   <body class="bg-[#0c0f14] text-slate-100 antialiased selection:bg-[#e2f163] selection:text-black min-h-screen">
-    <div id="root"></div>
+    <div id="root">
+      <div id="loading-placeholder" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #0c0f14; color: #f1f5f9; font-family: sans-serif; gap: 16px;">
+        <div style="width: 52px; height: 52px; border-radius: 14px; background: #e2f163; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #020617; font-size: 24px; box-shadow: 0 0 30px rgba(226,241,99,0.3);">FT</div>
+        <div style="font-size: 14px; font-weight: 700; color: #94a3b8; letter-spacing: 0.05em;">Loading FitTrack PRO...</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
