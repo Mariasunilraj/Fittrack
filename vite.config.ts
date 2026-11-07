@@ -92,6 +92,7 @@ function secureVaultApiPlugin(): Plugin {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',
   plugins: [react(), secureVaultApiPlugin()],
   server: {
     port: 5173,

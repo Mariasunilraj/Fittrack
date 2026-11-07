@@ -46,7 +46,19 @@ export const storageService = {
         localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(INITIAL_USER_PROFILE));
         return INITIAL_USER_PROFILE;
       }
-      return parsed;
+      return {
+        ...INITIAL_USER_PROFILE,
+        ...parsed,
+        primaryGoals: Array.isArray(parsed.primaryGoals) && parsed.primaryGoals.length > 0
+          ? parsed.primaryGoals
+          : INITIAL_USER_PROFILE.primaryGoals,
+        preferredDisciplines: Array.isArray(parsed.preferredDisciplines) && parsed.preferredDisciplines.length > 0
+          ? parsed.preferredDisciplines
+          : INITIAL_USER_PROFILE.preferredDisciplines,
+        equipment: Array.isArray(parsed.equipment)
+          ? parsed.equipment
+          : INITIAL_USER_PROFILE.equipment
+      };
     } catch {
       return INITIAL_USER_PROFILE;
     }
