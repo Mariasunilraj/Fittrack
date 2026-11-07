@@ -6,6 +6,7 @@ export const DEFAULT_GUEST_PROFILE: UserProfile = {
   displayName: 'Athlete',
   ageBand: '18-29',
   heightCm: 175,
+  startingWeightKg: 72.0,
   currentWeightKg: 70.0,
   targetWeightKg: 68.0,
   experienceLevel: 'beginner',
@@ -18,7 +19,7 @@ export const DEFAULT_GUEST_PROFILE: UserProfile = {
   allergies: [],
   medicalNotes: '',
   hasAcceptedDisclaimer: false,
-  createdAt: ''
+  createdAt: '2026-11-01'
 };
 
 export const DEMO_ATHLETE_PROFILE: UserProfile = {
@@ -27,6 +28,7 @@ export const DEMO_ATHLETE_PROFILE: UserProfile = {
   displayName: 'Sunil Raj',
   ageBand: '18-29',
   heightCm: 175,
+  startingWeightKg: 76.0,
   currentWeightKg: 74.5,
   targetWeightKg: 70.0,
   experienceLevel: 'intermediate',

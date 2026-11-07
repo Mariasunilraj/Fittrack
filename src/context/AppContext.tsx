@@ -109,7 +109,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           ...DEFAULT_GUEST_PROFILE,
           id: `usr_${Date.now()}`,
           email: cleanEmail,
-          displayName: name.charAt(0).toUpperCase() + name.slice(1)
+          displayName: name.charAt(0).toUpperCase() + name.slice(1),
+          startingWeightKg: 76.0,
+          currentWeightKg: 74.5,
+          targetWeightKg: 70.0,
+          createdAt: '2026-11-01'
         };
         storageService.saveRegisteredUser(cleanEmail, password || 'default', userProfile);
       }
@@ -125,12 +129,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const registerUser = (data: Partial<UserProfile> & { displayName: string; email: string }) => {
     const cleanEmail = (data.email || '').trim().toLowerCase();
+    const initialWeight = data.currentWeightKg || 74.5;
+    const goalWeight = data.targetWeightKg || 70.0;
+    const createdDate = data.createdAt || '2026-11-01';
+
     const newProfile: UserProfile = {
       ...DEFAULT_GUEST_PROFILE,
       ...data,
       email: cleanEmail,
-      id: `usr_${Date.now()}`,
-      createdAt: new Date().toISOString()
+      startingWeightKg: data.startingWeightKg || initialWeight,
+      currentWeightKg: initialWeight,
+      targetWeightKg: goalWeight,
+      createdAt: createdDate,
+      id: `usr_${Date.now()}`
     };
 
     storageService.saveRegisteredUser(cleanEmail, 'registered', newProfile);

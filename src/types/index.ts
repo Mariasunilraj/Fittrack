@@ -13,6 +13,7 @@ export interface UserProfile {
   displayName: string;
   ageBand: AgeBand;
   heightCm: number;
+  startingWeightKg?: number;
   currentWeightKg: number;
   targetWeightKg?: number;
   experienceLevel: ExperienceLevel;

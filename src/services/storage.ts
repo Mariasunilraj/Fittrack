@@ -90,6 +90,8 @@ export const storageService = {
       return {
         ...DEMO_ATHLETE_PROFILE,
         ...parsed,
+        startingWeightKg: parsed.startingWeightKg || parsed.currentWeightKg || DEMO_ATHLETE_PROFILE.startingWeightKg || 76.0,
+        createdAt: parsed.createdAt || DEMO_ATHLETE_PROFILE.createdAt || '2026-11-01',
         primaryGoals: Array.isArray(parsed.primaryGoals) && parsed.primaryGoals.length > 0
           ? parsed.primaryGoals
           : DEMO_ATHLETE_PROFILE.primaryGoals,

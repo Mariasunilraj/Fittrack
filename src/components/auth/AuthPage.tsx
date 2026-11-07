@@ -104,9 +104,11 @@ export const AuthPage: React.FC = () => {
         email: regEmail.trim(),
         ageBand: regAgeBand,
         foodPreference: regFoodPreference,
+        startingWeightKg: weightNum,
         currentWeightKg: weightNum,
         targetWeightKg: targetWeightNum,
-        preferredDisciplines: [regPrimaryDiscipline, 'mobility']
+        preferredDisciplines: [regPrimaryDiscipline, 'mobility'],
+        createdAt: '2026-11-01'
       });
 
       try {

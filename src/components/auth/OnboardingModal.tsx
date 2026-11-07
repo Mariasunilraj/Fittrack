@@ -47,6 +47,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
       displayName: displayName || 'FitTrack Athlete',
       ageBand,
       heightCm,
+      startingWeightKg: profile.startingWeightKg || currentWeightKg,
       currentWeightKg,
       targetWeightKg,
       experienceLevel,
@@ -55,7 +56,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
       region,
       foodPreference,
       medicalNotes,
-      hasAcceptedDisclaimer: true
+      hasAcceptedDisclaimer: true,
+      createdAt: profile.createdAt || '2026-11-01'
     });
 
     onClose();
