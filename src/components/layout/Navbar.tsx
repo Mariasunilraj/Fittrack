@@ -17,7 +17,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
     taekwondo: 'Taekwondo Martial Arts',
     progress: 'Progress & Recovery Analytics',
     'ai-coach': 'FitTrack AI Assistant',
-    settings: 'Settings & Cloud Database'
+    settings: 'Settings & Cloud Database',
+    auth: 'Sign In / Register'
   };
 
   return (
@@ -59,6 +60,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
             <Sparkles className="w-3.5 h-3.5 animate-pulse" />
             <span className="hidden sm:inline">AI Fitness Coach</span>
             <span className="sm:hidden">AI</span>
+          </button>
+
+          {/* Sign In / Register Button */}
+          <button
+            onClick={() => setCurrentView('auth')}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${
+              currentView === 'auth'
+                ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-md shadow-brand-yellow/20'
+                : 'bg-brand-card hover:bg-brand-hover text-slate-200 border-brand-border'
+            }`}
+            title="Sign In or Register New Account"
+          >
+            <User className="w-3.5 h-3.5 text-brand-yellow" />
+            <span className="hidden sm:inline">Sign In / Register</span>
           </button>
 
           {/* User Profile Pill */}

@@ -2,23 +2,23 @@ import { UserProfile, WorkoutSession, WorkoutLogEntry, MealLogItem, WaterLog, Re
 
 export const INITIAL_USER_PROFILE: UserProfile = {
   id: 'usr_demo_001',
-  email: 'arjun.fitness@example.in',
-  displayName: 'Arjun Sharma',
-  ageBand: '30-39',
-  heightCm: 176,
-  currentWeightKg: 73.5,
-  targetWeightKg: 71.0,
+  email: 'athlete@fittrack.in',
+  displayName: 'Sunil Raj',
+  ageBand: '18-29',
+  heightCm: 175,
+  currentWeightKg: 74.5,
+  targetWeightKg: 70.0,
   experienceLevel: 'intermediate',
   primaryGoals: ['Build Functional Strength', 'Calisthenics Skills', 'Improve Flexibility & Martial Arts', 'Healthy Indian Diet'],
   trainingAccess: 'both',
   equipment: ['Pull-Up Bar', 'Dumbbells (5-25kg)', 'Resistance Bands', 'Yoga Mat', 'Gym Access'],
   preferredDisciplines: ['calisthenics', 'gym', 'taekwondo', 'mobility'],
   region: 'south-indian',
-  foodPreference: 'eggetarian',
+  foodPreference: 'non-vegetarian',
   allergies: [],
-  medicalNotes: 'Past minor ankle sprain (rehabilitated). No acute medical conditions.',
+  medicalNotes: 'No acute medical conditions. Ready for hybrid training.',
   hasAcceptedDisclaimer: true,
-  createdAt: '2026-10-01'
+  createdAt: '2026-11-01'
 };
 
 export const INITIAL_WORKOUT_PLANS: WorkoutSession[] = [

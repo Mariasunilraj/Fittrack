@@ -13,11 +13,15 @@ import {
 import { storageService } from '../services/storage';
 import { askGeminiFitnessCoach } from '../services/geminiAI';
 
-export type AppView = 'dashboard' | 'training' | 'exercises' | 'nutrition' | 'taekwondo' | 'progress' | 'ai-coach' | 'settings';
+export type AppView = 'dashboard' | 'training' | 'exercises' | 'nutrition' | 'taekwondo' | 'progress' | 'ai-coach' | 'settings' | 'auth';
 
 interface AppContextType {
   currentView: AppView;
   setCurrentView: (view: AppView) => void;
+  isAuthenticated: boolean;
+  loginUser: (email: string, password?: string, customName?: string) => void;
+  registerUser: (data: Partial<UserProfile> & { displayName: string; email: string }) => void;
+  logoutUser: () => void;
   profile: UserProfile;
   updateProfile: (profile: UserProfile) => void;
   workoutPlans: WorkoutSession[];
@@ -56,6 +60,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentView, setCurrentView] = useState<AppView>('dashboard');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => storageService.isAuthenticated());
   const [profile, setProfile] = useState<UserProfile>(() => storageService.getProfile());
   const [workoutPlans, setWorkoutPlans] = useState<WorkoutSession[]>(() => storageService.getWorkoutPlans());
   const [activeWorkoutSession, setActiveWorkoutSession] = useState<WorkoutSession | null>(null);
@@ -74,6 +79,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTimeout(() => {
       setToastMessage(prev => (prev === msg ? null : prev));
     }, 3500);
+  };
+
+  const loginUser = (email: string, _password?: string, customName?: string) => {
+    const existingProfile = storageService.getProfile();
+    const updated: UserProfile = {
+      ...existingProfile,
+      email: email || existingProfile.email,
+      displayName: customName || (email ? email.split('@')[0] : existingProfile.displayName)
+    };
+    setProfile(updated);
+    storageService.saveProfile(updated);
+    storageService.setAuthenticated(true);
+    setIsAuthenticated(true);
+    showToast(`Welcome back, ${updated.displayName}!`);
+    setCurrentView('dashboard');
+  };
+
+  const registerUser = (data: Partial<UserProfile> & { displayName: string; email: string }) => {
+    const existingProfile = storageService.getProfile();
+    const newProfile: UserProfile = {
+      ...existingProfile,
+      ...data,
+      id: `usr_${Date.now()}`
+    };
+    setProfile(newProfile);
+    storageService.saveProfile(newProfile);
+    storageService.setAuthenticated(true);
+    setIsAuthenticated(true);
+    showToast(`Welcome to FitTrack, ${newProfile.displayName}!`);
+    setCurrentView('dashboard');
+  };
+
+  const logoutUser = () => {
+    storageService.setAuthenticated(false);
+    setIsAuthenticated(false);
+    showToast('Signed out of FitTrack');
+    setCurrentView('auth');
   };
 
   const updateProfile = (newProfile: UserProfile) => {
@@ -294,6 +336,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       value={{
         currentView,
         setCurrentView,
+        isAuthenticated,
+        loginUser,
+        registerUser,
+        logoutUser,
         profile,
         updateProfile,
         workoutPlans,

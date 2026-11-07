@@ -12,6 +12,7 @@ import { TaekwondoTracker } from './components/taekwondo/TaekwondoTracker';
 import { ProgressAnalytics } from './components/progress/ProgressAnalytics';
 import { AICoachChat } from './components/ai/AICoachChat';
 import { SettingsView } from './components/settings/SettingsView';
+import { AuthPage } from './components/auth/AuthPage';
 import { AuthModal } from './components/auth/AuthModal';
 import { OnboardingModal } from './components/auth/OnboardingModal';
 import { CheckCircle2 } from 'lucide-react';
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
           {currentView === 'progress' && <ProgressAnalytics />}
           {currentView === 'ai-coach' && <AICoachChat />}
           {currentView === 'settings' && <SettingsView />}
+          {currentView === 'auth' && <AuthPage />}
         </main>
       </div>
 

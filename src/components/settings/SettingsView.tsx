@@ -16,7 +16,8 @@ import {
   Lock,
   Cpu,
   Server,
-  Activity
+  Activity,
+  LogOut
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { storageService } from '../../services/storage';
@@ -25,7 +26,7 @@ import { NEON_SQL_MIGRATION } from '../../data/neonSchemaScript';
 import { apiClient, VaultStatusResponse } from '../../services/apiClient';
 
 export const SettingsView: React.FC = () => {
-  const { profile, setShowOnboarding, showToast } = useApp();
+  const { profile, setShowOnboarding, showToast, logoutUser, setCurrentView } = useApp();
   const [showSql, setShowSql] = useState(false);
   const [copiedSql, setCopiedSql] = useState(false);
   const [showNeonSql, setShowNeonSql] = useState(false);
@@ -585,8 +586,18 @@ export const SettingsView: React.FC = () => {
           </button>
 
           <button
+            onClick={() => {
+              logoutUser();
+            }}
+            className="py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-2 transition cursor-pointer"
+          >
+            <LogOut className="w-4 h-4 text-amber-400" />
+            <span>Sign Out / Switch Account</span>
+          </button>
+
+          <button
             onClick={handleResetData}
-            className="py-2.5 px-4 rounded-xl bg-rose-950/20 hover:bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2 transition cursor-pointer ml-auto"
+            className="py-2.5 px-4 rounded-xl bg-rose-950/20 hover:bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2 transition cursor-pointer sm:ml-auto"
           >
             <Trash2 className="w-4 h-4" />
             <span>Reset Local Records</span>

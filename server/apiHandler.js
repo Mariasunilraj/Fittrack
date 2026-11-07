@@ -412,9 +412,15 @@ export async function handleNeonSync(req, res) {
       results.nutrition = await logNutritionToNeon(nutritionItem.userId, nutritionItem);
     }
 
+    const activeDbUrl =
+      process.env.DATABASE_URL ||
+      process.env.POSTGRES_URL ||
+      process.env.STORAGE_URL ||
+      process.env.NEON_DATABASE_URL;
+
     return res.json({
       success: true,
-      syncedToNeon: Boolean(process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('YOUR_NEON_PASSWORD')),
+      syncedToNeon: Boolean(activeDbUrl && !activeDbUrl.includes('YOUR_NEON_PASSWORD')),
       results
     });
   } catch (err) {

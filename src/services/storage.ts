@@ -20,6 +20,7 @@ import {
 
 const STORAGE_KEYS = {
   USER_PROFILE: 'fittrack_profile',
+  IS_AUTHENTICATED: 'fittrack_is_authenticated',
   WORKOUT_PLANS: 'fittrack_workout_plans',
   MEAL_LOGS: 'fittrack_meal_logs',
   WATER_LOG: 'fittrack_water_log',
@@ -39,7 +40,13 @@ export const storageService = {
       return INITIAL_USER_PROFILE;
     }
     try {
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      // Ensure deprecated demo profile for 'Arjun Sharma' is permanently purged
+      if (parsed.displayName === 'Arjun Sharma' || parsed.email?.includes('arjun')) {
+        localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(INITIAL_USER_PROFILE));
+        return INITIAL_USER_PROFILE;
+      }
+      return parsed;
     } catch {
       return INITIAL_USER_PROFILE;
     }
@@ -47,6 +54,15 @@ export const storageService = {
 
   saveProfile(profile: UserProfile): void {
     localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+  },
+
+  isAuthenticated(): boolean {
+    const status = localStorage.getItem(STORAGE_KEYS.IS_AUTHENTICATED);
+    return status === 'true';
+  },
+
+  setAuthenticated(status: boolean): void {
+    localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, status ? 'true' : 'false');
   },
 
   getWorkoutPlans(): WorkoutSession[] {
@@ -157,13 +173,19 @@ export const storageService = {
       const welcomeMsg: AIChatMessage = {
         id: 'msg_welcome',
         sender: 'assistant',
-        content: `Namaste Arjun! 🙏 I'm your FitTrack AI Coach. I can help adapt your calisthenics ladders, estimate macros for regional Indian home-cooked meals, structure your Taekwondo poomsae conditioning, or answer fitness and recovery questions safely. What are we focusing on today?`,
+        content: `Namaste! 🙏 I'm your FitTrack AI Coach. I can help adapt your calisthenics ladders, estimate macros for regional Indian home-cooked meals, structure your Taekwondo poomsae conditioning, or answer fitness and recovery questions safely. What are we focusing on today?`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       return [welcomeMsg];
     }
     try {
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      // Clean up legacy references to Arjun Sharma if present in chat history
+      if (Array.isArray(parsed) && parsed.some(m => m.content?.includes('Arjun'))) {
+        localStorage.removeItem(STORAGE_KEYS.AI_CHAT_HISTORY);
+        return this.getAIChatHistory();
+      }
+      return parsed;
     } catch {
       return [];
     }

@@ -103,7 +103,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   type="text"
                   value={displayName}
                   onChange={e => setDisplayName(e.target.value)}
-                  placeholder="e.g. Arjun Sharma"
+                  placeholder="e.g. Sunil Raj"
                   className="w-full px-4 py-3 bg-brand-dark border border-brand-border rounded-xl text-white focus:outline-none focus:border-brand-yellow"
                 />
               </div>
