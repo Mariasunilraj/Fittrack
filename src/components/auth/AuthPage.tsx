@@ -3,28 +3,18 @@ import {
   Lock,
   Mail,
   User,
-  Sparkles,
-  ShieldCheck,
-  CheckCircle2,
   ArrowRight,
   Eye,
-  EyeOff,
-  Flame,
-  Award,
-  Activity,
-  Utensils,
-  Camera,
-  ChevronRight,
-  Scale
+  EyeOff
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useApp } from '../../context/AppContext';
 import { AgeBand, FoodPreference, TrainingDiscipline } from '../../types';
 
 export const AuthPage: React.FC = () => {
-  const { loginUser, registerUser, showToast, setCurrentView } = useApp();
+  const { loginUser, registerUser, showToast } = useApp();
 
-  // Active form tab on the same page: 'login' | 'register'
+  // Active form tab: 'login' | 'register'
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
 
   // Login form state
@@ -61,11 +51,11 @@ export const AuthPage: React.FC = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      loginUser(loginEmail, loginPassword);
+      loginUser(loginEmail.trim(), loginPassword.trim());
       try {
         confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
       } catch (err) {}
-    }, 600);
+    }, 400);
   };
 
   // Handle Register submission
@@ -108,501 +98,375 @@ export const AuthPage: React.FC = () => {
         currentWeightKg: weightNum,
         targetWeightKg: targetWeightNum,
         preferredDisciplines: [regPrimaryDiscipline, 'mobility'],
-        createdAt: '2026-11-01'
+        createdAt: new Date().toISOString().split('T')[0]
       });
 
       try {
-        confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
       } catch (err) {}
-    }, 700);
-  };
-
-  // Demo Fast Track Login as Official F.MARIA SUNIL RAJ
-  const handleQuickDemoAccess = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      loginUser('mariasunilraj8@gmail.com', 'REDACTED_SECRET', 'F.MARIA SUNIL RAJ');
-      try {
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-      } catch (err) {}
-    }, 400);
+    }, 500);
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-4 sm:py-8 px-2 sm:px-4 animate-fadeIn">
-      {/* Container with Left Feature Showcase and Right Dual Form Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* ======================================================== */}
-        {/* LEFT COLUMN: BRANDING & FEATURE SHOWCASE                 */}
-        {/* ======================================================== */}
-        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-yellow/15 border border-brand-yellow/30 text-brand-yellow text-xs font-black uppercase tracking-wider mb-3">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Next-Gen Fitness Platform</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-              One Unified Account for <span className="text-brand-yellow">Hybrid Mastery</span>.
-            </h1>
-            <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-              Designed specifically for all ages (18–60+), combining multimodal Gemini AI food photo scanning, Calisthenics progressions, Taekwondo martial arts, and Gym lifting.
-            </p>
+    <div className="min-h-[75vh] flex items-center justify-center py-6 sm:py-12 px-3 sm:px-4 animate-fadeIn">
+      <div className="w-full max-w-[440px] mx-auto">
+        {/* FitTrack Logo & Header */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-yellow text-slate-950 font-black text-xl shadow-lg shadow-brand-yellow/20 mb-3">
+            FT
           </div>
-
-          {/* 4 Feature Highlights */}
-          <div className="space-y-3 pt-2">
-            <div className="p-3.5 rounded-2xl bg-brand-surface border border-brand-border flex items-start gap-3.5 shadow-md">
-              <div className="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Camera className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Gemini AI Food Photo Scanner</h4>
-                <p className="text-xs text-slate-400 mt-0.5 leading-snug">
-                  Snap any home-cooked or restaurant Indian meal to get instant calories, protein, carbs, and fat breakdown.
-                </p>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-2xl bg-brand-surface border border-brand-border flex items-start gap-3.5 shadow-md">
-              <div className="w-10 h-10 rounded-xl bg-brand-yellow/15 text-brand-yellow flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Activity className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Tri-Discipline Training Schedules</h4>
-                <p className="text-xs text-slate-400 mt-0.5 leading-snug">
-                  Calisthenics ladders, Taekwondo poomsae & kick drills, and Gym barbell lifts with custom techniques.
-                </p>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-2xl bg-brand-surface border border-brand-border flex items-start gap-3.5 shadow-md">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Scale className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Goal Trajectory & PR Hall of Fame</h4>
-                <p className="text-xs text-slate-400 mt-0.5 leading-snug">
-                  Current weight vs target goal area charts, weekly discipline breakdowns, and personal record logs.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Privacy & Data Protection Indicator */}
-          <div className="p-3.5 rounded-xl bg-brand-dark/70 border border-brand-border/80 flex items-center gap-3 text-xs text-slate-400">
-            <Lock className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <span>
-              <strong>Private & Secure:</strong> Your personal health metrics and training logs are encrypted.
-            </span>
-          </div>
+          <h1 className="text-2xl font-black text-white tracking-tight">FitTrack PRO</h1>
+          <p className="text-xs text-slate-400 mt-1">Smart Fitness & Nutrition Management</p>
         </div>
 
-        {/* ======================================================== */}
-        {/* RIGHT COLUMN: LOGIN & REGISTER ON THE SAME PAGE          */}
-        {/* ======================================================== */}
-        <div className="lg:col-span-7">
-          <div className="bg-brand-surface border border-brand-border rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden text-slate-100">
-            {/* Ambient background glow */}
-            <div className="absolute -top-24 -right-24 w-60 h-60 bg-brand-yellow/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Simplified Auth Card */}
+        <div className="bg-brand-surface border border-brand-border rounded-3xl p-6 sm:p-7 shadow-2xl relative overflow-hidden text-slate-100">
+          {/* Subtle Ambient Glow */}
+          <div className="absolute -top-24 -right-24 w-44 h-44 bg-brand-yellow/10 rounded-full blur-3xl pointer-events-none" />
 
-            {/* UNIFIED SWITCHER: LOGIN & REGISTER TABS ON THE SAME PAGE */}
-            <div className="p-1.5 rounded-2xl bg-brand-dark/90 border border-brand-border flex items-center gap-1.5 mb-6">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('login');
-                  setErrorMessage(null);
-                }}
-                className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-                  activeTab === 'login'
-                    ? 'bg-brand-yellow text-slate-950 shadow-md shadow-brand-yellow/20'
-                    : 'text-slate-400 hover:text-white hover:bg-brand-card'
-                }`}
-              >
-                <Lock className="w-4 h-4" />
-                <span>1. Sign In to FitTrack</span>
-              </button>
+          {/* Clean Switcher: Sign In & Create A/C */}
+          <div className="p-1 rounded-2xl bg-brand-dark/90 border border-brand-border flex items-center gap-1 mb-5">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('login');
+                setErrorMessage(null);
+              }}
+              className={`flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
+                activeTab === 'login'
+                  ? 'bg-brand-yellow text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-white hover:bg-brand-card'
+              }`}
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('register');
-                  setErrorMessage(null);
-                }}
-                className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-                  activeTab === 'register'
-                    ? 'bg-brand-yellow text-slate-950 shadow-md shadow-brand-yellow/20'
-                    : 'text-slate-400 hover:text-white hover:bg-brand-card'
-                }`}
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>2. Create New Account</span>
-              </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('register');
+                setErrorMessage(null);
+              }}
+              className={`flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
+                activeTab === 'register'
+                  ? 'bg-brand-yellow text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-white hover:bg-brand-card'
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              <span>Create A/C</span>
+            </button>
+          </div>
+
+          {/* Error Alert */}
+          {errorMessage && (
+            <div className="mb-4 p-3 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2.5 animate-fadeIn">
+              <span className="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0" />
+              <span>{errorMessage}</span>
             </div>
+          )}
 
-            {/* Error Message Alert */}
-            {errorMessage && (
-              <div className="mb-5 p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2.5 animate-fadeIn">
-                <span className="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0" />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            {/* ==================================================== */}
-            {/* TAB 1: SIGN IN FORM                                  */}
-            {/* ==================================================== */}
-            {activeTab === 'login' && (
-              <div className="space-y-5 animate-fadeIn">
+          {/* ==================================================== */}
+          {/* TAB 1: SIGN IN FORM                                  */}
+          {/* ==================================================== */}
+          {activeTab === 'login' && (
+            <div className="space-y-4 animate-fadeIn">
+              <form onSubmit={handleLoginSubmit} className="space-y-3.5">
                 <div>
-                  <h2 className="text-xl font-bold text-white tracking-tight">Welcome Back to FitTrack</h2>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Enter your email credentials to access your daily workouts, nutrition tracker, and analytics.
-                  </p>
-
-                  {/* Primary Account One-Click Autofill Pill */}
-                  <div
-                    onClick={() => {
-                      setLoginEmail('mariasunilraj8@gmail.com');
-                      setLoginPassword('REDACTED_SECRET');
-                      setErrorMessage(null);
-                    }}
-                    className="mt-3 p-2.5 rounded-xl bg-brand-yellow/10 border border-brand-yellow/30 flex items-center justify-between text-xs text-brand-yellow cursor-pointer hover:bg-brand-yellow/20 transition group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-3.5 h-3.5 flex-shrink-0 animate-pulse" />
-                      <span><strong>F.MARIA SUNIL RAJ</strong> • mariasunilraj8@gmail.com</span>
-                    </div>
-                    <span className="text-[10px] font-bold uppercase underline group-hover:text-white">Autofill</span>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input
+                      type="email"
+                      required
+                      placeholder="Enter your email"
+                      value={loginEmail}
+                      onChange={e => setLoginEmail(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                    />
                   </div>
                 </div>
 
-                <form onSubmit={handleLoginSubmit} className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                      Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => showToast('Password reset link sent to your registered email.')}
+                      className="text-[11px] text-brand-yellow hover:underline cursor-pointer"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input
+                      type={showLoginPassword ? 'text' : 'password'}
+                      required
+                      placeholder="••••••••"
+                      value={loginPassword}
+                      onChange={e => setLoginPassword(e.target.value)}
+                      className="w-full pl-10 pr-11 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
+                    >
+                      {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-0.5">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={e => setRememberMe(e.target.checked)}
+                      className="rounded border-brand-border bg-brand-dark text-brand-yellow focus:ring-0"
+                    />
+                    <span>Keep me signed in</span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full mt-2 py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.01] disabled:opacity-50"
+                >
+                  {loading ? (
+                    <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Sign In</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              <p className="text-center text-xs text-slate-400 pt-3 border-t border-brand-border/60">
+                Don't have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('register');
+                    setErrorMessage(null);
+                  }}
+                  className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer"
+                >
+                  Create A/C
+                </button>
+              </p>
+            </div>
+          )}
+
+          {/* ==================================================== */}
+          {/* TAB 2: REGISTER FORM                                 */}
+          {/* ==================================================== */}
+          {activeTab === 'register' && (
+            <div className="space-y-4 animate-fadeIn">
+              <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. F.MARIA SUNIL RAJ"
+                      value={regFullName}
+                      onChange={e => setRegFullName(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input
+                      type="email"
+                      required
+                      placeholder="name@example.com"
+                      value={regEmail}
+                      onChange={e => setRegEmail(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                      Email Address
+                      Password
                     </label>
                     <div className="relative">
-                      <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                       <input
-                        type="email"
+                        type={showRegPassword ? 'text' : 'password'}
                         required
-                        placeholder="mariasunilraj8@gmail.com"
-                        value={loginEmail}
-                        onChange={e => setLoginEmail(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                        placeholder="••••••••"
+                        value={regPassword}
+                        onChange={e => setRegPassword(e.target.value)}
+                        className="w-full pl-9 pr-9 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowRegPassword(!showRegPassword)}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
+                      >
+                        {showRegPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
                     </div>
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                        Password
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => showToast('Password reset link has been dispatched to your email.')}
-                        className="text-[11px] text-brand-yellow hover:underline cursor-pointer"
-                      >
-                        Forgot password?
-                      </button>
-                    </div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                      Confirm Password
+                    </label>
                     <div className="relative">
-                      <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                       <input
-                        type={showLoginPassword ? 'text' : 'password'}
+                        type={showRegPassword ? 'text' : 'password'}
                         required
                         placeholder="••••••••"
-                        value={loginPassword}
-                        onChange={e => setLoginPassword(e.target.value)}
-                        className="w-full pl-10 pr-11 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                        value={regConfirmPassword}
+                        onChange={e => setRegConfirmPassword(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowLoginPassword(!showLoginPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
-                      >
-                        {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex items-center justify-between pt-1">
-                    <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
-                      <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={e => setRememberMe(e.target.checked)}
-                        className="rounded border-brand-border bg-brand-dark text-brand-yellow focus:ring-0"
-                      />
-                      <span>Keep me signed in</span>
+                {/* Age Band Selector */}
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                    Age Band
+                  </label>
+                  <div className="grid grid-cols-5 gap-1.5">
+                    {(['18-29', '30-39', '40-49', '50-59', '60+'] as AgeBand[]).map(band => (
+                      <button
+                        key={band}
+                        type="button"
+                        onClick={() => setRegAgeBand(band)}
+                        className={`py-1.5 px-1 text-center rounded-xl text-xs font-bold border transition cursor-pointer ${
+                          regAgeBand === band
+                            ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-sm'
+                            : 'bg-brand-dark/80 border-brand-border text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        {band}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Dietary Preference & Primary Discipline */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                      Diet
                     </label>
+                    <select
+                      value={regFoodPreference}
+                      onChange={e => setRegFoodPreference(e.target.value as FoodPreference)}
+                      className="w-full px-2.5 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs text-white focus:outline-none focus:border-brand-yellow capitalize"
+                    >
+                      <option value="non-vegetarian">Non-Veg</option>
+                      <option value="vegetarian">Veg</option>
+                      <option value="eggetarian">Eggetarian</option>
+                      <option value="vegan">Vegan</option>
+                    </select>
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.01] disabled:opacity-50"
-                  >
-                    {loading ? (
-                      <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span>Sign In</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-                </form>
-
-                {/* Instant Guest / Demo Mode Button */}
-                <div className="relative my-4">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-brand-border" />
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                      Discipline
+                    </label>
+                    <select
+                      value={regPrimaryDiscipline}
+                      onChange={e => setRegPrimaryDiscipline(e.target.value as TrainingDiscipline)}
+                      className="w-full px-2.5 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs text-white focus:outline-none focus:border-brand-yellow capitalize"
+                    >
+                      <option value="calisthenics">Calisthenics</option>
+                      <option value="taekwondo">Taekwondo</option>
+                      <option value="gym">Gym / Weights</option>
+                      <option value="weightlifting">Powerlifting</option>
+                    </select>
                   </div>
-                  <div className="relative flex justify-center text-[10px] uppercase font-bold">
-                    <span className="bg-brand-surface px-3 text-slate-500">Or Access With One Click</span>
+                </div>
+
+                {/* Weight & Target Goal */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                      Current Weight (kg)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={regWeightKg}
+                      onChange={e => setRegWeightKg(e.target.value)}
+                      className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs font-mono text-white text-center focus:outline-none focus:border-brand-yellow"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                      Target Goal (kg)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={regTargetWeightKg}
+                      onChange={e => setRegTargetWeightKg(e.target.value)}
+                      className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs font-mono text-brand-yellow text-center focus:outline-none focus:border-brand-yellow"
+                    />
                   </div>
                 </div>
 
                 <button
-                  type="button"
-                  onClick={handleQuickDemoAccess}
-                  className="w-full py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer hover:border-slate-500"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full mt-2 py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.01] disabled:opacity-50"
                 >
-                  <Sparkles className="w-4 h-4 text-brand-yellow" />
-                  <span>⚡ Instant Fast Track: F.MARIA SUNIL RAJ</span>
+                  {loading ? (
+                    <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Create Account</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
+              </form>
 
-                {/* Switch to Register link on same page */}
-                <p className="text-center text-xs text-slate-400 pt-2">
-                  Don't have an account yet?{' '}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab('register');
-                      setErrorMessage(null);
-                    }}
-                    className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer"
-                  >
-                    Create Account on this page →
-                  </button>
-                </p>
-              </div>
-            )}
-
-            {/* ==================================================== */}
-            {/* TAB 2: REGISTER FORM                                 */}
-            {/* ==================================================== */}
-            {activeTab === 'register' && (
-              <div className="space-y-5 animate-fadeIn">
-                <div>
-                  <h2 className="text-xl font-bold text-white tracking-tight">Create Your FitTrack Account</h2>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Set up your personalized athlete profile for calorie targets, workouts, and goal trajectory.
-                  </p>
-                </div>
-
-                <form onSubmit={handleRegisterSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Full Name
-                      </label>
-                      <div className="relative">
-                        <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input
-                          type="text"
-                          required
-                          placeholder="e.g. F.MARIA SUNIL RAJ"
-                          value={regFullName}
-                          onChange={e => setRegFullName(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input
-                          type="email"
-                          required
-                          placeholder="you@domain.com"
-                          value={regEmail}
-                          onChange={e => setRegEmail(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Create Password (min 6 chars)
-                      </label>
-                      <div className="relative">
-                        <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input
-                          type={showRegPassword ? 'text' : 'password'}
-                          required
-                          placeholder="••••••••"
-                          value={regPassword}
-                          onChange={e => setRegPassword(e.target.value)}
-                          className="w-full pl-10 pr-10 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowRegPassword(!showRegPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
-                        >
-                          {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Confirm Password
-                      </label>
-                      <div className="relative">
-                        <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input
-                          type={showRegPassword ? 'text' : 'password'}
-                          required
-                          placeholder="••••••••"
-                          value={regConfirmPassword}
-                          onChange={e => setRegConfirmPassword(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Age Band Selector (18-60+) */}
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                      Target Age Band (Calibrated Training & Recovery)
-                    </label>
-                    <div className="grid grid-cols-5 gap-1.5">
-                      {(['18-29', '30-39', '40-49', '50-59', '60+'] as AgeBand[]).map(band => (
-                        <button
-                          key={band}
-                          type="button"
-                          onClick={() => setRegAgeBand(band)}
-                          className={`py-2 px-1 text-center rounded-xl text-xs font-bold border transition cursor-pointer ${
-                            regAgeBand === band
-                              ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-sm'
-                              : 'bg-brand-dark/80 border-brand-border text-slate-400 hover:text-white'
-                          }`}
-                        >
-                          {band}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Dietary Preference & Primary Discipline */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Dietary Palette
-                      </label>
-                      <select
-                        value={regFoodPreference}
-                        onChange={e => setRegFoodPreference(e.target.value as FoodPreference)}
-                        className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs text-white focus:outline-none focus:border-brand-yellow capitalize"
-                      >
-                        <option value="vegetarian">Vegetarian (Pure Veg)</option>
-                        <option value="non-vegetarian">Non-Vegetarian</option>
-                        <option value="eggetarian">Eggetarian</option>
-                        <option value="vegan">Vegan</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Primary Discipline
-                      </label>
-                      <select
-                        value={regPrimaryDiscipline}
-                        onChange={e => setRegPrimaryDiscipline(e.target.value as TrainingDiscipline)}
-                        className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs text-white focus:outline-none focus:border-brand-yellow capitalize"
-                      >
-                        <option value="calisthenics">Calisthenics (Bodyweight)</option>
-                        <option value="taekwondo">Taekwondo (Martial Arts)</option>
-                        <option value="gym">Gym & Free Weights</option>
-                        <option value="weightlifting">Powerlifting & Strength</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Weight & Target Goal */}
-                  <div className="grid grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Current Weight (kg)
-                      </label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={regWeightKg}
-                        onChange={e => setRegWeightKg(e.target.value)}
-                        className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs font-mono text-white text-center focus:outline-none focus:border-brand-yellow"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                        Target Goal (kg)
-                      </label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={regTargetWeightKg}
-                        onChange={e => setRegTargetWeightKg(e.target.value)}
-                        className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs font-mono text-brand-yellow text-center focus:outline-none focus:border-brand-yellow"
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full mt-3 py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.01] disabled:opacity-50"
-                  >
-                    {loading ? (
-                      <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span>Create Account & Start Training</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-                </form>
-
-                {/* Switch to Sign In link on same page */}
-                <p className="text-center text-xs text-slate-400 pt-2">
-                  Already have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab('login');
-                      setErrorMessage(null);
-                    }}
-                    className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer"
-                  >
-                    Sign In on this page →
-                  </button>
-                </p>
-              </div>
-            )}
-          </div>
+              <p className="text-center text-xs text-slate-400 pt-3 border-t border-brand-border/60">
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('login');
+                    setErrorMessage(null);
+                  }}
+                  className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer"
+                >
+                  Sign In
+                </button>
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
