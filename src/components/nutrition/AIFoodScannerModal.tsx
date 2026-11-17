@@ -14,6 +14,7 @@ import {
   Info
 } from 'lucide-react';
 import { apiClient, AnalyzedMealData } from '../../services/apiClient';
+import { r2StorageService } from '../../services/r2StorageService';
 import { useApp } from '../../context/AppContext';
 
 interface AIFoodScannerModalProps {
@@ -108,6 +109,8 @@ export const AIFoodScannerModal: React.FC<AIFoodScannerModalProps> = ({ isOpen, 
       if (response.success && response.data) {
         setAnalyzedResult(response.data);
         setAnalysisSource(response.source || 'Gemini Vision AI');
+        // Persist photo to Cloudflare R2
+        r2StorageService.uploadFoodScanPhoto(imagePreview, 'usr_sunilraj_001').catch(() => {});
         showToast(`Analyzed ${response.data.dishName}!`);
       } else {
         showToast(response.error || 'Failed to analyze meal photo.');

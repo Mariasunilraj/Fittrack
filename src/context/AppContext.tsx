@@ -12,6 +12,8 @@ import {
   WeightLogEntry
 } from '../types';
 import { storageService } from '../services/storage';
+import { neonService } from '../services/neonService';
+import { resendService } from '../services/resendService';
 import { DEFAULT_GUEST_PROFILE, DEMO_ATHLETE_PROFILE } from '../data/defaultUserData';
 import { askGeminiFitnessCoach } from '../services/geminiAI';
 
@@ -161,6 +163,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setWeightHistory(initialHistory);
     setProfile(newProfile);
     setIsAuthenticated(true);
+
+    // Asynchronously sync to Neon Database and dispatch welcome email via Resend
+    neonService.syncProfile(newProfile).catch(() => {});
+    if (newProfile.email) {
+      resendService.sendWelcomeEmail({
+        athleteName: newProfile.displayName,
+        athleteEmail: newProfile.email,
+        ageBand: newProfile.ageBand,
+        primaryDiscipline: newProfile.preferredDisciplines?.[0] || 'calisthenics',
+        startingWeightKg: newProfile.startingWeightKg || newProfile.currentWeightKg,
+        targetWeightKg: newProfile.targetWeightKg || 70.0
+      }).catch(() => {});
+    }
+
     showToast(`Welcome to FitTrack, ${newProfile.displayName}!`);
     setCurrentView('dashboard');
   };
@@ -185,6 +201,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     storageService.saveProfile(updatedProfile);
     const effectiveDate = date || new Date().toISOString().split('T')[0];
     const isMonday = new Date(effectiveDate).getDay() === 1;
+
+    // Asynchronously sync weigh-in record to Neon Serverless PostgreSQL
+    neonService.logWeighIn(profile.id, weightKg, profile.targetWeightKg || 70.0, notes).catch(() => {});
+
+    // If Monday weigh-in, trigger Resend notification
+    if (isMonday && profile.email) {
+      resendService.sendMondayWeighInReminder({
+        athleteName: profile.displayName,
+        athleteEmail: profile.email,
+        currentWeightKg: Number(weightKg.toFixed(1)),
+        targetWeightKg: Number((profile.targetWeightKg || 70.0).toFixed(1)),
+        accountStartDate: profile.createdAt || '2026-11-01'
+      }).catch(() => {});
+    }
+
     showToast(`Weekly weigh-in saved: ${weightKg.toFixed(1)} kg ${isMonday ? '(Monday Check-In)' : ''}`);
   };
 
