@@ -65,7 +65,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
     }
 
     if (!isValidEmail(cleanEmail)) {
-      setErrorMessage('Please enter a valid RFC-compliant email address.');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
@@ -89,7 +89,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
     }, 400);
   };
 
-  // Handle Register submission with Input Sanitization & Password Validation
+  // Handle Register submission with Input Sanitization & Validation
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -105,7 +105,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
     }
 
     if (!isValidEmail(cleanEmail)) {
-      setErrorMessage('Please enter a valid RFC-compliant email address.');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
@@ -144,11 +144,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
   };
 
   return (
-    <div className="min-h-[75vh] flex items-center justify-center py-6 sm:py-10 px-3 sm:px-4 animate-fadeIn">
+    <div className="min-h-[75vh] flex items-center justify-center py-4 sm:py-10 px-2 sm:px-4 animate-fadeIn w-full">
       <div className="w-full max-w-[440px] mx-auto">
         {/* FitTrack Logo & Header */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-yellow text-slate-950 font-black text-xl shadow-lg shadow-brand-yellow/20 mb-3">
+        <div className="text-center mb-5 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-yellow text-slate-950 font-black text-xl shadow-lg shadow-brand-yellow/20 mb-3 active:scale-95 transition-transform">
             FT
           </div>
           <h1 className="text-2xl font-black text-white tracking-tight">FitTrack PRO</h1>
@@ -156,11 +156,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
         </div>
 
         {/* Simplified Auth Card */}
-        <div className="bg-brand-surface border border-brand-border rounded-3xl p-6 sm:p-7 shadow-2xl relative overflow-hidden text-slate-100">
+        <div className="bg-brand-surface border border-brand-border rounded-3xl p-5 sm:p-7 shadow-2xl relative overflow-hidden text-slate-100">
           {/* Subtle Ambient Glow */}
           <div className="absolute -top-24 -right-24 w-44 h-44 bg-brand-yellow/10 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Clean Switcher: Sign In & Create A/C */}
+          {/* Clean Switcher: Sign In & Create A/C (44px min tap targets) */}
           <div className="p-1 rounded-2xl bg-brand-dark/90 border border-brand-border flex items-center gap-1 mb-5">
             <button
               type="button"
@@ -168,13 +168,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                 setActiveTab('login');
                 setErrorMessage(null);
               }}
-              className={`flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
+              className={`flex-1 min-h-[44px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 touch-manipulation ${
                 activeTab === 'login'
                   ? 'bg-brand-yellow text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white hover:bg-brand-card'
               }`}
             >
-              <Lock className="w-3.5 h-3.5" />
+              <Lock className="w-4 h-4" />
               <span>Sign In</span>
             </button>
 
@@ -184,13 +184,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                 setActiveTab('register');
                 setErrorMessage(null);
               }}
-              className={`flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
+              className={`flex-1 min-h-[44px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 touch-manipulation ${
                 activeTab === 'register'
                   ? 'bg-brand-yellow text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white hover:bg-brand-card'
               }`}
             >
-              <User className="w-3.5 h-3.5" />
+              <User className="w-4 h-4" />
               <span>Create A/C</span>
             </button>
           </div>
@@ -214,14 +214,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                     <input
                       type="email"
+                      inputMode="email"
+                      autoComplete="email"
                       required
                       placeholder="Enter your email"
                       value={loginEmail}
                       onChange={e => setLoginEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                      className="w-full pl-10 pr-4 py-3 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -234,25 +236,27 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     <button
                       type="button"
                       onClick={() => showToast('Password reset instructions dispatched to your verified email.')}
-                      className="text-[11px] text-brand-yellow hover:underline cursor-pointer"
+                      className="text-xs text-brand-yellow hover:underline cursor-pointer py-1"
                     >
                       Forgot password?
                     </button>
                   </div>
                   <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                     <input
                       type={showLoginPassword ? 'text' : 'password'}
+                      autoComplete="current-password"
                       required
                       placeholder="••••••••"
                       value={loginPassword}
                       onChange={e => setLoginPassword(e.target.value)}
-                      className="w-full pl-10 pr-11 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                      className="w-full pl-10 pr-12 py-3 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition min-h-[44px]"
                     />
                     <button
                       type="button"
                       onClick={() => setShowLoginPassword(!showLoginPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 text-slate-400 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer active:scale-90"
+                      aria-label="Toggle password visibility"
                     >
                       {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -260,12 +264,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                 </div>
 
                 <div className="flex items-center justify-between pt-0.5">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                  <label className="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 min-h-[36px]">
                     <input
                       type="checkbox"
                       checked={rememberMe}
                       onChange={e => setRememberMe(e.target.checked)}
-                      className="rounded border-brand-border bg-brand-dark text-brand-yellow focus:ring-0"
+                      className="w-4 h-4 rounded border-brand-border bg-brand-dark text-brand-yellow focus:ring-0 cursor-pointer"
                     />
                     <span>Keep me signed in</span>
                   </label>
@@ -274,7 +278,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.01] disabled:opacity-50"
+                  className="w-full mt-2 min-h-[48px] py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer active:scale-[0.98] disabled:opacity-50 touch-manipulation"
                 >
                   {loading ? (
                     <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
@@ -289,13 +293,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
 
               {/* Privacy Policy Link on Form */}
               <div className="text-center pt-2">
-                <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1">
-                  <ShieldCheck className="w-3 h-3 text-emerald-400 inline" />
-                  <span>Your credentials are encrypted. Read our </span>
+                <p className="text-xs text-slate-400 flex items-center justify-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 inline" />
+                  <span>Encrypted & Private • </span>
                   <button
                     type="button"
                     onClick={onOpenPrivacyPolicy}
-                    className="text-brand-yellow hover:underline font-semibold cursor-pointer"
+                    className="text-brand-yellow hover:underline font-bold cursor-pointer py-1"
                   >
                     Privacy Policy
                   </button>
@@ -310,7 +314,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     setActiveTab('register');
                     setErrorMessage(null);
                   }}
-                  className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer"
+                  className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer py-1"
                 >
                   Create A/C
                 </button>
@@ -329,14 +333,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     Full Name
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                     <input
                       type="text"
+                      inputMode="text"
+                      autoComplete="name"
                       required
                       placeholder="e.g. F.MARIA SUNIL RAJ"
                       value={regFullName}
                       onChange={e => setRegFullName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                      className="w-full pl-10 pr-4 py-3 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -346,14 +352,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                     <input
                       type="email"
+                      inputMode="email"
+                      autoComplete="email"
                       required
                       placeholder="name@example.com"
                       value={regEmail}
                       onChange={e => setRegEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                      className="w-full pl-10 pr-4 py-3 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -364,21 +372,23 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                       Password (min 6)
                     </label>
                     <div className="relative">
-                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                       <input
                         type={showRegPassword ? 'text' : 'password'}
+                        autoComplete="new-password"
                         required
                         placeholder="••••••••"
                         value={regPassword}
                         onChange={e => setRegPassword(e.target.value)}
-                        className="w-full pl-9 pr-9 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                        className="w-full pl-9 pr-10 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition min-h-[44px]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowRegPassword(!showRegPassword)}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer active:scale-90"
+                        aria-label="Toggle password visibility"
                       >
-                        {showRegPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
                   </div>
@@ -388,20 +398,21 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                       Confirm Password
                     </label>
                     <div className="relative">
-                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                       <input
                         type={showRegPassword ? 'text' : 'password'}
+                        autoComplete="new-password"
                         required
                         placeholder="••••••••"
                         value={regConfirmPassword}
                         onChange={e => setRegConfirmPassword(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition"
+                        className="w-full pl-9 pr-4 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-yellow transition min-h-[44px]"
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* Age Band Selector */}
+                {/* Age Band Selector (44px min tap targets) */}
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
                     Age Band (Calibrated Recovery)
@@ -412,9 +423,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                         key={band}
                         type="button"
                         onClick={() => setRegAgeBand(band)}
-                        className={`py-1.5 px-1 text-center rounded-xl text-xs font-bold border transition cursor-pointer ${
+                        className={`min-h-[44px] py-2 px-1 text-center rounded-xl text-xs font-bold border transition cursor-pointer active:scale-95 touch-manipulation ${
                           regAgeBand === band
-                            ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-sm'
+                            ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-sm font-black'
                             : 'bg-brand-dark/80 border-brand-border text-slate-400 hover:text-white'
                         }`}
                       >
@@ -433,7 +444,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     <select
                       value={regFoodPreference}
                       onChange={e => setRegFoodPreference(e.target.value as FoodPreference)}
-                      className="w-full px-2.5 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs text-white focus:outline-none focus:border-brand-yellow capitalize"
+                      className="w-full px-3 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-xs text-white focus:outline-none focus:border-brand-yellow capitalize min-h-[44px]"
                     >
                       <option value="non-vegetarian">Non-Veg</option>
                       <option value="vegetarian">Veg</option>
@@ -449,7 +460,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     <select
                       value={regPrimaryDiscipline}
                       onChange={e => setRegPrimaryDiscipline(e.target.value as TrainingDiscipline)}
-                      className="w-full px-2.5 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs text-white focus:outline-none focus:border-brand-yellow capitalize"
+                      className="w-full px-3 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-xs text-white focus:outline-none focus:border-brand-yellow capitalize min-h-[44px]"
                     >
                       <option value="calisthenics">Calisthenics</option>
                       <option value="taekwondo">Taekwondo</option>
@@ -467,10 +478,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     </label>
                     <input
                       type="number"
+                      inputMode="decimal"
                       step="0.1"
                       value={regWeightKg}
                       onChange={e => setRegWeightKg(e.target.value)}
-                      className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs font-mono text-white text-center focus:outline-none focus:border-brand-yellow"
+                      className="w-full px-3 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-xs font-mono text-white text-center focus:outline-none focus:border-brand-yellow min-h-[44px]"
                     />
                   </div>
                   <div>
@@ -479,10 +491,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     </label>
                     <input
                       type="number"
+                      inputMode="decimal"
                       step="0.1"
                       value={regTargetWeightKg}
                       onChange={e => setRegTargetWeightKg(e.target.value)}
-                      className="w-full px-3 py-2 bg-brand-dark/90 border border-brand-border rounded-xl text-xs font-mono text-brand-yellow text-center focus:outline-none focus:border-brand-yellow"
+                      className="w-full px-3 py-2.5 bg-brand-dark/90 border border-brand-border rounded-xl text-base sm:text-xs font-mono text-brand-yellow text-center focus:outline-none focus:border-brand-yellow min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -490,7 +503,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.01] disabled:opacity-50"
+                  className="w-full mt-2 min-h-[48px] py-3 px-5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer active:scale-[0.98] disabled:opacity-50 touch-manipulation"
                 >
                   {loading ? (
                     <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
@@ -505,12 +518,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
 
               {/* Privacy Policy Link on Register Form */}
               <div className="text-center pt-2">
-                <p className="text-[11px] text-slate-400">
+                <p className="text-xs text-slate-400">
                   By creating an account, you agree to FitTrack's{' '}
                   <button
                     type="button"
                     onClick={onOpenPrivacyPolicy}
-                    className="text-brand-yellow hover:underline font-semibold cursor-pointer"
+                    className="text-brand-yellow hover:underline font-bold cursor-pointer py-1"
                   >
                     Privacy Policy
                   </button>{' '}
@@ -526,7 +539,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
                     setActiveTab('login');
                     setErrorMessage(null);
                   }}
-                  className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer"
+                  className="text-brand-yellow hover:underline font-bold ml-1 cursor-pointer py-1"
                 >
                   Sign In
                 </button>

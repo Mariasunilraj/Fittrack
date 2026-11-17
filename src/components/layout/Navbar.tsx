@@ -21,19 +21,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 w-full bg-brand-surface/90 backdrop-blur-md border-b border-brand-border px-4 sm:px-6 py-3.5">
+    <header className="sticky top-0 z-30 w-full bg-brand-surface/95 backdrop-blur-md border-b border-brand-border px-3 sm:px-6 py-2.5 sm:py-3.5 safe-area-top select-none">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Left: Brand Logo & Current View */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <div
             onClick={() => setCurrentView(isAuthenticated ? 'dashboard' : 'auth')}
-            className="flex items-center gap-2.5 cursor-pointer group"
+            className="flex items-center gap-2 cursor-pointer group active:scale-95 transition-transform"
           >
-            <div className="w-9 h-9 rounded-xl bg-brand-yellow flex items-center justify-center font-black text-slate-950 text-xl tracking-tighter shadow-md shadow-brand-yellow/20 group-hover:scale-105 transition">
+            <div className="w-10 h-10 rounded-xl bg-brand-yellow flex items-center justify-center font-black text-slate-950 text-xl tracking-tighter shadow-md shadow-brand-yellow/20">
               FT
             </div>
-            <div className="hidden sm:block">
-              <span className="font-extrabold text-lg tracking-tight text-white flex items-center gap-1.5">
+            <div>
+              <span className="font-extrabold text-base sm:text-lg tracking-tight text-white flex items-center gap-1.5">
                 FitTrack <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-md bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30">PRO</span>
               </span>
             </div>
@@ -51,13 +51,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
         <div className="flex items-center gap-2 sm:gap-3">
           {isAuthenticated ? (
             <>
-              {/* User Profile Pill */}
+              {/* User Profile Pill (44px min tap target) */}
               <div
                 onClick={() => setCurrentView('settings')}
-                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border transition cursor-pointer"
+                className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border transition cursor-pointer min-h-[44px] active:scale-95 touch-manipulation"
                 title="Account Settings"
               >
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-brand-yellow to-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-yellow to-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-sm">
                   {profile.displayName ? profile.displayName.charAt(0).toUpperCase() : 'A'}
                 </div>
                 <div className="hidden sm:block text-left text-xs">
@@ -66,10 +66,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
                 </div>
               </div>
 
-              {/* 1-Click Sign Out Button */}
+              {/* 1-Click Sign Out Button (44px min tap target) */}
               <button
                 onClick={logoutUser}
-                className="p-2 rounded-xl bg-brand-card hover:bg-rose-950/30 border border-brand-border hover:border-rose-500/40 text-slate-400 hover:text-rose-400 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+                className="p-2.5 sm:p-2 rounded-xl bg-brand-card hover:bg-rose-950/30 border border-brand-border hover:border-rose-500/40 text-slate-400 hover:text-rose-400 transition cursor-pointer flex items-center justify-center gap-1.5 text-xs font-bold min-h-[44px] min-w-[44px] active:scale-95 touch-manipulation"
                 title="Sign Out of FitTrack"
               >
                 <LogOut className="w-4 h-4" />
@@ -77,12 +77,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
               </button>
             </>
           ) : (
-            /* Logged Out / Guest View: Only show Sign In button */
+            /* Logged Out / Guest View: 44px min tap target */
             <button
               onClick={() => setCurrentView('auth')}
-              className="px-3.5 py-1.5 rounded-xl bg-brand-yellow hover:bg-[#cbe034] text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-brand-yellow/20 transition cursor-pointer hover:scale-105"
+              className="min-h-[44px] px-4 py-2 rounded-xl bg-brand-yellow hover:bg-[#cbe034] text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-brand-yellow/20 transition cursor-pointer active:scale-95 touch-manipulation"
             >
-              <User className="w-3.5 h-3.5" />
+              <User className="w-4 h-4" />
               <span>Sign In / Register</span>
             </button>
           )}

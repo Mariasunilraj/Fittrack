@@ -14,26 +14,41 @@ export const MobileNav: React.FC = () => {
     { id: 'settings', label: 'Settings', icon: Settings }
   ];
 
+  const handleNavClick = (id: AppView) => {
+    // Subtle haptic vibration on mobile
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate(8);
+      } catch {}
+    }
+    setCurrentView(id);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    const mainEl = document.querySelector('main');
+    if (mainEl) mainEl.scrollTop = 0;
+  };
+
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-brand-surface/95 backdrop-blur-md border-t border-brand-border px-1.5 py-2 flex items-center justify-around shadow-2xl safe-area-bottom">
+    <nav
+      aria-label="Mobile Navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-brand-surface/98 backdrop-blur-xl border-t border-brand-border px-1 py-1.5 flex items-center justify-around shadow-2xl safe-area-bottom select-none"
+    >
       {items.map(item => {
         const Icon = item.icon;
         const isActive = currentView === item.id;
         return (
           <button
             key={item.id}
-            onClick={() => {
-              setCurrentView(item.id);
-              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-              const mainEl = document.querySelector('main');
-              if (mainEl) mainEl.scrollTop = 0;
-            }}
-            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition cursor-pointer min-w-[50px] ${
-              isActive ? 'text-brand-yellow font-bold' : 'text-slate-400 hover:text-slate-200'
+            onClick={() => handleNavClick(item.id)}
+            className={`flex flex-col items-center justify-center min-h-[46px] min-w-[48px] px-1 py-1 rounded-xl transition-all cursor-pointer active:scale-90 active:opacity-80 touch-manipulation ${
+              isActive
+                ? 'text-brand-yellow font-black'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <Icon className={`w-5 h-5 mb-0.5 transition ${isActive ? 'text-brand-yellow scale-110' : ''}`} />
-            <span className="text-[10px] tracking-tight">{item.label}</span>
+            <div className={`p-1 rounded-lg transition-transform ${isActive ? 'bg-brand-yellow/15 scale-110' : ''}`}>
+              <Icon className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-semibold tracking-tight mt-0.5">{item.label}</span>
           </button>
         );
       })}

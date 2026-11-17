@@ -16,6 +16,7 @@ import { AuthPage } from './components/auth/AuthPage';
 import { AuthModal } from './components/auth/AuthModal';
 import { OnboardingModal } from './components/auth/OnboardingModal';
 import { CookieConsentBanner } from './components/common/CookieConsentBanner';
+import { PWAInstallBanner } from './components/common/PWAInstallBanner';
 import { PrivacyPolicyModal } from './components/legal/PrivacyPolicyModal';
 import { CheckCircle2 } from 'lucide-react';
 
@@ -74,6 +75,8 @@ const AppContent: React.FC = () => {
           key={cookieKey}
           onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)}
         />
+
+        <PWAInstallBanner />
 
         <PrivacyPolicyModal
           isOpen={showPrivacyPolicy}
@@ -148,6 +151,9 @@ const AppContent: React.FC = () => {
         key={cookieKey}
         onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)}
       />
+
+      {/* PWA App Install Banner */}
+      <PWAInstallBanner />
 
       {/* Privacy Policy Modal */}
       <PrivacyPolicyModal

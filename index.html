@@ -2,43 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e2f163'><path d='M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43 1.43 1.43 2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43 1.43-1.43z'/></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitTrack — All-Age Fitness & Health Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+    <title>FitTrack PRO — Smart Fitness & Health Management</title>
+    
+    <!-- PWA Web App Manifest & Mobile App Configuration -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="theme-color" content="#0c0f14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FitTrack" />
+    <meta name="application-name" content="FitTrack PRO" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Google Typography Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    <script>
-      function showEarlyError(msg) {
-        function display() {
-          var el = document.getElementById('debug-banner');
-          if (!el) {
-            el = document.createElement('div');
-            el.id = 'debug-banner';
-            el.style = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#991b1b;color:#fff;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;border-bottom:3px solid #ef4444;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
-            if (document.body) {
-              document.body.prepend(el);
-            } else {
-              document.documentElement.appendChild(el);
-            }
-          }
-          el.textContent = msg;
-        }
-        if (document.body) {
-          display();
-        } else {
-          window.addEventListener('DOMContentLoaded', display);
-        }
-      }
-      window.addEventListener('error', function(e) {
-        showEarlyError('FitTrack Error: ' + (e.message || e.error) + '\nLocation: ' + (e.filename || '') + ':' + (e.lineno || ''));
-      });
-      window.addEventListener('unhandledrejection', function(e) {
-        showEarlyError('FitTrack Unhandled Rejection: ' + (e.reason ? (e.reason.stack || e.reason) : e));
-      });
-    </script>
   </head>
-  <body class="bg-[#0c0f14] text-slate-100 antialiased selection:bg-[#e2f163] selection:text-black min-h-screen">
+  <body class="bg-[#0c0f14] text-slate-100 antialiased selection:bg-[#e2f163] selection:text-black min-h-screen overflow-x-hidden">
     <div id="root">
       <div id="loading-placeholder" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #0c0f14; color: #f1f5f9; font-family: sans-serif; gap: 16px;">
         <div style="width: 52px; height: 52px; border-radius: 14px; background: #e2f163; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #020617; font-size: 24px; box-shadow: 0 0 30px rgba(226,241,99,0.3);">FT</div>

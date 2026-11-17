@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Lock, FileText, Cookie, Heart } from 'lucide-react';
+import { ShieldCheck, Lock, FileText, Cookie } from 'lucide-react';
 
 interface FooterProps {
   onOpenPrivacyPolicy: () => void;
@@ -28,15 +28,15 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* Center: Legal & Privacy Links */}
-        <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+        {/* Center: Legal & Privacy Links (Touch targets 44px min height) */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
           <button
             type="button"
             onClick={onOpenPrivacyPolicy}
-            className="hover:text-brand-yellow transition cursor-pointer flex items-center gap-1"
+            className="hover:text-brand-yellow transition cursor-pointer flex items-center gap-1.5 py-2 px-1 min-h-[44px] active:scale-95"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-brand-yellow" />
-            <span>Privacy Policy & Data Collection</span>
+            <span>Privacy Policy</span>
           </button>
 
           <span className="text-slate-600 hidden sm:inline">•</span>
@@ -44,7 +44,7 @@ export const Footer: React.FC<FooterProps> = ({
           <button
             type="button"
             onClick={onOpenCookiePreferences}
-            className="hover:text-brand-yellow transition cursor-pointer flex items-center gap-1"
+            className="hover:text-brand-yellow transition cursor-pointer flex items-center gap-1.5 py-2 px-1 min-h-[44px] active:scale-95"
           >
             <Cookie className="w-3.5 h-3.5 text-amber-400" />
             <span>Cookie Preferences</span>
@@ -55,10 +55,10 @@ export const Footer: React.FC<FooterProps> = ({
           <button
             type="button"
             onClick={onOpenPrivacyPolicy}
-            className="hover:text-brand-yellow transition cursor-pointer flex items-center gap-1"
+            className="hover:text-brand-yellow transition cursor-pointer flex items-center gap-1.5 py-2 px-1 min-h-[44px] active:scale-95"
           >
             <FileText className="w-3.5 h-3.5 text-cyan-400" />
-            <span>User Data Rights (GDPR / CCPA)</span>
+            <span>User Data Rights</span>
           </button>
         </div>
 

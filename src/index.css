@@ -3,9 +3,26 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
   body {
     @apply bg-[#0c0f14] text-slate-100 font-sans;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    width: 100%;
+    touch-action: manipulation;
+  }
+
+  /* Rule: Mobile typography & preventing iOS auto-zoom on form inputs */
+  @media screen and (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important; /* iOS Safari forces auto-zoom if font-size < 16px */
+    }
   }
 }
 
@@ -67,7 +84,28 @@
   scrollbar-width: none;
 }
 
-/* Safe area support for mobile devices (iPhone home indicator) */
+/* Touch & Usability: Minimum 44px Tap Targets & Active States */
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-tap {
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+.active-tap:active {
+  transform: scale(0.96);
+  opacity: 0.92;
+}
+
+/* Safe area support for phone notches & home indicators */
 .safe-area-bottom {
-  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
 }

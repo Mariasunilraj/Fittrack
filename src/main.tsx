@@ -4,6 +4,20 @@ import App from './App';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import './index.css';
 
+// Register PWA Service Worker for Offline Functionality & Installability
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        console.log('[FitTrack PWA] Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.warn('[FitTrack PWA] Service Worker registration failed:', error);
+      });
+  });
+}
+
 function mountFitTrack() {
   let rootElement = document.getElementById('root');
   if (!rootElement) {
