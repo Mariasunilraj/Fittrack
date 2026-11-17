@@ -345,14 +345,6 @@ export const TrainingPlanner: React.FC = () => {
 
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
           <button
-            onClick={() => setCurrentView('ai-coach')}
-            className="py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-200 text-xs font-bold flex items-center gap-2 transition cursor-pointer"
-          >
-            <Sparkles className="w-4 h-4 text-brand-yellow" />
-            <span>AI Routine</span>
-          </button>
-
-          <button
             onClick={() => setShowAddModal(true)}
             className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-md shadow-brand-yellow/15 transition cursor-pointer hover:scale-[1.02]"
           >

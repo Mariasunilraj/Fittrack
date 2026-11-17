@@ -8,16 +8,14 @@ import {
   RecoveryLog,
   PersonalRecord,
   TaekwondoSession,
-  AIChatMessage,
   WeightLogEntry
 } from '../types';
 import { storageService } from '../services/storage';
 import { neonService } from '../services/neonService';
 import { resendService } from '../services/resendService';
 import { DEFAULT_GUEST_PROFILE, DEMO_ATHLETE_PROFILE } from '../data/defaultUserData';
-import { askGeminiFitnessCoach } from '../services/geminiAI';
 
-export type AppView = 'dashboard' | 'training' | 'exercises' | 'nutrition' | 'taekwondo' | 'progress' | 'ai-coach' | 'settings' | 'auth';
+export type AppView = 'dashboard' | 'training' | 'exercises' | 'nutrition' | 'taekwondo' | 'progress' | 'settings' | 'auth';
 
 interface AppContextType {
   currentView: AppView;
@@ -50,10 +48,6 @@ interface AppContextType {
   deletePersonalRecord: (id: string) => void;
   taekwondoSessions: TaekwondoSession[];
   addTaekwondoSession: (session: Omit<TaekwondoSession, 'id' | 'userId'>) => void;
-  aiChatHistory: AIChatMessage[];
-  isAiThinking: boolean;
-  sendAiMessage: (text: string) => Promise<void>;
-  clearAiChat: () => void;
   showOnboarding: boolean;
   setShowOnboarding: (show: boolean) => void;
   weightHistory: WeightLogEntry[];
@@ -86,8 +80,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [recoveryLogs, setRecoveryLogs] = useState<RecoveryLog[]>(() => storageService.getRecoveryLogs());
   const [personalRecords, setPersonalRecords] = useState<PersonalRecord[]>(() => storageService.getPRs());
   const [taekwondoSessions, setTaekwondoSessions] = useState<TaekwondoSession[]>(() => storageService.getTkdSessions());
-  const [aiChatHistory, setAiChatHistory] = useState<AIChatMessage[]>(() => storageService.getAIChatHistory());
-  const [isAiThinking, setIsAiThinking] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [weightHistory, setWeightHistory] = useState<WeightLogEntry[]>(() => storageService.getWeightHistory());
@@ -380,58 +372,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast('🥋 Taekwondo practice session logged!');
   };
 
-  const sendAiMessage = async (userText: string) => {
-    if (!userText.trim()) return;
-
-    const userMsg: AIChatMessage = {
-      id: `usr_${Date.now()}`,
-      sender: 'user',
-      content: userText,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    const updatedHistory = [...aiChatHistory, userMsg];
-    setAiChatHistory(updatedHistory);
-    storageService.saveAIChatHistory(updatedHistory);
-
-    setIsAiThinking(true);
-    try {
-      const formattedHistory = updatedHistory.slice(-6).map(m => ({
-        role: m.sender === 'user' ? ('user' as const) : ('model' as const),
-        parts: [{ text: m.content }]
-      }));
-
-      const aiResult = await askGeminiFitnessCoach(userText, profile, formattedHistory);
-
-      const botMsg: AIChatMessage = {
-        id: `ai_${Date.now()}`,
-        sender: 'assistant',
-        content: aiResult.text,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-
-      const finalHistory = [...updatedHistory, botMsg];
-      setAiChatHistory(finalHistory);
-      storageService.saveAIChatHistory(finalHistory);
-    } catch (err) {
-      const errorMsg: AIChatMessage = {
-        id: `ai_err_${Date.now()}`,
-        sender: 'assistant',
-        content: 'I had trouble processing that request. Please check your network or API settings.',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setAiChatHistory([...updatedHistory, errorMsg]);
-    } finally {
-      setIsAiThinking(false);
-    }
-  };
-
-  const clearAiChat = () => {
-    storageService.saveAIChatHistory([]);
-    setAiChatHistory(storageService.getAIChatHistory());
-    showToast('AI conversation reset');
-  };
-
   return (
     <AppContext.Provider
       value={{
@@ -465,10 +405,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deletePersonalRecord,
         taekwondoSessions,
         addTaekwondoSession,
-        aiChatHistory,
-        isAiThinking,
-        sendAiMessage,
-        clearAiChat,
         showOnboarding,
         setShowOnboarding,
         weightHistory,

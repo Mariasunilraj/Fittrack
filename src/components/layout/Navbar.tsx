@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Sparkles, LogOut } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 interface NavbarProps {
@@ -16,7 +16,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
     nutrition: 'Indian Nutrition & Hydration',
     taekwondo: 'Taekwondo Martial Arts',
     progress: 'Progress & Recovery Analytics',
-    'ai-coach': 'FitTrack AI Assistant',
     settings: 'Account Settings',
     auth: 'Sign In / Register'
   };
@@ -52,20 +51,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
         <div className="flex items-center gap-2 sm:gap-3">
           {isAuthenticated ? (
             <>
-              {/* AI Quick Button */}
-              <button
-                onClick={() => setCurrentView('ai-coach')}
-                className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${
-                  currentView === 'ai-coach'
-                    ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-md shadow-brand-yellow/20'
-                    : 'bg-brand-card hover:bg-brand-hover text-brand-yellow border-brand-yellow/30'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                <span className="hidden sm:inline">AI Fitness Coach</span>
-                <span className="sm:hidden">AI</span>
-              </button>
-
               {/* User Profile Pill */}
               <div
                 onClick={() => setCurrentView('settings')}

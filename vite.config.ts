@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import {
   handleAnalyzeFoodPhoto,
-  handleAiChat,
   handleCalisthenicsApi,
   handleGymApi,
   handleVaultStatus,
@@ -55,11 +54,6 @@ function secureVaultApiPlugin(): Plugin {
           if (req.method === 'POST' && url === '/api/nutrition/analyze-photo') {
             const body = await getBody();
             return handleAnalyzeFoodPhoto({ body } as any, mockRes);
-          }
-
-          if (req.method === 'POST' && url === '/api/ai/chat') {
-            const body = await getBody();
-            return handleAiChat({ body } as any, mockRes);
           }
 
           if (req.method === 'GET' && url === '/api/exercises/calisthenics') {

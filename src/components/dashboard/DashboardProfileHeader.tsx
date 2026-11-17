@@ -1,9 +1,9 @@
 import React from 'react';
-import { User, Calendar, Edit3, Sparkles, Shield, Award, Target, Flame } from 'lucide-react';
+import { User, Calendar, Edit3, Shield, Award, Target, Flame } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const DashboardProfileHeader: React.FC = () => {
-  const { profile, setShowOnboarding, setCurrentView } = useApp();
+  const { profile, setShowOnboarding } = useApp();
 
   const todayDateFormatted = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -68,18 +68,10 @@ export const DashboardProfileHeader: React.FC = () => {
         <div className="w-full md:w-auto flex items-center gap-2.5 pt-2 md:pt-0">
           <button
             onClick={() => setShowOnboarding(true)}
-            className="flex-1 md:flex-initial py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-xs font-bold text-slate-200 flex items-center justify-center gap-1.5 transition cursor-pointer hover:border-slate-500 shadow-sm"
-          >
-            <Edit3 className="w-3.5 h-3.5 text-brand-yellow" />
-            <span>Edit Profile</span>
-          </button>
-
-          <button
-            onClick={() => setCurrentView('ai-coach')}
             className="flex-1 md:flex-initial py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.02]"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>AI Coach</span>
+            <Edit3 className="w-3.5 h-3.5" />
+            <span>Edit Profile</span>
           </button>
         </div>
       </div>

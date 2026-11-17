@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Dumbbell, BookOpen, UtensilsCrossed, TrendingUp, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Dumbbell, BookOpen, UtensilsCrossed, TrendingUp, Settings } from 'lucide-react';
 import { useApp, AppView } from '../../context/AppContext';
 
 export const MobileNav: React.FC = () => {
@@ -11,7 +11,7 @@ export const MobileNav: React.FC = () => {
     { id: 'exercises', label: 'Library', icon: BookOpen },
     { id: 'nutrition', label: 'Diet', icon: UtensilsCrossed },
     { id: 'progress', label: 'Progress', icon: TrendingUp },
-    { id: 'ai-coach', label: 'AI Coach', icon: Sparkles }
+    { id: 'settings', label: 'Settings', icon: Settings }
   ];
 
   return (

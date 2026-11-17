@@ -1,9 +1,9 @@
 import React from 'react';
-import { Sparkles, Calendar, ArrowRight, ShieldCheck, Dumbbell } from 'lucide-react';
+import { Sparkles, Calendar, ShieldCheck, Dumbbell } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const WelcomeBanner: React.FC = () => {
-  const { profile, workoutPlans, startWorkout, setCurrentView } = useApp();
+  const { profile, workoutPlans, startWorkout } = useApp();
   const todayWorkout = workoutPlans[0];
 
   return (
@@ -35,13 +35,6 @@ export const WelcomeBanner: React.FC = () => {
             >
               <Dumbbell className="w-4 h-4" />
               <span>Start Today's Workout</span>
-            </button>
-            <button
-              onClick={() => setCurrentView('ai-coach')}
-              className="py-3 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-200 text-sm font-semibold flex items-center gap-1.5 transition cursor-pointer"
-            >
-              <span>Ask AI Coach</span>
-              <ArrowRight className="w-4 h-4 text-brand-yellow" />
             </button>
           </div>
         )}

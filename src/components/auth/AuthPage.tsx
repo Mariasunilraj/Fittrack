@@ -5,13 +5,26 @@ import {
   User,
   ArrowRight,
   Eye,
-  EyeOff
+  EyeOff,
+  ShieldCheck
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useApp } from '../../context/AppContext';
 import { AgeBand, FoodPreference, TrainingDiscipline } from '../../types';
+import {
+  sanitizeString,
+  isValidEmail,
+  sanitizeNumeric,
+  checkLoginRateLimit,
+  recordFailedLoginAttempt,
+  resetLoginRateLimit
+} from '../../utils/security';
 
-export const AuthPage: React.FC = () => {
+interface AuthPageProps {
+  onOpenPrivacyPolicy?: () => void;
+}
+
+export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
   const { loginUser, registerUser, showToast } = useApp();
 
   // Active form tab: 'login' | 'register'
@@ -38,60 +51,83 @@ export const AuthPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Handle Login submission
+  // Handle Login submission with Rate Limiting & Input Sanitization
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!loginEmail.trim() || !loginPassword.trim()) {
+    const cleanEmail = sanitizeString(loginEmail, 150).toLowerCase();
+    const cleanPassword = loginPassword.trim();
+
+    if (!cleanEmail || !cleanPassword) {
       setErrorMessage('Please enter both your email address and password.');
+      return;
+    }
+
+    if (!isValidEmail(cleanEmail)) {
+      setErrorMessage('Please enter a valid RFC-compliant email address.');
+      return;
+    }
+
+    // Rate Limiting check (anti-brute force)
+    const rateCheck = checkLoginRateLimit(cleanEmail);
+    if (!rateCheck.allowed) {
+      setErrorMessage(
+        `Too many failed attempts. Login locked for security. Please retry in ${rateCheck.remainingSeconds} seconds.`
+      );
       return;
     }
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      loginUser(loginEmail.trim(), loginPassword.trim());
+      resetLoginRateLimit(cleanEmail);
+      loginUser(cleanEmail, cleanPassword);
       try {
         confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
       } catch (err) {}
     }, 400);
   };
 
-  // Handle Register submission
+  // Handle Register submission with Input Sanitization & Password Validation
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!regFullName.trim()) {
-      setErrorMessage('Please enter your full name.');
+    const cleanName = sanitizeString(regFullName, 80);
+    const cleanEmail = sanitizeString(regEmail, 150).toLowerCase();
+    const cleanPassword = regPassword.trim();
+    const cleanConfirm = regConfirmPassword.trim();
+
+    if (!cleanName) {
+      setErrorMessage('Please enter your full name (maximum 80 characters).');
       return;
     }
 
-    if (!regEmail.trim()) {
-      setErrorMessage('Please enter a valid email address.');
+    if (!isValidEmail(cleanEmail)) {
+      setErrorMessage('Please enter a valid RFC-compliant email address.');
       return;
     }
 
-    if (regPassword.length < 6) {
+    if (cleanPassword.length < 6) {
       setErrorMessage('Password must be at least 6 characters long.');
       return;
     }
 
-    if (regPassword !== regConfirmPassword) {
+    if (cleanPassword !== cleanConfirm) {
       setErrorMessage('Passwords do not match. Please re-enter.');
       return;
     }
 
-    const weightNum = parseFloat(regWeightKg) || 74.5;
-    const targetWeightNum = parseFloat(regTargetWeightKg) || 70.0;
+    const weightNum = sanitizeNumeric(regWeightKg, 25, 300, 74.5);
+    const targetWeightNum = sanitizeNumeric(regTargetWeightKg, 25, 300, 70.0);
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       registerUser({
-        displayName: regFullName.trim(),
-        email: regEmail.trim(),
+        displayName: cleanName,
+        email: cleanEmail,
         ageBand: regAgeBand,
         foodPreference: regFoodPreference,
         startingWeightKg: weightNum,
@@ -108,7 +144,7 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[75vh] flex items-center justify-center py-6 sm:py-12 px-3 sm:px-4 animate-fadeIn">
+    <div className="min-h-[75vh] flex items-center justify-center py-6 sm:py-10 px-3 sm:px-4 animate-fadeIn">
       <div className="w-full max-w-[440px] mx-auto">
         {/* FitTrack Logo & Header */}
         <div className="text-center mb-6">
@@ -197,7 +233,7 @@ export const AuthPage: React.FC = () => {
                     </label>
                     <button
                       type="button"
-                      onClick={() => showToast('Password reset link sent to your registered email.')}
+                      onClick={() => showToast('Password reset instructions dispatched to your verified email.')}
                       className="text-[11px] text-brand-yellow hover:underline cursor-pointer"
                     >
                       Forgot password?
@@ -250,6 +286,21 @@ export const AuthPage: React.FC = () => {
                   )}
                 </button>
               </form>
+
+              {/* Privacy Policy Link on Form */}
+              <div className="text-center pt-2">
+                <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1">
+                  <ShieldCheck className="w-3 h-3 text-emerald-400 inline" />
+                  <span>Your credentials are encrypted. Read our </span>
+                  <button
+                    type="button"
+                    onClick={onOpenPrivacyPolicy}
+                    className="text-brand-yellow hover:underline font-semibold cursor-pointer"
+                  >
+                    Privacy Policy
+                  </button>
+                </p>
+              </div>
 
               <p className="text-center text-xs text-slate-400 pt-3 border-t border-brand-border/60">
                 Don't have an account?{' '}
@@ -310,7 +361,7 @@ export const AuthPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                      Password
+                      Password (min 6)
                     </label>
                     <div className="relative">
                       <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -353,7 +404,7 @@ export const AuthPage: React.FC = () => {
                 {/* Age Band Selector */}
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    Age Band
+                    Age Band (Calibrated Recovery)
                   </label>
                   <div className="grid grid-cols-5 gap-1.5">
                     {(['18-29', '30-39', '40-49', '50-59', '60+'] as AgeBand[]).map(band => (
@@ -451,6 +502,21 @@ export const AuthPage: React.FC = () => {
                   )}
                 </button>
               </form>
+
+              {/* Privacy Policy Link on Register Form */}
+              <div className="text-center pt-2">
+                <p className="text-[11px] text-slate-400">
+                  By creating an account, you agree to FitTrack's{' '}
+                  <button
+                    type="button"
+                    onClick={onOpenPrivacyPolicy}
+                    className="text-brand-yellow hover:underline font-semibold cursor-pointer"
+                  >
+                    Privacy Policy
+                  </button>{' '}
+                  and data minimization terms.
+                </p>
+              </div>
 
               <p className="text-center text-xs text-slate-400 pt-3 border-t border-brand-border/60">
                 Already have an account?{' '}

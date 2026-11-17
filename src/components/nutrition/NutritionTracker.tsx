@@ -52,14 +52,6 @@ export const NutritionTracker: React.FC = () => {
             <Camera className="w-4 h-4" />
             <span>Scan Meal Photo (AI)</span>
           </button>
-
-          <button
-            onClick={() => setCurrentView('ai-coach')}
-            className="py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-200 text-xs font-bold flex items-center gap-2 transition cursor-pointer"
-          >
-            <Sparkles className="w-4 h-4 text-brand-yellow" />
-            <span className="hidden sm:inline">Ask AI Coach</span>
-          </button>
         </div>
       </div>
 

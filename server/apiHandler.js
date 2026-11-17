@@ -249,62 +249,6 @@ Return ONLY valid JSON without any markdown code fence.`;
   }
 }
 
-export async function handleAiChat(req, res) {
-  try {
-    const { userPrompt, profile = {}, conversationHistory = [] } = req.body || {};
-
-    if (!userPrompt) {
-      return res.status(400).json({ success: false, error: 'Prompt is required.' });
-    }
-
-    const geminiKey = process.env.GEMINI_API_KEY;
-
-    if (geminiKey && geminiKey.trim().length > 10) {
-      try {
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(geminiKey)}`;
-
-        const systemText = `You are FitTrack AI Coach, an expert fitness assistant specializing in all-age fitness (18-60+), Indian nutrition and regional diets, calisthenics ladders, gym resistance training, Taekwondo martial arts, and sensible recovery. Always maintain user safety and provide structured bullet points. User Profile: Name: ${profile.displayName || 'Athlete'}, Age Band: ${profile.ageBand || '30-39'}, Level: ${profile.experienceLevel || 'intermediate'}, Food: ${profile.foodPreference || 'vegetarian'}.`;
-
-        const response = await fetch(geminiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': geminiKey
-          },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: systemText }] },
-            contents: [
-              ...conversationHistory,
-              { role: 'user', parts: [{ text: userPrompt }] }
-            ],
-            generationConfig: { temperature: 0.7, maxOutputTokens: 800 }
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) {
-            return res.json({ success: true, text, isFallback: false, source: 'Gemini 2.5 Flash' });
-          }
-        }
-      } catch (err) {
-        console.warn('[FitTrack Security Vault] AI chat fallback triggered:', err.message);
-      }
-    }
-
-    // Heuristic response
-    return res.json({
-      success: true,
-      text: `⚡ **FitTrack AI Coach Guidance:**\n\nFor your profile (${profile.ageBand || 'adult'}, ${profile.experienceLevel || 'intermediate'}, ${profile.foodPreference || 'balanced diet'}):\n\n- **Progressive Overload:** Increase 1 rep per set or +1.5kg every 7-10 days.\n- **Indian Diet Balance:** Ensure every meal includes a protein anchor (paneer, dal, eggs, sprouts, or chicken).\n- **Joint Safety:** Warm up rotators and hips for 5 mins before loading.\n\n*Safety reminder: Discontinue immediately if dizzy or sharp joint pain occurs.*`,
-      isFallback: true,
-      source: 'FitTrack Local Engine'
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, error: 'Internal chat service error.' });
-  }
-}
-
 export async function handleCalisthenicsApi(req, res) {
   try {
     const key = process.env.CALISTHENICS_API_KEY;

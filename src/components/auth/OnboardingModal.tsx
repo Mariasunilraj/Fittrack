@@ -6,9 +6,10 @@ import { AgeBand, ExperienceLevel, FoodPreference, IndianRegion, TrainingDiscipl
 interface OnboardingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenPrivacyPolicy?: () => void;
 }
 
-export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) => {
+export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, onOpenPrivacyPolicy }) => {
   const { profile, updateProfile, showToast } = useApp();
   const [step, setStep] = useState(1);
 
@@ -372,6 +373,20 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   I confirm I am an adult (18+), have read and agree to the health & safety terms, and understand that I should consult a doctor before starting any rigorous physical regimen.
                 </span>
               </label>
+
+              {/* Privacy Policy & Consent Notice */}
+              <div className="p-3 bg-brand-dark/70 border border-brand-border rounded-xl text-xs text-slate-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <span>Personal metrics are processed under zero-ad data minimization.</span>
+                {onOpenPrivacyPolicy && (
+                  <button
+                    type="button"
+                    onClick={onOpenPrivacyPolicy}
+                    className="text-brand-yellow hover:underline font-bold text-left sm:text-right cursor-pointer"
+                  >
+                    Read Privacy Policy →
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -6,7 +6,6 @@ import {
   RecoveryLog,
   PersonalRecord,
   TaekwondoSession,
-  AIChatMessage,
   WeightLogEntry
 } from '../types';
 import {
@@ -31,7 +30,6 @@ const STORAGE_KEYS = {
   RECOVERY_LOGS: 'fittrack_recovery_logs',
   PRS: 'fittrack_prs',
   TKD_SESSIONS: 'fittrack_tkd_sessions',
-  AI_CHAT_HISTORY: 'fittrack_ai_chat',
   WEIGHT_HISTORY: 'fittrack_weight_history',
   SUPABASE_CONFIG: 'fittrack_supabase_config',
   GEMINI_API_KEY: 'fittrack_gemini_key'
@@ -262,34 +260,6 @@ export const storageService = {
 
   saveTkdSessions(sessions: TaekwondoSession[]): void {
     localStorage.setItem(STORAGE_KEYS.TKD_SESSIONS, JSON.stringify(sessions));
-  },
-
-  getAIChatHistory(): AIChatMessage[] {
-    const data = localStorage.getItem(STORAGE_KEYS.AI_CHAT_HISTORY);
-    if (!data) {
-      const welcomeMsg: AIChatMessage = {
-        id: 'msg_welcome',
-        sender: 'assistant',
-        content: `Namaste! 🙏 I'm your FitTrack AI Coach. I can help adapt your calisthenics ladders, estimate macros for regional Indian home-cooked meals, structure your Taekwondo poomsae conditioning, or answer fitness and recovery questions safely. What are we focusing on today?`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      return [welcomeMsg];
-    }
-    try {
-      const parsed = JSON.parse(data);
-      // Clean up legacy references to Arjun Sharma if present in chat history
-      if (Array.isArray(parsed) && parsed.some(m => m.content?.includes('Arjun'))) {
-        localStorage.removeItem(STORAGE_KEYS.AI_CHAT_HISTORY);
-        return this.getAIChatHistory();
-      }
-      return parsed;
-    } catch {
-      return [];
-    }
-  },
-
-  saveAIChatHistory(history: AIChatMessage[]): void {
-    localStorage.setItem(STORAGE_KEYS.AI_CHAT_HISTORY, JSON.stringify(history));
   },
 
   getGeminiApiKey(): string {

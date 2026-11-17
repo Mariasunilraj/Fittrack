@@ -190,15 +190,3 @@ export interface PersonalRecord {
   date: string;
   discipline: TrainingDiscipline;
 }
-
-export interface AIChatMessage {
-  id: string;
-  sender: 'user' | 'assistant';
-  content: string;
-  timestamp: string;
-  suggestedAction?: {
-    type: 'add_workout' | 'log_food' | 'view_exercise';
-    payload: any;
-    label: string;
-  };
-}

@@ -136,3 +136,37 @@ VALUES
     ('usr_sunilraj_001', '2026-11-01', 76.0, 70.0, 'Account Start (Initial Weight)'),
     ('usr_sunilraj_001', '2026-11-03', 74.5, 70.0, 'Weekly Monday Weigh-In')
 ON CONFLICT DO NOTHING;
+
+-- 11. ROW-LEVEL SECURITY (RLS) FOR PRIVACY & STRICT DATA OWNERSHIP
+ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE weight_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE workout_routines ENABLE ROW LEVEL SECURITY;
+ALTER TABLE routine_exercises ENABLE ROW LEVEL SECURITY;
+ALTER TABLE workout_session_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE nutrition_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE personal_records ENABLE ROW LEVEL SECURITY;
+
+-- Athletes can only select, insert, update, or delete their own data
+DROP POLICY IF EXISTS user_profiles_owner_policy ON user_profiles;
+CREATE POLICY user_profiles_owner_policy ON user_profiles
+    FOR ALL USING (id = coalesce(current_setting('request.jwt.claim.sub', true), id));
+
+DROP POLICY IF EXISTS weight_history_owner_policy ON weight_history;
+CREATE POLICY weight_history_owner_policy ON weight_history
+    FOR ALL USING (user_id = coalesce(current_setting('request.jwt.claim.sub', true), user_id));
+
+DROP POLICY IF EXISTS workout_routines_owner_policy ON workout_routines;
+CREATE POLICY workout_routines_owner_policy ON workout_routines
+    FOR ALL USING (user_id = coalesce(current_setting('request.jwt.claim.sub', true), user_id));
+
+DROP POLICY IF EXISTS workout_session_logs_owner_policy ON workout_session_logs;
+CREATE POLICY workout_session_logs_owner_policy ON workout_session_logs
+    FOR ALL USING (user_id = coalesce(current_setting('request.jwt.claim.sub', true), user_id));
+
+DROP POLICY IF EXISTS nutrition_logs_owner_policy ON nutrition_logs;
+CREATE POLICY nutrition_logs_owner_policy ON nutrition_logs
+    FOR ALL USING (user_id = coalesce(current_setting('request.jwt.claim.sub', true), user_id));
+
+DROP POLICY IF EXISTS personal_records_owner_policy ON personal_records;
+CREATE POLICY personal_records_owner_policy ON personal_records
+    FOR ALL USING (user_id = coalesce(current_setting('request.jwt.claim.sub', true), user_id));
