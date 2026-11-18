@@ -10,7 +10,9 @@ import {
   Layers,
   Sparkles,
   Trash2,
-  AlertCircle
+  AlertCircle,
+  Swords,
+  Activity
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { WorkoutSession, TrainingDiscipline } from '../../types';
@@ -145,39 +147,39 @@ export const DashboardTodayWorkoutPlan: React.FC = () => {
         <button
           type="button"
           onClick={() => setSelectedDiscipline('calisthenics')}
-          className={`py-3 px-2 sm:px-4 rounded-xl text-center font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-2 transition cursor-pointer ${
+          className={`min-h-[44px] py-2.5 px-2 sm:px-4 rounded-xl text-center font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1.5 transition cursor-pointer active:scale-95 touch-manipulation ${
             selectedDiscipline === 'calisthenics'
-              ? 'bg-brand-yellow text-slate-950 shadow-md shadow-brand-yellow/15'
+              ? 'bg-[#ccff00] text-slate-950 shadow-md shadow-[#ccff00]/15 font-black'
               : 'text-slate-400 hover:text-white hover:bg-brand-card'
           }`}
         >
-          <span className="text-base sm:text-lg">🤸</span>
+          <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-current" />
           <span>Calisthenics</span>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedDiscipline('taekwondo')}
-          className={`py-3 px-2 sm:px-4 rounded-xl text-center font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-2 transition cursor-pointer ${
+          className={`min-h-[44px] py-2.5 px-2 sm:px-4 rounded-xl text-center font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1.5 transition cursor-pointer active:scale-95 touch-manipulation ${
             selectedDiscipline === 'taekwondo'
-              ? 'bg-brand-yellow text-slate-950 shadow-md shadow-brand-yellow/15'
+              ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20 font-black'
               : 'text-slate-400 hover:text-white hover:bg-brand-card'
           }`}
         >
-          <span className="text-base sm:text-lg">🥋</span>
+          <Swords className="w-4 h-4 sm:w-5 sm:h-5 text-current" />
           <span>Taekwondo</span>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedDiscipline('gym')}
-          className={`py-3 px-2 sm:px-4 rounded-xl text-center font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-2 transition cursor-pointer ${
+          className={`min-h-[44px] py-2.5 px-2 sm:px-4 rounded-xl text-center font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1.5 transition cursor-pointer active:scale-95 touch-manipulation ${
             selectedDiscipline === 'gym'
-              ? 'bg-brand-yellow text-slate-950 shadow-md shadow-brand-yellow/15'
+              ? 'bg-sky-400 text-slate-950 shadow-md shadow-sky-400/20 font-black'
               : 'text-slate-400 hover:text-white hover:bg-brand-card'
           }`}
         >
-          <span className="text-base sm:text-lg">🏋️</span>
+          <Dumbbell className="w-4 h-4 sm:w-5 sm:h-5 text-current" />
           <span>Gym & Lifts</span>
         </button>
       </div>

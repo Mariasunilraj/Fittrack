@@ -7,7 +7,7 @@ import { DashboardWeeklyWorkoutChart } from './DashboardWeeklyWorkoutChart';
 
 export const DashboardView: React.FC = () => {
   return (
-    <div className="space-y-7 animate-fadeIn pb-12">
+    <div className="space-y-6 sm:space-y-7 animate-fadeIn pb-28 sm:pb-20">
       {/* 1. PROFILE SECTION: Visible Name and Age */}
       <section aria-label="User Profile">
         <DashboardProfileHeader />

@@ -30,7 +30,7 @@ export const MobileNav: React.FC = () => {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-brand-surface/98 backdrop-blur-xl border-t border-brand-border px-1 py-1.5 flex items-center justify-around shadow-2xl safe-area-bottom select-none"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-brand-surface/98 backdrop-blur-xl border-t border-brand-border px-1 py-1 flex items-center justify-around shadow-2xl safe-area-bottom select-none h-14"
     >
       {items.map(item => {
         const Icon = item.icon;
@@ -39,16 +39,16 @@ export const MobileNav: React.FC = () => {
           <button
             key={item.id}
             onClick={() => handleNavClick(item.id)}
-            className={`flex flex-col items-center justify-center min-h-[46px] min-w-[48px] px-1 py-1 rounded-xl transition-all cursor-pointer active:scale-90 active:opacity-80 touch-manipulation ${
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[46px] px-1 py-0.5 rounded-xl transition-all cursor-pointer active:scale-90 active:opacity-80 touch-manipulation ${
               isActive
-                ? 'text-brand-yellow font-black'
+                ? 'text-[#ccff00] font-black'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className={`p-1 rounded-lg transition-transform ${isActive ? 'bg-brand-yellow/15 scale-110' : ''}`}>
-              <Icon className="w-5 h-5" />
+            <div className={`p-0.5 rounded-lg transition-transform ${isActive ? 'bg-[#ccff00]/15 scale-105' : ''}`}>
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-[10px] font-semibold tracking-tight mt-0.5">{item.label}</span>
+            <span className="text-[10px] font-semibold tracking-tight mt-0.5 leading-none">{item.label}</span>
           </button>
         );
       })}

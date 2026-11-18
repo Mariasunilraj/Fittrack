@@ -15,7 +15,10 @@ import {
   RotateCcw,
   PlusCircle,
   X,
-  AlertCircle
+  AlertCircle,
+  Swords,
+  Activity,
+  AlertTriangle
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { WorkoutSession, TrainingDiscipline, PlannedExercise } from '../../types';
@@ -38,6 +41,9 @@ export const TrainingPlanner: React.FC = () => {
   const todayDayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState<string>(todayDayName);
   const [activeSubheadFilter, setActiveSubheadFilter] = useState<'all' | 'calisthenics' | 'taekwondo' | 'gym'>('all');
+
+  // Deletion confirmation modal state
+  const [sessionToDelete, setSessionToDelete] = useState<WorkoutSession | null>(null);
 
   // Modal state for adding a custom session
   const [showAddModal, setShowAddModal] = useState(false);
@@ -218,22 +224,24 @@ export const TrainingPlanner: React.FC = () => {
   const tkdSession = getDisciplineSession('taekwondo');
   const gymSession = getDisciplineSession('gym');
 
-  // Deletion of an entire workout
+  // Deletion of an entire workout with safe confirmation modal
   const handleDeleteWorkout = (session: WorkoutSession) => {
-    if (window.confirm(`Delete "${session.title}" from your ${selectedDay} schedule?`)) {
-      // If it exists in state, delete it; if it was default, create an emptied version
-      const existing = workoutPlans.find(p => p.id === session.id);
-      if (existing) {
-        deleteWorkoutPlan(session.id);
-      } else {
-        // Save empty version
-        updateWorkoutPlan({
-          ...session,
-          exercises: []
-        });
-      }
-      showToast(`Removed "${session.title}" from ${selectedDay}!`);
+    setSessionToDelete(session);
+  };
+
+  const confirmDeleteWorkout = (session: WorkoutSession) => {
+    // If it exists in state, delete it; if it was default, create an emptied version
+    const existing = workoutPlans.find(p => p.id === session.id);
+    if (existing) {
+      deleteWorkoutPlan(session.id);
+    } else {
+      // Save empty version
+      updateWorkoutPlan({
+        ...session,
+        exercises: []
+      });
     }
+    showToast(`Removed "${session.title}" from ${selectedDay}!`);
   };
 
   // Deletion of an individual technique / exercise
@@ -324,29 +332,29 @@ export const TrainingPlanner: React.FC = () => {
   };
 
   return (
-    <div className="space-y-7 pb-12 animate-fadeIn max-w-5xl mx-auto">
+    <div className="space-y-6 sm:space-y-7 pb-32 sm:pb-24 animate-fadeIn max-w-5xl mx-auto">
       {/* 1. Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30">
+            <span className="text-xs font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
               Daily Training Routine
             </span>
-            <span className="text-xs text-slate-400">Workout & Technique Management</span>
+            <span className="text-xs text-slate-400 font-medium">Technique & Schedule Management</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1 flex items-center gap-2">
-            <Dumbbell className="w-7 h-7 text-brand-yellow" />
+            <Dumbbell className="w-7 h-7 text-[#ccff00]" />
             <span>Workout</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Organized across three sub-heads: <strong className="text-brand-yellow">Calisthenics (Calis)</strong>, <strong className="text-rose-400">Taekwondo</strong>, and <strong className="text-sky-400">Gym</strong>. Use the delete buttons to remove workouts or individual techniques anytime.
+          <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
+            Daily training across three disciplines: <span className="inline-flex items-center gap-1 font-semibold text-white"><Activity className="w-3.5 h-3.5 text-[#ccff00]" /> Calisthenics</span>, <span className="inline-flex items-center gap-1 font-semibold text-white"><Swords className="w-3.5 h-3.5 text-rose-400" /> Taekwondo</span>, and <span className="inline-flex items-center gap-1 font-semibold text-white"><Dumbbell className="w-3.5 h-3.5 text-sky-400" /> Gym</span>.
           </p>
         </div>
 
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
           <button
             onClick={() => setShowAddModal(true)}
-            className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-md shadow-brand-yellow/15 transition cursor-pointer hover:scale-[1.02]"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-md shadow-[#ccff00]/20 transition cursor-pointer active:scale-95 touch-manipulation"
           >
             <Plus className="w-4 h-4" />
             <span>Add Session</span>
@@ -354,98 +362,111 @@ export const TrainingPlanner: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Day of Week Selector */}
+      {/* 2. Day of Week Selector with Scroll Hint */}
       <div className="p-4 rounded-2xl bg-brand-surface border border-brand-border shadow-lg space-y-2.5">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 text-brand-yellow" />
+          <span className="font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <Calendar className="w-4 h-4 text-[#ccff00]" />
             <span>Select Day of Schedule:</span>
           </span>
           <span className="text-slate-400">
-            Viewing: <strong className="text-brand-yellow">{selectedDay}</strong>
+            Viewing: <strong className="text-[#ccff00]">{selectedDay}</strong>
             {selectedDay.toLowerCase() === todayDayName.toLowerCase() && ' (Today)'}
           </span>
         </div>
 
-        <div className="flex sm:grid sm:grid-cols-7 gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-          {daysOfWeek.map(day => {
-            const isSelected = selectedDay.toLowerCase() === day.toLowerCase();
-            const isToday = day.toLowerCase() === todayDayName.toLowerCase();
-            return (
-              <button
-                key={day}
-                type="button"
-                onClick={() => setSelectedDay(day)}
-                className={`py-2.5 px-2.5 sm:px-2 rounded-xl text-center text-xs font-bold transition cursor-pointer border flex-shrink-0 min-w-[58px] sm:min-w-0 flex-1 sm:flex-initial ${
-                  isSelected
-                    ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-md shadow-brand-yellow/15'
-                    : 'bg-brand-card text-slate-300 border-brand-border hover:border-slate-500'
-                }`}
-              >
-                <div className="leading-tight">{day.slice(0, 3)}</div>
-                {isToday && (
-                  <span
-                    className={`text-[9px] uppercase font-black block mt-0.5 ${
-                      isSelected ? 'text-slate-950' : 'text-brand-yellow'
-                    }`}
-                  >
-                    Today
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        <div className="relative">
+          <div className="flex sm:grid sm:grid-cols-7 gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 pr-8 sm:pr-0">
+            {daysOfWeek.map(day => {
+              const isSelected = selectedDay.toLowerCase() === day.toLowerCase();
+              const isToday = day.toLowerCase() === todayDayName.toLowerCase();
+              return (
+                <button
+                  key={day}
+                  type="button"
+                  onClick={() => setSelectedDay(day)}
+                  className={`min-h-[44px] py-2 px-2.5 sm:px-2 rounded-xl text-center text-xs font-bold transition cursor-pointer border flex-shrink-0 min-w-[58px] sm:min-w-0 flex-1 sm:flex-initial active:scale-95 touch-manipulation ${
+                    isSelected
+                      ? 'bg-[#ccff00] text-slate-950 border-[#ccff00] shadow-md shadow-[#ccff00]/20 font-black'
+                      : 'bg-brand-card text-slate-300 border-brand-border hover:border-slate-500'
+                  }`}
+                >
+                  <div className="leading-tight">{day.slice(0, 3)}</div>
+                  {isToday && (
+                    <span
+                      className={`text-[9px] uppercase font-black block mt-0.5 ${
+                        isSelected ? 'text-slate-950' : 'text-[#ccff00]'
+                      }`}
+                    >
+                      Today
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          {/* Scroll hint fade for mobile */}
+          <div className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-brand-surface to-transparent flex items-center justify-end pr-0.5 text-slate-400">
+            <ChevronRight className="w-4 h-4 opacity-70" />
+          </div>
         </div>
       </div>
 
-      {/* 3. Sub-Heads Filter Tabs */}
-      <div className="flex flex-nowrap sm:flex-wrap items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-        <button
-          onClick={() => setActiveSubheadFilter('all')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex-shrink-0 ${
-            activeSubheadFilter === 'all'
-              ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
-              : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
-          }`}
-        >
-          All 3 Sub-Heads
-        </button>
+      {/* 3. Sub-Heads Filter Tabs with Scroll Hint & Line Icons */}
+      <div className="relative">
+        <div className="flex flex-nowrap sm:flex-wrap items-center gap-2 overflow-x-auto no-scrollbar pb-1 pr-8 sm:pr-0">
+          <button
+            onClick={() => setActiveSubheadFilter('all')}
+            className={`min-h-[44px] py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex-shrink-0 active:scale-95 touch-manipulation ${
+              activeSubheadFilter === 'all'
+                ? 'bg-[#ccff00] text-slate-950 border-[#ccff00] font-black'
+                : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
+            }`}
+          >
+            All 3 Sub-Heads
+          </button>
 
-        <button
-          onClick={() => setActiveSubheadFilter('calisthenics')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 ${
-            activeSubheadFilter === 'calisthenics'
-              ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
-              : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
-          }`}
-        >
-          <span>🤸</span>
-          <span>1. Calis</span>
-        </button>
+          <button
+            onClick={() => setActiveSubheadFilter('calisthenics')}
+            className={`min-h-[44px] py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 active:scale-95 touch-manipulation ${
+              activeSubheadFilter === 'calisthenics'
+                ? 'bg-[#ccff00] text-slate-950 border-[#ccff00] font-black'
+                : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
+            }`}
+          >
+            <Activity className="w-4 h-4 text-[#ccff00]" />
+            <span>1. Calisthenics</span>
+          </button>
 
-        <button
-          onClick={() => setActiveSubheadFilter('taekwondo')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 ${
-            activeSubheadFilter === 'taekwondo'
-              ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
-              : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
-          }`}
-        >
-          <span>🥋</span>
-          <span>2. Taekwondo</span>
-        </button>
+          <button
+            onClick={() => setActiveSubheadFilter('taekwondo')}
+            className={`min-h-[44px] py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 active:scale-95 touch-manipulation ${
+              activeSubheadFilter === 'taekwondo'
+                ? 'bg-rose-500 text-white border-rose-500 font-black'
+                : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
+            }`}
+          >
+            <Swords className="w-4 h-4 text-rose-400" />
+            <span>2. Taekwondo</span>
+          </button>
 
-        <button
-          onClick={() => setActiveSubheadFilter('gym')}
-          className={`py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 ${
-            activeSubheadFilter === 'gym'
-              ? 'bg-brand-yellow text-slate-950 border-brand-yellow'
-              : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
-          }`}
-        >
-          <span>🏋️</span>
-          <span>3. Gym</span>
-        </button>
+          <button
+            onClick={() => setActiveSubheadFilter('gym')}
+            className={`min-h-[44px] py-2 px-4 rounded-xl text-xs font-bold transition cursor-pointer border flex items-center gap-1.5 flex-shrink-0 active:scale-95 touch-manipulation ${
+              activeSubheadFilter === 'gym'
+                ? 'bg-sky-400 text-slate-950 border-sky-400 font-black'
+                : 'bg-brand-surface border-brand-border text-slate-400 hover:text-white'
+            }`}
+          >
+            <Dumbbell className="w-4 h-4 text-sky-400" />
+            <span>3. Gym</span>
+          </button>
+        </div>
+
+        {/* Scroll hint fade for subhead tabs */}
+        <div className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0c0f14] to-transparent flex items-center justify-end pr-0.5 text-slate-400">
+          <ChevronRight className="w-4 h-4 opacity-70" />
+        </div>
       </div>
 
       {/* 4. THE THREE SUB-HEADS WITH SCHEDULE FOR THE DAY & DELETE BUTTONS */}
@@ -458,53 +479,54 @@ export const TrainingPlanner: React.FC = () => {
             {/* Subhead Header with Delete Workout Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-brand-yellow text-slate-950 flex items-center justify-center font-black text-2xl shadow-md shadow-brand-yellow/20 flex-shrink-0">
-                  🤸
+                <div className="w-12 h-12 rounded-2xl bg-[#ccff00] text-slate-950 flex items-center justify-center font-black shadow-md shadow-[#ccff00]/20 flex-shrink-0">
+                  <Activity className="w-6 h-6 text-slate-950" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30">
+                    <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[#ccff00]/20 text-[#ccff00] border border-[#ccff00]/30">
                       Sub-Head 1
                     </span>
                     <span className="text-xs text-slate-400 font-bold">Bodyweight Mastery</span>
                   </div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight mt-0.5">
-                    Calisthenics (Calis) — Schedule for {selectedDay}
+                    Calisthenics
                   </h2>
                 </div>
               </div>
 
               {/* Workout Control Actions */}
               <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-                <span className="text-xs font-mono text-slate-400 flex items-center gap-1 bg-brand-card px-2.5 py-1.5 rounded-xl border border-brand-border">
-                  <Clock className="w-3.5 h-3.5 text-brand-yellow" />
-                  {calisSession.durationMinutes}m
+                <span className="text-xs font-mono text-slate-400 flex items-center gap-1 bg-brand-card px-2.5 py-2 rounded-xl border border-brand-border min-h-[44px]">
+                  <Clock className="w-3.5 h-3.5 text-[#ccff00]" />
+                  <span>{calisSession.durationMinutes}m</span>
                 </span>
-
-                {/* DELETE WORKOUT BUTTON */}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteWorkout(calisSession)}
-                  className="p-2 rounded-xl bg-rose-950/20 hover:bg-rose-950/40 border border-rose-500/30 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1 text-xs font-bold"
-                  title="Delete this Calisthenics workout routine"
-                >
-                  <Trash2 className="w-4 h-4 text-rose-400" />
-                  <span className="hidden sm:inline">Delete Workout</span>
-                </button>
 
                 <button
                   type="button"
                   onClick={() => handleResetDiscipline('calisthenics')}
-                  className="p-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-400 hover:text-white transition cursor-pointer"
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold active:scale-95 touch-manipulation"
                   title="Restore default Calisthenics schedule"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Reset</span>
+                </button>
+
+                {/* Safe Delete with Confirmation */}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteWorkout(calisSession)}
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-rose-950/25 hover:bg-rose-950/45 border border-rose-500/35 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
+                  title="Delete this Calisthenics workout routine"
+                >
+                  <Trash2 className="w-4 h-4 text-rose-400" />
+                  <span>Delete</span>
                 </button>
 
                 {calisSession.exercises.length > 0 && (
                   <button
                     onClick={() => startWorkout(calisSession)}
-                    className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.02]"
+                    className="min-h-[44px] py-2 px-4 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-[#ccff00]/20 transition cursor-pointer active:scale-95 touch-manipulation"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
                     <span>Start Workout</span>
@@ -616,53 +638,54 @@ export const TrainingPlanner: React.FC = () => {
             {/* Subhead Header with Delete Workout Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center font-black text-2xl shadow-md shadow-rose-500/20 flex-shrink-0">
-                  🥋
+                <div className="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center font-black shadow-md shadow-rose-500/20 flex-shrink-0">
+                  <Swords className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                    <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">
                       Sub-Head 2
                     </span>
                     <span className="text-xs text-slate-400 font-bold">World Taekwondo (WT)</span>
                   </div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight mt-0.5">
-                    Taekwondo — Schedule for {selectedDay}
+                    Taekwondo
                   </h2>
                 </div>
               </div>
 
               {/* Workout Control Actions */}
               <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-                <span className="text-xs font-mono text-slate-400 flex items-center gap-1 bg-brand-card px-2.5 py-1.5 rounded-xl border border-brand-border">
+                <span className="text-xs font-mono text-slate-400 flex items-center gap-1 bg-brand-card px-2.5 py-2 rounded-xl border border-brand-border min-h-[44px]">
                   <Clock className="w-3.5 h-3.5 text-rose-400" />
-                  {tkdSession.durationMinutes} mins
+                  <span>{tkdSession.durationMinutes}m</span>
                 </span>
-
-                {/* DELETE WORKOUT BUTTON */}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteWorkout(tkdSession)}
-                  className="p-2 rounded-xl bg-rose-950/20 hover:bg-rose-950/40 border border-rose-500/30 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1 text-xs font-bold"
-                  title="Delete this Taekwondo workout routine"
-                >
-                  <Trash2 className="w-4 h-4 text-rose-400" />
-                  <span className="hidden sm:inline">Delete Workout</span>
-                </button>
 
                 <button
                   type="button"
                   onClick={() => handleResetDiscipline('taekwondo')}
-                  className="p-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-400 hover:text-white transition cursor-pointer"
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold active:scale-95 touch-manipulation"
                   title="Restore default Taekwondo schedule"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Reset</span>
+                </button>
+
+                {/* Safe Delete with Confirmation */}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteWorkout(tkdSession)}
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-rose-950/25 hover:bg-rose-950/45 border border-rose-500/35 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
+                  title="Delete this Taekwondo workout routine"
+                >
+                  <Trash2 className="w-4 h-4 text-rose-400" />
+                  <span>Delete</span>
                 </button>
 
                 {tkdSession.exercises.length > 0 && (
                   <button
                     onClick={() => startWorkout(tkdSession)}
-                    className="py-2.5 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-black text-xs flex items-center gap-2 shadow-lg shadow-rose-500/20 transition cursor-pointer hover:scale-[1.02]"
+                    className="min-h-[44px] py-2 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-black text-xs flex items-center gap-2 shadow-lg shadow-rose-500/20 transition cursor-pointer active:scale-95 touch-manipulation"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
                     <span>Start Workout</span>
@@ -774,53 +797,54 @@ export const TrainingPlanner: React.FC = () => {
             {/* Subhead Header with Delete Workout Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-sky-500 text-slate-950 flex items-center justify-center font-black text-2xl shadow-md shadow-sky-500/20 flex-shrink-0">
-                  🏋️
+                <div className="w-12 h-12 rounded-2xl bg-sky-400 text-slate-950 flex items-center justify-center font-black shadow-md shadow-sky-400/20 flex-shrink-0">
+                  <Dumbbell className="w-6 h-6 text-slate-950" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                    <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">
                       Sub-Head 3
                     </span>
                     <span className="text-xs text-slate-400 font-bold">Resistance & Hypertrophy</span>
                   </div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight mt-0.5">
-                    Gym — Schedule for {selectedDay}
+                    Gym & Strength
                   </h2>
                 </div>
               </div>
 
               {/* Workout Control Actions */}
               <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-                <span className="text-xs font-mono text-slate-400 flex items-center gap-1 bg-brand-card px-2.5 py-1.5 rounded-xl border border-brand-border">
+                <span className="text-xs font-mono text-slate-400 flex items-center gap-1 bg-brand-card px-2.5 py-2 rounded-xl border border-brand-border min-h-[44px]">
                   <Clock className="w-3.5 h-3.5 text-sky-400" />
-                  {gymSession.durationMinutes} mins
+                  <span>{gymSession.durationMinutes}m</span>
                 </span>
-
-                {/* DELETE WORKOUT BUTTON */}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteWorkout(gymSession)}
-                  className="p-2 rounded-xl bg-rose-950/20 hover:bg-rose-950/40 border border-rose-500/30 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1 text-xs font-bold"
-                  title="Delete this Gym workout routine"
-                >
-                  <Trash2 className="w-4 h-4 text-rose-400" />
-                  <span className="hidden sm:inline">Delete Workout</span>
-                </button>
 
                 <button
                   type="button"
                   onClick={() => handleResetDiscipline('gym')}
-                  className="p-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-400 hover:text-white transition cursor-pointer"
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold active:scale-95 touch-manipulation"
                   title="Restore default Gym schedule"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Reset</span>
+                </button>
+
+                {/* Safe Delete with Confirmation */}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteWorkout(gymSession)}
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-rose-950/25 hover:bg-rose-950/45 border border-rose-500/35 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
+                  title="Delete this Gym workout routine"
+                >
+                  <Trash2 className="w-4 h-4 text-rose-400" />
+                  <span>Delete</span>
                 </button>
 
                 {gymSession.exercises.length > 0 && (
                   <button
                     onClick={() => startWorkout(gymSession)}
-                    className="py-2.5 px-4 rounded-xl bg-sky-400 hover:bg-sky-500 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-sky-400/20 transition cursor-pointer hover:scale-[1.02]"
+                    className="min-h-[44px] py-2 px-4 rounded-xl bg-sky-400 hover:bg-sky-500 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-sky-400/20 transition cursor-pointer active:scale-95 touch-manipulation"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
                     <span>Start Workout</span>
@@ -1007,24 +1031,27 @@ export const TrainingPlanner: React.FC = () => {
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { id: 'calisthenics', label: 'Calisthenics', icon: '🤸' },
-                    { id: 'taekwondo', label: 'Taekwondo', icon: '🥋' },
-                    { id: 'gym', label: 'Gym', icon: '🏋️' }
-                  ].map(item => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => setAddDisciplineTarget(item.id as TrainingDiscipline)}
-                      className={`p-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition cursor-pointer ${
-                        addDisciplineTarget === item.id
-                          ? 'bg-brand-yellow text-slate-950 border-brand-yellow shadow-sm'
-                          : 'bg-brand-dark border-brand-border text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      <span className="text-base">{item.icon}</span>
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
+                    { id: 'calisthenics', label: 'Calisthenics', icon: Activity, color: 'text-[#ccff00]' },
+                    { id: 'taekwondo', label: 'Taekwondo', icon: Swords, color: 'text-rose-400' },
+                    { id: 'gym', label: 'Gym', icon: Dumbbell, color: 'text-sky-400' }
+                  ].map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setAddDisciplineTarget(item.id as TrainingDiscipline)}
+                        className={`min-h-[44px] p-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition cursor-pointer active:scale-95 touch-manipulation ${
+                          addDisciplineTarget === item.id
+                            ? 'bg-[#ccff00] text-slate-950 border-[#ccff00] shadow-sm font-black'
+                            : 'bg-brand-dark border-brand-border text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        <Icon className={`w-5 h-5 ${addDisciplineTarget === item.id ? 'text-slate-950' : item.color}`} />
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -1038,7 +1065,7 @@ export const TrainingPlanner: React.FC = () => {
                   placeholder="e.g. Weighted Pull-Ups & L-Sit Ladder"
                   value={newTitle}
                   onChange={e => setNewTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-brand-dark border border-brand-border rounded-xl text-white text-sm focus:outline-none focus:border-brand-yellow"
+                  className="w-full px-4 py-2.5 bg-brand-dark border border-brand-border rounded-xl text-white text-sm focus:outline-none focus:border-[#ccff00] min-h-[44px]"
                 />
               </div>
 
@@ -1053,7 +1080,7 @@ export const TrainingPlanner: React.FC = () => {
                   step="5"
                   value={newDuration}
                   onChange={e => setNewDuration(Number(e.target.value))}
-                  className="w-full accent-[#e2f163] cursor-pointer"
+                  className="w-full accent-[#ccff00] cursor-pointer"
                 />
               </div>
 
@@ -1061,18 +1088,60 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer"
+                  className="min-h-[44px] px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-brand-yellow text-slate-950 font-bold rounded-xl text-xs shadow-md shadow-brand-yellow/15 cursor-pointer hover:bg-brand-yellowDark"
+                  className="min-h-[44px] px-5 py-2.5 bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 font-black rounded-xl text-xs shadow-md shadow-[#ccff00]/20 cursor-pointer active:scale-95 touch-manipulation"
                 >
                   Save Schedule
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Workout Deletion Confirmation Modal */}
+      {sessionToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-sm bg-brand-surface border border-brand-border rounded-2xl p-5 sm:p-6 shadow-2xl text-slate-100 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center flex-shrink-0">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-base">Delete Workout Routine?</h3>
+                <p className="text-xs text-slate-400 mt-0.5">Are you sure you want to delete this routine?</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-300 bg-brand-dark/80 p-3 rounded-xl border border-brand-border">
+              "{sessionToDelete.title}" will be removed from your {selectedDay} schedule. You can restore the default routine anytime using the Reset button.
+            </p>
+
+            <div className="flex items-center justify-end gap-2.5 pt-1">
+              <button
+                type="button"
+                onClick={() => setSessionToDelete(null)}
+                className="min-h-[44px] px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  confirmDeleteWorkout(sessionToDelete);
+                  setSessionToDelete(null);
+                }}
+                className="min-h-[44px] px-4 py-2 text-xs font-bold text-white rounded-xl bg-rose-600 hover:bg-rose-500 transition cursor-pointer flex items-center gap-1.5 shadow-lg shadow-rose-600/20"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Yes, Delete</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

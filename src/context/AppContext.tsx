@@ -369,7 +369,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updated = [newSession, ...taekwondoSessions];
     setTaekwondoSessions(updated);
     storageService.saveTkdSessions(updated);
-    showToast('🥋 Taekwondo practice session logged!');
+    showToast('Taekwondo practice session logged!');
   };
 
   return (

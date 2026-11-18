@@ -62,7 +62,7 @@ const AppContent: React.FC = () => {
     return (
       <div className="min-h-[100dvh] bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
         <Navbar onOpenAuth={() => setShowAuthModal(true)} />
-        <main ref={authMainRef} className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-y-auto w-full mx-auto">
+        <main ref={authMainRef} className="flex-1 flex flex-col justify-start sm:justify-center items-center p-2 sm:p-4 overflow-y-auto w-full mx-auto pb-20 sm:pb-8 pt-3 sm:pt-4">
           <AuthPage onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)} />
         </main>
 
@@ -104,7 +104,7 @@ const AppContent: React.FC = () => {
         <Sidebar />
 
         {/* View Switcher Main Content Area */}
-        <main ref={mainRef} className="flex-1 p-3 sm:p-5 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto pb-24 md:pb-8 flex flex-col justify-between">
+        <main ref={mainRef} className="flex-1 p-3 sm:p-5 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto pb-32 md:pb-10 flex flex-col justify-between">
           <div>
             {currentView === 'dashboard' && <DashboardView />}
             {currentView === 'training' && <TrainingPlanner />}
