@@ -28,28 +28,32 @@ export const NutritionTracker: React.FC = () => {
   const mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'] as const;
 
   return (
-    <div className="space-y-6 pb-12 animate-fadeIn">
+    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn">
       {/* Header with AI Scanner Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-yellow">
-            Indian Food & Hydration Tracker
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Nutrition Diary
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
+              Indian Food & Hydration Tracker
+            </span>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">ICMR-NIN Portions</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1 flex items-center gap-2">
+            <Utensils className="w-7 h-7 text-[#ccff00]" />
+            <span>Nutrition Diary</span>
           </h1>
-          <p className="text-sm text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1">
             AI food photo analysis with Gemini Vision, verified ICMR-NIN household portions, and hydration.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 self-start sm:self-auto">
+        <div className="flex items-center gap-2.5 self-start sm:self-auto flex-shrink-0">
           {/* Main AI Food Scanner Button */}
           <button
             onClick={() => setShowScannerModal(true)}
-            className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-brand-yellow/20 transition cursor-pointer hover:scale-[1.02]"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-[#ccff00]/20 transition cursor-pointer active:scale-95 touch-manipulation"
           >
-            <Camera className="w-4 h-4" />
+            <Camera className="w-4 h-4 text-slate-950" />
             <span>Scan Meal Photo (AI)</span>
           </button>
         </div>

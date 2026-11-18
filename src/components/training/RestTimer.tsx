@@ -46,7 +46,7 @@ export const RestTimer: React.FC<RestTimerProps> = ({ initialSeconds, onClose })
   const progressPct = ((initialSeconds - secondsLeft) / initialSeconds) * 100;
 
   return (
-    <div className="fixed bottom-20 right-6 z-50 p-4 rounded-2xl bg-brand-surface border border-brand-border shadow-2xl w-72 text-slate-100 animate-slideUp">
+    <div className="fixed bottom-24 sm:bottom-20 right-3 sm:right-6 z-50 p-4 rounded-2xl bg-brand-surface border border-brand-border shadow-2xl w-72 text-slate-100 animate-slideUp safe-area-bottom">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 text-xs font-bold uppercase text-brand-yellow tracking-wider">
           <Timer className="w-4 h-4" />

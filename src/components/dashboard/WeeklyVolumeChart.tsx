@@ -2,13 +2,13 @@ import React from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 const WEEKLY_DATA = [
-  { day: 'Mon', minutes: 45, discipline: 'Calisthenics' },
-  { day: 'Tue', minutes: 50, discipline: 'Weightlifting' },
-  { day: 'Wed', minutes: 30, discipline: 'Mobility' },
-  { day: 'Thu', minutes: 45, discipline: 'Calisthenics' },
-  { day: 'Fri', minutes: 60, discipline: 'Taekwondo' },
-  { day: 'Sat', minutes: 40, discipline: 'Gym Pull' },
-  { day: 'Sun', minutes: 0, discipline: 'Rest Day' }
+  { day: 'Mon 16', minutes: 45, discipline: 'Calisthenics' },
+  { day: 'Tue 17', minutes: 55, discipline: 'Weightlifting' },
+  { day: 'Wed 18', minutes: 45, discipline: 'Calisthenics' },
+  { day: 'Thu 19', minutes: 60, discipline: 'Taekwondo' },
+  { day: 'Fri 20', minutes: 45, discipline: 'Calisthenics' },
+  { day: 'Sat 21', minutes: 60, discipline: 'Gym Resistance' },
+  { day: 'Sun 22', minutes: 0, discipline: 'Rest Day' }
 ];
 
 export const WeeklyVolumeChart: React.FC = () => {
@@ -20,7 +20,7 @@ export const WeeklyVolumeChart: React.FC = () => {
           <h3 className="text-lg font-bold text-white">Weekly Training Volume</h3>
         </div>
         <div className="text-xs text-slate-400 font-medium">
-          Total: <strong className="text-brand-yellow font-bold">270 mins</strong>
+          Logged through Nov 18: <strong className="text-brand-yellow font-bold">145 mins</strong> (Plan: 310m)
         </div>
       </div>
 

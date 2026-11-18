@@ -41,16 +41,40 @@ export const INITIAL_DEMO_WEIGHT_HISTORY: WeightLogEntry[] = [
     userId: 'usr_sunilraj_001',
     date: '2026-11-01',
     weightKg: 76.0,
-    notes: 'Account Start (Initial Weight)',
+    notes: 'Account Start (Initial Baseline)',
     isMondayWeighIn: false
   },
   {
     id: 'wh_demo_w1',
     userId: 'usr_sunilraj_001',
-    date: '2026-11-03',
-    weightKg: 74.5,
-    notes: 'Weekly Monday Weigh-In',
+    date: '2026-11-02',
+    weightKg: 75.6,
+    notes: 'Week 1 Monday Weigh-In',
     isMondayWeighIn: true
+  },
+  {
+    id: 'wh_demo_w2',
+    userId: 'usr_sunilraj_001',
+    date: '2026-11-09',
+    weightKg: 75.0,
+    notes: 'Week 2 Monday Weigh-In',
+    isMondayWeighIn: true
+  },
+  {
+    id: 'wh_demo_w3',
+    userId: 'usr_sunilraj_001',
+    date: '2026-11-16',
+    weightKg: 74.5,
+    notes: 'Week 3 Monday Weigh-In',
+    isMondayWeighIn: true
+  },
+  {
+    id: 'wh_demo_current',
+    userId: 'usr_sunilraj_001',
+    date: '2026-11-18',
+    weightKg: 74.5,
+    notes: 'Nov 18, 2026 Checkpoint (Today)',
+    isMondayWeighIn: false
   }
 ];
 

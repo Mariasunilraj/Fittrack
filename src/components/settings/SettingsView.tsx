@@ -36,16 +36,18 @@ export const SettingsView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-12 animate-fadeIn max-w-4xl mx-auto">
+    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn max-w-4xl mx-auto">
       {/* Settings Header */}
       <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-brand-yellow">
-          Account & Preferences
-        </span>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
+            Account & Security Preferences
+          </span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
           Settings
         </h1>
-        <p className="text-sm text-slate-400 mt-0.5">
+        <p className="text-xs sm:text-sm text-slate-300 mt-1">
           Manage your athlete profile, training disciplines, nutrition goals, and data portability.
         </p>
       </div>

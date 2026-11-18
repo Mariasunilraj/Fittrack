@@ -25,67 +25,68 @@ import { useApp } from '../../context/AppContext';
 export const DashboardWeeklyWorkoutChart: React.FC = () => {
   const { setCurrentView } = useApp();
 
-  // Weekly workout data across the 7 days with breakdown by discipline
+  // Weekly workout data for the current week (Nov 16 - Nov 22, 2026), today is Wed Nov 18, 2026
   const weeklyWorkoutData = [
     {
-      day: 'Mon',
+      day: 'Mon 16',
       calisthenics: 45,
       taekwondo: 0,
       gym: 0,
       totalMinutes: 45,
-      details: 'Calisthenics Pull-Up & Core Ladder (45m)'
+      details: 'Nov 16: Calisthenics Pull-Up & Core Ladder (45m - Completed)'
     },
     {
-      day: 'Tue',
+      day: 'Tue 17',
       calisthenics: 0,
       taekwondo: 0,
       gym: 55,
       totalMinutes: 55,
-      details: 'Gym Barbell Squat & Deadlift Power (55m)'
+      details: 'Nov 17: Gym Barbell Squat & Deadlift Power (55m - Completed)'
     },
     {
-      day: 'Wed',
-      calisthenics: 30,
-      taekwondo: 0,
-      gym: 0,
-      totalMinutes: 30,
-      details: 'Calisthenics Push & Mobility Flow (30m)'
-    },
-    {
-      day: 'Thu',
-      calisthenics: 0,
-      taekwondo: 60,
-      gym: 0,
-      totalMinutes: 60,
-      details: 'Taekwondo Poomsae & Dollyo Chagi (60m)'
-    },
-    {
-      day: 'Fri',
+      day: 'Wed 18',
       calisthenics: 45,
       taekwondo: 0,
       gym: 0,
       totalMinutes: 45,
-      details: 'Calisthenics Dips & Muscle Progressions (45m)'
+      details: 'Nov 18 (Today): Calisthenics Dips & Push Progressions (45m - Active)'
     },
     {
-      day: 'Sat',
+      day: 'Thu 19',
+      calisthenics: 0,
+      taekwondo: 60,
+      gym: 0,
+      totalMinutes: 60,
+      details: 'Nov 19: Taekwondo Poomsae & Dollyo Chagi (60m - Scheduled)'
+    },
+    {
+      day: 'Fri 20',
+      calisthenics: 45,
+      taekwondo: 0,
+      gym: 0,
+      totalMinutes: 45,
+      details: 'Nov 20: Calisthenics Upper Ladder (45m - Scheduled)'
+    },
+    {
+      day: 'Sat 21',
       calisthenics: 0,
       taekwondo: 0,
       gym: 60,
       totalMinutes: 60,
-      details: 'Gym Upper Body Hypertrophy (60m)'
+      details: 'Nov 21: Gym Hypertrophy & Arms (60m - Scheduled)'
     },
     {
-      day: 'Sun',
+      day: 'Sun 22',
       calisthenics: 0,
       taekwondo: 0,
       gym: 0,
       totalMinutes: 0,
-      details: 'Active Rest Day & Joint Mobility'
+      details: 'Nov 22: Active Rest & 90/90 Joint Mobility (Scheduled)'
     }
   ];
 
   const totalWeeklyMinutes = weeklyWorkoutData.reduce((acc, d) => acc + d.totalMinutes, 0);
+  const completedMinutesThroughToday = 145; // Mon 45 + Tue 55 + Wed 45
   const targetWeeklyMinutes = 250;
   const calisMinutes = weeklyWorkoutData.reduce((acc, d) => acc + d.calisthenics, 0);
   const tkdMinutes = weeklyWorkoutData.reduce((acc, d) => acc + d.taekwondo, 0);
@@ -97,27 +98,27 @@ export const DashboardWeeklyWorkoutChart: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/70 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30">
-              Weekly Consistency Tracker
+            <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
+              Week of Nov 16 – Nov 22, 2026
             </span>
-            <span className="text-xs text-slate-400">Monday to Sunday Breakdown</span>
+            <span className="text-xs text-slate-400">Current Week Progression • Today is Nov 18</span>
           </div>
           <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight mt-1 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-brand-yellow" />
+            <Activity className="w-5 h-5 text-[#ccff00]" />
             <span>Workouts Done in the Whole Week (Duration & Splits)</span>
           </h2>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <span className="text-[10px] font-bold uppercase text-slate-400 block">Total Active Volume</span>
-            <div className="text-xl sm:text-2xl font-black text-brand-yellow font-mono">
-              {totalWeeklyMinutes}{' '}
-              <span className="text-xs text-slate-400 font-normal">/ {targetWeeklyMinutes} mins</span>
+            <span className="text-[10px] font-bold uppercase text-slate-400 block">Weekly Volume</span>
+            <div className="text-xl sm:text-2xl font-black text-[#ccff00] font-mono">
+              {completedMinutesThroughToday}{' '}
+              <span className="text-xs text-slate-400 font-normal">/ {targetWeeklyMinutes}m logged</span>
             </div>
           </div>
           <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-            Target Met 🎉
+            On Track (145m done)
           </span>
         </div>
       </div>

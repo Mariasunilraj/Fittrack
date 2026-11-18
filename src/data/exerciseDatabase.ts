@@ -1,4 +1,5 @@
 import { ExerciseItem } from '../types';
+import { EXERCISE_ILLUSTRATIONS } from './exerciseIllustrations';
 
 export const EXERCISE_DATABASE: ExerciseItem[] = [
   // --- CALISTHENICS & BODYWEIGHT PROGRESSION ---
@@ -21,7 +22,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Wall Push-Up (higher incline reduces bodyweight load to ~30%).',
     progressions: 'Standard Floor Push-Up or Decline Push-Up.',
     caloriesBurnEstimatePerHour: 280,
-    imageUrl: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['cal-pushup-1']
   },
   {
     id: 'cal-pushup-2',
@@ -35,14 +36,14 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
       'Start in a high plank position with hands under or slightly wider than shoulders.',
       'Maintain neutral spine, tight abs, and squeezed glutes.',
       'Lower torso until chest is 2-3 cm off the floor with elbows at ~45 degrees.',
-      'Push the ground away explosively to complete rep.'
+      'Push the ground away explosively to complete rep with full scapular protraction.'
     ],
     breathingCues: 'Inhale while lowering; exhale forcefully on the ascent.',
     safetyNotes: 'Do not allow lower back to sag or hips to hike up.',
     regressions: 'Knee Push-Up or Incline Push-Up.',
     progressions: 'Diamond Push-Up, Archer Push-Up, or Weighted Push-Up.',
     caloriesBurnEstimatePerHour: 340,
-    imageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['cal-pushup-2']
   },
   {
     id: 'cal-pullup-1',
@@ -63,7 +64,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Raise bar higher or bend knees at 90 degrees.',
     progressions: 'Standard Pull-Up, Feet-Elevated Rows.',
     caloriesBurnEstimatePerHour: 320,
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['cal-pullup-1']
   },
   {
     id: 'cal-pullup-2',
@@ -84,7 +85,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Resistance band assisted pull-ups or negative slow eccentrics.',
     progressions: 'L-Sit Pull-Ups or Weighted Pull-Ups.',
     caloriesBurnEstimatePerHour: 400,
-    imageUrl: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['cal-pullup-2']
   },
   {
     id: 'cal-dip-1',
@@ -105,7 +106,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Bench Dips or Band-Assisted Dips.',
     progressions: 'Ring Dips or Weighted Dips.',
     caloriesBurnEstimatePerHour: 360,
-    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['cal-dip-1']
   },
   {
     id: 'cal-plank-1',
@@ -126,7 +127,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Tuck Hollow Hold (knees bent towards chest).',
     progressions: 'Hollow Body Rocks.',
     caloriesBurnEstimatePerHour: 250,
-    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['cal-plank-1']
   },
 
   // --- GYM RESISTANCE & WEIGHTLIFTING ---
@@ -150,7 +151,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Goblet Squat with dumbbell, Box Squats.',
     progressions: 'Pause Squats, Front Squats, Heavier progressive loading.',
     caloriesBurnEstimatePerHour: 480,
-    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['gym-squat-1']
   },
   {
     id: 'gym-bench-1',
@@ -172,7 +173,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Dumbbell Bench Press, Push-Ups.',
     progressions: 'Pause Bench Press, Incline Barbell Bench Press.',
     caloriesBurnEstimatePerHour: 390,
-    imageUrl: 'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['gym-bench-1']
   },
   {
     id: 'gym-deadlift-1',
@@ -194,7 +195,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Kettlebell Romanian Deadlift, Trap Bar Deadlift.',
     progressions: 'Deficit Deadlifts, Snatch-Grip Deadlifts.',
     caloriesBurnEstimatePerHour: 520,
-    imageUrl: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['gym-deadlift-1']
   },
   {
     id: 'gym-ohp-1',
@@ -215,7 +216,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Seated Dumbbell Shoulder Press.',
     progressions: 'Push Press, Behind the Neck Press.',
     caloriesBurnEstimatePerHour: 350,
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['gym-ohp-1']
   },
   {
     id: 'gym-db-curl-1',
@@ -235,7 +236,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Standing Alternating Dumbbell Curls.',
     progressions: 'Spider Curls or Preacher Curls.',
     caloriesBurnEstimatePerHour: 220,
-    imageUrl: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['gym-db-curl-1']
   },
 
   // --- TAEKWONDO MARTIAL ARTS & CONDITIONING ---
@@ -258,7 +259,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Low knee lift and slow extension at waist level.',
     progressions: 'Jumping Front Kick (Ttwieo Ap Chagi).',
     caloriesBurnEstimatePerHour: 420,
-    imageUrl: 'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['tkd-kick-1']
   },
   {
     id: 'tkd-kick-2',
@@ -279,7 +280,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Wall-assisted balance roundhouse drills.',
     progressions: '360 Tornado Kick (Narae Chagi).',
     caloriesBurnEstimatePerHour: 500,
-    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['tkd-kick-2']
   },
   {
     id: 'tkd-poomsae-1',
@@ -300,7 +301,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Practice individual stances and blocks separately.',
     progressions: 'Taegeuk Ee Jang through Pal Jang.',
     caloriesBurnEstimatePerHour: 320,
-    imageUrl: 'https://images.unsplash.com/photo-1509824227185-9c5a01ceba0d?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['tkd-poomsae-1']
   },
   {
     id: 'tkd-footwork-1',
@@ -321,7 +322,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Static switch drills at relaxed tempo.',
     progressions: 'Shadow sparring with random audio or visual cues.',
     caloriesBurnEstimatePerHour: 450,
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['tkd-footwork-1']
   },
 
   // --- MOBILITY, FLEXIBILITY & CARDIO ---
@@ -344,7 +345,7 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Place hands on floor behind for upper body support.',
     progressions: '90/90 Hip Lift and Hover.',
     caloriesBurnEstimatePerHour: 150,
-    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['mob-hips-1']
   },
   {
     id: 'mob-hamstrings-1',
@@ -365,6 +366,6 @@ export const EXERCISE_DATABASE: ExerciseItem[] = [
     regressions: 'Gentle stationary standing toe touches.',
     progressions: 'Active Taekwondo high kick holds.',
     caloriesBurnEstimatePerHour: 200,
-    imageUrl: 'https://images.unsplash.com/photo-1549576490-b0b4831ef60a?auto=format&fit=crop&w=800&q=80'
+    imageUrl: EXERCISE_ILLUSTRATIONS['mob-hamstrings-1']
   }
 ];

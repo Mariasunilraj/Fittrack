@@ -24,10 +24,10 @@ export const StatCards: React.FC = () => {
           </div>
         </div>
         <div className="mt-3">
-          <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">185 <span className="text-sm font-normal text-slate-400">mins</span></div>
+          <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">145 <span className="text-sm font-normal text-slate-400">mins</span></div>
           <p className="text-[11px] text-emerald-400 mt-1 font-medium flex items-center gap-1">
             <span>↑ 18%</span>
-            <span className="text-slate-500 font-normal">vs last week</span>
+            <span className="text-slate-500 font-normal">through Nov 18</span>
           </p>
         </div>
       </div>

@@ -53,24 +53,28 @@ export const TaekwondoTracker: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-12 animate-fadeIn">
+    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-yellow">
-            World Taekwondo (WT) Curriculum & Practice
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Taekwondo Martial Arts
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/30">
+              World Taekwondo (WT) Curriculum
+            </span>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">Poomsae & Sparring</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1 flex items-center gap-2">
+            <Shield className="w-7 h-7 text-rose-400" />
+            <span>Taekwondo Martial Arts</span>
           </h1>
-          <p className="text-sm text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1">
             Fundamentals, Taegeuk Poomsae forms, kicking mechanics, safety checklist, and dojang session log.
           </p>
         </div>
 
         <button
           onClick={() => setShowLogModal(true)}
-          className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 text-xs font-bold flex items-center gap-2 shadow-md shadow-brand-yellow/15 transition cursor-pointer self-start sm:self-auto"
+          className="min-h-[44px] py-2.5 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-black flex items-center gap-2 shadow-lg shadow-rose-500/20 transition cursor-pointer self-start sm:self-auto active:scale-95 touch-manipulation"
         >
           <Plus className="w-4 h-4" />
           <span>Log TKD Practice</span>

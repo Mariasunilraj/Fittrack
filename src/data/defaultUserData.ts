@@ -187,7 +187,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
     carbsG: 39.0,
     fatG: 1.2,
     fiberG: 3.3,
-    date: '2026-11-05'
+    date: '2026-11-18'
   },
   {
     id: 'ml-2',
@@ -201,7 +201,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
     carbsG: 16.5,
     fatG: 2.5,
     fiberG: 4.1,
-    date: '2026-11-05'
+    date: '2026-11-18'
   },
   {
     id: 'ml-3',
@@ -215,7 +215,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
     carbsG: 0.8,
     fatG: 10.0,
     fiberG: 0,
-    date: '2026-11-05'
+    date: '2026-11-18'
   },
   {
     id: 'ml-4',
@@ -229,7 +229,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
     carbsG: 52.5,
     fatG: 1.5,
     fiberG: 8.4,
-    date: '2026-11-05'
+    date: '2026-11-18'
   },
   {
     id: 'ml-5',
@@ -243,7 +243,7 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
     carbsG: 6.6,
     fatG: 19.2,
     fiberG: 1.8,
-    date: '2026-11-05'
+    date: '2026-11-18'
   },
   {
     id: 'ml-6',
@@ -257,21 +257,21 @@ export const INITIAL_MEAL_LOGS: MealLogItem[] = [
     carbsG: 6.2,
     fatG: 5.2,
     fiberG: 0,
-    date: '2026-11-05'
+    date: '2026-11-18'
   }
 ];
 
 export const INITIAL_WATER_LOG: WaterLog = {
   userId: 'usr_sunilraj_001',
-  date: '2026-11-05',
-  amountMl: 2250,
+  date: '2026-11-18',
+  amountMl: 2450,
   targetMl: 3200
 };
 
 export const INITIAL_RECOVERY_LOG: RecoveryLog = {
   id: 'rec_01',
   userId: 'usr_sunilraj_001',
-  date: '2026-11-05',
+  date: '2026-11-18',
   sleepHours: 7.5,
   sorenessRating: 3, // Low-mild soreness
   energyRating: 8, // High energy
@@ -284,7 +284,7 @@ export const INITIAL_PRS: PersonalRecord[] = [
     exerciseName: 'Barbell Back Squat',
     recordType: '1RM',
     value: '115 kg',
-    date: '2026-10-24',
+    date: '2026-11-10',
     discipline: 'weightlifting'
   },
   {
@@ -292,7 +292,7 @@ export const INITIAL_PRS: PersonalRecord[] = [
     exerciseName: 'Strict Pull-Ups',
     recordType: 'Max Reps',
     value: '14 reps',
-    date: '2026-10-18',
+    date: '2026-11-14',
     discipline: 'calisthenics'
   },
   {
@@ -300,7 +300,7 @@ export const INITIAL_PRS: PersonalRecord[] = [
     exerciseName: 'Hollow Body Hold',
     recordType: 'Hold Time',
     value: '75 seconds',
-    date: '2026-10-30',
+    date: '2026-11-16',
     discipline: 'calisthenics'
   },
   {
@@ -308,7 +308,7 @@ export const INITIAL_PRS: PersonalRecord[] = [
     exerciseName: 'Deadlift (Conventional)',
     recordType: '1RM',
     value: '140 kg',
-    date: '2026-10-12',
+    date: '2026-11-04',
     discipline: 'weightlifting'
   }
 ];
@@ -317,7 +317,7 @@ export const INITIAL_TKD_SESSIONS: TaekwondoSession[] = [
   {
     id: 'tkd_s1',
     userId: 'usr_sunilraj_001',
-    date: '2026-11-02',
+    date: '2026-11-15',
     durationMinutes: 60,
     focusArea: 'poomsae',
     beltRank: 'Green Belt (6th Gup)',

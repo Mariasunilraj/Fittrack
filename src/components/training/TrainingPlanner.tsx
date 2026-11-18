@@ -505,10 +505,10 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleResetDiscipline('calisthenics')}
-                  className="min-h-[44px] px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold active:scale-95 touch-manipulation"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
                   title="Restore default Calisthenics schedule"
                 >
-                  <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-300" />
                   <span>Reset</span>
                 </button>
 
@@ -516,10 +516,10 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleDeleteWorkout(calisSession)}
-                  className="min-h-[44px] px-3 py-2 rounded-xl bg-rose-950/25 hover:bg-rose-950/45 border border-rose-500/35 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-600 border border-rose-500/50 text-rose-200 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
                   title="Delete this Calisthenics workout routine"
                 >
-                  <Trash2 className="w-4 h-4 text-rose-400" />
+                  <Trash2 className="w-4 h-4 text-rose-300" />
                   <span>Delete</span>
                 </button>
 
@@ -536,19 +536,19 @@ export const TrainingPlanner: React.FC = () => {
             </div>
 
             {/* Session Focus Banner */}
-            <div className="p-3.5 rounded-xl bg-brand-card/80 border border-brand-border flex items-center justify-between text-xs">
-              <div className="space-y-0.5">
-                <span className="text-brand-yellow font-bold uppercase text-[10px] tracking-wider block">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#141923] border border-slate-700 flex items-center justify-between text-xs gap-3">
+              <div className="space-y-0.5 min-w-0 flex-1">
+                <span className="text-[#ccff00] font-black uppercase text-[10px] tracking-wider block">
                   Routine Focus:
                 </span>
-                <span className="font-bold text-white text-sm">{calisSession.title}</span>
+                <span className="font-extrabold text-white text-sm sm:text-base truncate block">{calisSession.title}</span>
               </div>
               <button
                 type="button"
                 onClick={() => openTechniquePicker(calisSession)}
-                className="py-1 px-3 rounded-lg bg-brand-yellow/15 hover:bg-brand-yellow text-brand-yellow hover:text-slate-950 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer border border-brand-yellow/30"
+                className="min-h-[38px] py-1.5 px-3.5 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md shadow-[#ccff00]/15 transition cursor-pointer flex-shrink-0 active:scale-95"
               >
-                <PlusCircle className="w-3.5 h-3.5" />
+                <PlusCircle className="w-4 h-4" />
                 <span>Add Technique</span>
               </button>
             </div>
@@ -556,10 +556,10 @@ export const TrainingPlanner: React.FC = () => {
             {/* Exercises / Techniques with Delete Button for each */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold uppercase tracking-wider text-slate-400 block">
+                <span className="font-bold uppercase tracking-wider text-slate-300 block">
                   Techniques & Exercises ({calisSession.exercises.length}):
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-400">
                   Click the trash icon to delete any technique
                 </span>
               </div>
@@ -571,7 +571,7 @@ export const TrainingPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => openTechniquePicker(calisSession)}
-                    className="py-1.5 px-4 rounded-xl bg-brand-yellow text-slate-950 font-bold text-xs"
+                    className="min-h-[44px] py-2 px-4 rounded-xl bg-[#ccff00] text-slate-950 font-black text-xs"
                   >
                     + Add Technique
                   </button>
@@ -588,24 +588,24 @@ export const TrainingPlanner: React.FC = () => {
                     return (
                       <div
                         key={ex.id || idx}
-                        className="p-3.5 sm:p-4 rounded-xl bg-brand-dark/80 border border-brand-border flex items-center justify-between gap-3 hover:border-slate-500 transition group"
+                        className="p-3.5 sm:p-4 rounded-xl bg-[#141923] border border-slate-700/80 hover:border-slate-500 flex items-center justify-between gap-3 transition group shadow-sm"
                       >
-                        <div className="flex items-center gap-3 truncate pr-2">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
                           {photo ? (
                             <img
                               src={photo}
                               alt={ex.name}
-                              className="w-12 h-12 rounded-xl object-cover border border-brand-border flex-shrink-0 shadow-sm"
+                              className="w-12 h-12 rounded-xl object-cover border border-slate-700 flex-shrink-0 shadow-sm bg-[#0a0d14]"
                             />
                           ) : (
-                            <span className="w-7 h-7 rounded-lg bg-brand-card border border-brand-border flex items-center justify-center font-bold text-brand-yellow text-[10px] flex-shrink-0">
+                            <span className="w-8 h-8 rounded-lg bg-[#1a2332] border border-[#ccff00]/30 flex items-center justify-center font-black text-[#ccff00] text-xs flex-shrink-0">
                               {idx + 1}
                             </span>
                           )}
-                          <div className="space-y-0.5 truncate">
-                            <h4 className="font-bold text-white text-xs sm:text-sm truncate">{ex.name}</h4>
-                            <p className="text-[11px] text-slate-400">
-                              Rest: <strong className="text-slate-300">{ex.restSeconds}s</strong> • {ex.sets} sets {ex.targetReps ? `× ${ex.targetReps} reps` : ex.targetHoldSeconds ? `× ${ex.targetHoldSeconds}s hold` : ''}
+                          <div className="space-y-0.5 min-w-0 flex-1">
+                            <h4 className="font-extrabold text-white text-xs sm:text-sm leading-snug line-clamp-1 sm:line-clamp-2" title={ex.name}>{ex.name}</h4>
+                            <p className="text-[11px] text-slate-300 font-medium truncate">
+                              Rest: <strong className="text-white font-bold">{ex.restSeconds}s</strong> • {ex.sets} sets {ex.targetReps ? `× ${ex.targetReps} reps` : ex.targetHoldSeconds ? `× ${ex.targetHoldSeconds}s hold` : ''}
                             </p>
                           </div>
                         </div>
@@ -615,7 +615,7 @@ export const TrainingPlanner: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleDeleteTechnique(calisSession, ex.id, ex.name)}
-                            className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition cursor-pointer"
+                            className="min-h-[44px] min-w-[44px] p-2 rounded-xl text-slate-400 hover:text-white hover:bg-rose-600 border border-transparent hover:border-rose-500 transition cursor-pointer flex items-center justify-center"
                             title={`Delete technique "${ex.name}"`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -664,10 +664,10 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleResetDiscipline('taekwondo')}
-                  className="min-h-[44px] px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold active:scale-95 touch-manipulation"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
                   title="Restore default Taekwondo schedule"
                 >
-                  <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-300" />
                   <span>Reset</span>
                 </button>
 
@@ -675,10 +675,10 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleDeleteWorkout(tkdSession)}
-                  className="min-h-[44px] px-3 py-2 rounded-xl bg-rose-950/25 hover:bg-rose-950/45 border border-rose-500/35 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-600 border border-rose-500/50 text-rose-200 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
                   title="Delete this Taekwondo workout routine"
                 >
-                  <Trash2 className="w-4 h-4 text-rose-400" />
+                  <Trash2 className="w-4 h-4 text-rose-300" />
                   <span>Delete</span>
                 </button>
 
@@ -695,19 +695,19 @@ export const TrainingPlanner: React.FC = () => {
             </div>
 
             {/* Session Focus Banner */}
-            <div className="p-3.5 rounded-xl bg-brand-card/80 border border-brand-border flex items-center justify-between text-xs">
-              <div className="space-y-0.5">
-                <span className="text-rose-400 font-bold uppercase text-[10px] tracking-wider block">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#141923] border border-slate-700 flex items-center justify-between text-xs gap-3">
+              <div className="space-y-0.5 min-w-0 flex-1">
+                <span className="text-rose-400 font-black uppercase text-[10px] tracking-wider block">
                   Routine Focus:
                 </span>
-                <span className="font-bold text-white text-sm">{tkdSession.title}</span>
+                <span className="font-extrabold text-white text-sm sm:text-base truncate block">{tkdSession.title}</span>
               </div>
               <button
                 type="button"
                 onClick={() => openTechniquePicker(tkdSession)}
-                className="py-1 px-3 rounded-lg bg-rose-500/15 hover:bg-rose-500 text-rose-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer border border-rose-500/30"
+                className="min-h-[38px] py-1.5 px-3.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-black text-xs flex items-center gap-1.5 shadow-md shadow-rose-500/15 transition cursor-pointer flex-shrink-0 active:scale-95"
               >
-                <PlusCircle className="w-3.5 h-3.5" />
+                <PlusCircle className="w-4 h-4" />
                 <span>Add Technique</span>
               </button>
             </div>
@@ -715,10 +715,10 @@ export const TrainingPlanner: React.FC = () => {
             {/* Exercises / Techniques with Delete Button for each */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold uppercase tracking-wider text-slate-400 block">
+                <span className="font-bold uppercase tracking-wider text-slate-300 block">
                   Techniques & Kicks ({tkdSession.exercises.length}):
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-400">
                   Click the trash icon to delete any technique
                 </span>
               </div>
@@ -730,7 +730,7 @@ export const TrainingPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => openTechniquePicker(tkdSession)}
-                    className="py-1.5 px-4 rounded-xl bg-rose-500 text-white font-bold text-xs"
+                    className="min-h-[44px] py-2 px-4 rounded-xl bg-rose-500 text-white font-black text-xs"
                   >
                     + Add Technique
                   </button>
@@ -747,24 +747,24 @@ export const TrainingPlanner: React.FC = () => {
                     return (
                       <div
                         key={ex.id || idx}
-                        className="p-3.5 sm:p-4 rounded-xl bg-brand-dark/80 border border-brand-border flex items-center justify-between gap-3 hover:border-slate-500 transition group"
+                        className="p-3.5 sm:p-4 rounded-xl bg-[#141923] border border-slate-700/80 hover:border-slate-500 flex items-center justify-between gap-3 transition group shadow-sm"
                       >
-                        <div className="flex items-center gap-3 truncate pr-2">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
                           {photo ? (
                             <img
                               src={photo}
                               alt={ex.name}
-                              className="w-12 h-12 rounded-xl object-cover border border-brand-border flex-shrink-0 shadow-sm"
+                              className="w-12 h-12 rounded-xl object-cover border border-slate-700 flex-shrink-0 shadow-sm bg-[#0a0d14]"
                             />
                           ) : (
-                            <span className="w-7 h-7 rounded-lg bg-brand-card border border-brand-border flex items-center justify-center font-bold text-rose-400 text-[10px] flex-shrink-0">
+                            <span className="w-8 h-8 rounded-lg bg-[#1a2332] border border-rose-500/30 flex items-center justify-center font-black text-rose-400 text-xs flex-shrink-0">
                               {idx + 1}
                             </span>
                           )}
-                          <div className="space-y-0.5 truncate">
-                            <h4 className="font-bold text-white text-xs sm:text-sm truncate">{ex.name}</h4>
-                            <p className="text-[11px] text-slate-400">
-                              Rest: <strong className="text-slate-300">{ex.restSeconds}s</strong> • {ex.sets} sets {ex.targetReps ? `× ${ex.targetReps} reps` : 'Poomsae pattern'}
+                          <div className="space-y-0.5 min-w-0 flex-1">
+                            <h4 className="font-extrabold text-white text-xs sm:text-sm leading-snug line-clamp-1 sm:line-clamp-2" title={ex.name}>{ex.name}</h4>
+                            <p className="text-[11px] text-slate-300 font-medium truncate">
+                              Rest: <strong className="text-white font-bold">{ex.restSeconds}s</strong> • {ex.sets} sets {ex.targetReps ? `× ${ex.targetReps} reps` : 'Poomsae pattern'}
                             </p>
                           </div>
                         </div>
@@ -774,7 +774,7 @@ export const TrainingPlanner: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleDeleteTechnique(tkdSession, ex.id, ex.name)}
-                            className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition cursor-pointer"
+                            className="min-h-[44px] min-w-[44px] p-2 rounded-xl text-slate-400 hover:text-white hover:bg-rose-600 border border-transparent hover:border-rose-500 transition cursor-pointer flex items-center justify-center"
                             title={`Delete technique "${ex.name}"`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -823,10 +823,10 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleResetDiscipline('gym')}
-                  className="min-h-[44px] px-3 py-2 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold active:scale-95 touch-manipulation"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
                   title="Restore default Gym schedule"
                 >
-                  <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-300" />
                   <span>Reset</span>
                 </button>
 
@@ -834,10 +834,10 @@ export const TrainingPlanner: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleDeleteWorkout(gymSession)}
-                  className="min-h-[44px] px-3 py-2 rounded-xl bg-rose-950/25 hover:bg-rose-950/45 border border-rose-500/35 text-rose-300 hover:text-rose-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-600 border border-rose-500/50 text-rose-200 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95 touch-manipulation"
                   title="Delete this Gym workout routine"
                 >
-                  <Trash2 className="w-4 h-4 text-rose-400" />
+                  <Trash2 className="w-4 h-4 text-rose-300" />
                   <span>Delete</span>
                 </button>
 
@@ -854,19 +854,19 @@ export const TrainingPlanner: React.FC = () => {
             </div>
 
             {/* Session Focus Banner */}
-            <div className="p-3.5 rounded-xl bg-brand-card/80 border border-brand-border flex items-center justify-between text-xs">
-              <div className="space-y-0.5">
-                <span className="text-sky-400 font-bold uppercase text-[10px] tracking-wider block">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#141923] border border-slate-700 flex items-center justify-between text-xs gap-3">
+              <div className="space-y-0.5 min-w-0 flex-1">
+                <span className="text-sky-400 font-black uppercase text-[10px] tracking-wider block">
                   Routine Focus:
                 </span>
-                <span className="font-bold text-white text-sm">{gymSession.title}</span>
+                <span className="font-extrabold text-white text-sm sm:text-base truncate block">{gymSession.title}</span>
               </div>
               <button
                 type="button"
                 onClick={() => openTechniquePicker(gymSession)}
-                className="py-1 px-3 rounded-lg bg-sky-500/15 hover:bg-sky-500 text-sky-300 hover:text-slate-950 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer border border-sky-500/30"
+                className="min-h-[38px] py-1.5 px-3.5 rounded-xl bg-sky-400 hover:bg-sky-500 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md shadow-sky-400/15 transition cursor-pointer flex-shrink-0 active:scale-95"
               >
-                <PlusCircle className="w-3.5 h-3.5" />
+                <PlusCircle className="w-4 h-4" />
                 <span>Add Technique</span>
               </button>
             </div>
@@ -874,10 +874,10 @@ export const TrainingPlanner: React.FC = () => {
             {/* Exercises / Techniques with Delete Button for each */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold uppercase tracking-wider text-slate-400 block">
+                <span className="font-bold uppercase tracking-wider text-slate-300 block">
                   Techniques & Lifts ({gymSession.exercises.length}):
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-400">
                   Click the trash icon to delete any technique
                 </span>
               </div>
@@ -889,7 +889,7 @@ export const TrainingPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => openTechniquePicker(gymSession)}
-                    className="py-1.5 px-4 rounded-xl bg-sky-400 text-slate-950 font-bold text-xs"
+                    className="min-h-[44px] py-2 px-4 rounded-xl bg-sky-400 text-slate-950 font-black text-xs"
                   >
                     + Add Technique
                   </button>
@@ -906,24 +906,24 @@ export const TrainingPlanner: React.FC = () => {
                     return (
                       <div
                         key={ex.id || idx}
-                        className="p-3.5 sm:p-4 rounded-xl bg-brand-dark/80 border border-brand-border flex items-center justify-between gap-3 hover:border-slate-500 transition group"
+                        className="p-3.5 sm:p-4 rounded-xl bg-[#141923] border border-slate-700/80 hover:border-slate-500 flex items-center justify-between gap-3 transition group shadow-sm"
                       >
-                        <div className="flex items-center gap-3 truncate pr-2">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
                           {photo ? (
                             <img
                               src={photo}
                               alt={ex.name}
-                              className="w-12 h-12 rounded-xl object-cover border border-brand-border flex-shrink-0 shadow-sm"
+                              className="w-12 h-12 rounded-xl object-cover border border-slate-700 flex-shrink-0 shadow-sm bg-[#0a0d14]"
                             />
                           ) : (
-                            <span className="w-7 h-7 rounded-lg bg-brand-card border border-brand-border flex items-center justify-center font-bold text-sky-400 text-[10px] flex-shrink-0">
+                            <span className="w-8 h-8 rounded-lg bg-[#1a2332] border border-sky-400/30 flex items-center justify-center font-black text-sky-400 text-xs flex-shrink-0">
                               {idx + 1}
                             </span>
                           )}
-                          <div className="space-y-0.5 truncate">
-                            <h4 className="font-bold text-white text-xs sm:text-sm truncate">{ex.name}</h4>
-                            <p className="text-[11px] text-slate-400">
-                              Rest: <strong className="text-slate-300">{ex.restSeconds}s</strong> • {ex.sets} sets × {ex.targetReps} reps {ex.targetWeightKg ? `@ ${ex.targetWeightKg}kg` : ''}
+                          <div className="space-y-0.5 min-w-0 flex-1">
+                            <h4 className="font-extrabold text-white text-xs sm:text-sm leading-snug line-clamp-1 sm:line-clamp-2" title={ex.name}>{ex.name}</h4>
+                            <p className="text-[11px] text-slate-300 font-medium truncate">
+                              Rest: <strong className="text-white font-bold">{ex.restSeconds}s</strong> • {ex.sets} sets × {ex.targetReps} reps {ex.targetWeightKg ? `@ ${ex.targetWeightKg}kg` : ''}
                             </p>
                           </div>
                         </div>
@@ -933,7 +933,7 @@ export const TrainingPlanner: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleDeleteTechnique(gymSession, ex.id, ex.name)}
-                            className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition cursor-pointer"
+                            className="min-h-[44px] min-w-[44px] p-2 rounded-xl text-slate-400 hover:text-white hover:bg-rose-600 border border-transparent hover:border-rose-500 transition cursor-pointer flex items-center justify-center"
                             title={`Delete technique "${ex.name}"`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -952,50 +952,50 @@ export const TrainingPlanner: React.FC = () => {
       {/* Technique Picker Modal */}
       {pickingForSessionId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-lg bg-brand-surface border border-brand-border rounded-2xl p-6 shadow-2xl text-slate-100 space-y-4 max-h-[85vh] flex flex-col">
-            <div className="flex items-center justify-between border-b border-brand-border pb-3">
+          <div className="relative w-full max-w-lg bg-[#0f141f] border border-slate-700 rounded-2xl p-6 shadow-2xl text-slate-100 space-y-4 max-h-[85vh] flex flex-col">
+            <div className="flex items-center justify-between border-b border-slate-700 pb-3">
               <div>
                 <h3 className="font-bold text-white text-lg">Add Technique to Schedule</h3>
-                <p className="text-xs text-slate-400">Choose a technique to add to your {selectedDay} workout.</p>
+                <p className="text-xs text-slate-300">Choose a technique to add to your {selectedDay} workout.</p>
               </div>
               <button
                 type="button"
                 onClick={() => setPickingForSessionId(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white"
+                className="min-h-[44px] min-w-[44px] p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center justify-center cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-2 overflow-y-auto flex-1 pr-1">
+            <div className="space-y-2 overflow-y-auto flex-1 pr-1 safe-area-bottom">
               {EXERCISE_DATABASE.map(ex => (
                 <div
                   key={ex.id}
                   onClick={() => handleSelectTechniqueToAdd(ex)}
-                  className="p-3 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border flex items-center justify-between cursor-pointer transition group gap-3"
+                  className="p-3 rounded-xl bg-[#141923] hover:bg-[#1a2332] border border-slate-700/80 hover:border-[#ccff00]/50 flex items-center justify-between cursor-pointer transition group gap-3"
                 >
-                  <div className="flex items-center gap-3 truncate">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     {ex.imageUrl ? (
                       <img
                         src={ex.imageUrl}
                         alt={ex.name}
-                        className="w-12 h-12 rounded-lg object-cover border border-brand-border flex-shrink-0"
+                        className="w-12 h-12 rounded-lg object-cover border border-slate-700 flex-shrink-0 bg-[#0a0d14]"
                       />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-brand-dark flex items-center justify-center text-xs font-bold text-brand-yellow flex-shrink-0">
-                        {ex.discipline.slice(0, 3)}
+                      <div className="w-12 h-12 rounded-lg bg-[#0a0d14] flex items-center justify-center text-xs font-black text-[#ccff00] flex-shrink-0 border border-slate-700">
+                        {ex.discipline.slice(0, 3).toUpperCase()}
                       </div>
                     )}
-                    <div className="truncate">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-xs text-white group-hover:text-brand-yellow truncate">
+                        <span className="font-bold text-xs sm:text-sm text-white group-hover:text-[#ccff00] truncate">
                           {ex.name}
                         </span>
-                        <span className="text-[10px] uppercase font-bold px-1.5 py-0.2 rounded bg-brand-dark text-brand-yellow flex-shrink-0">
+                        <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-black/60 text-[#ccff00] border border-[#ccff00]/30 flex-shrink-0">
                           {ex.discipline}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 mt-0.5 truncate">
+                      <p className="text-[11px] text-slate-300 mt-0.5 truncate font-medium">
                         Target: {ex.targetMuscles.join(', ')} • {ex.equipment}
                       </p>
                     </div>
@@ -1003,7 +1003,7 @@ export const TrainingPlanner: React.FC = () => {
 
                   <button
                     type="button"
-                    className="py-1 px-2.5 rounded-lg bg-brand-yellow text-slate-950 font-bold text-xs flex items-center gap-1 group-hover:scale-105 transition flex-shrink-0"
+                    className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 font-black text-xs flex items-center gap-1 group-hover:scale-105 transition flex-shrink-0 shadow-sm"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add</span>

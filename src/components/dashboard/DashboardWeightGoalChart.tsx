@@ -101,10 +101,13 @@ export const DashboardWeightGoalChart: React.FC = () => {
       const isStart = idx === 0;
       const shortD = formatShortDate(entry.date);
       const isMonday = entry.isMondayWeighIn ?? (new Date(entry.date).getDay() === 1);
+      const isToday = entry.date === new Date().toISOString().split('T')[0] || entry.date === '2026-11-18';
       
       let dateLabel = shortD;
       if (isStart) {
         dateLabel = `Start (${shortD})`;
+      } else if (isToday) {
+        dateLabel = `Today (${shortD})`;
       } else if (isMonday) {
         dateLabel = `Mon (${shortD})`;
       }
@@ -114,7 +117,7 @@ export const DashboardWeightGoalChart: React.FC = () => {
         fullDate: formatDisplayDate(entry.date),
         weight: Number(entry.weightKg.toFixed(1)),
         target: targetWeight,
-        label: entry.notes || (isStart ? 'Account Start' : isMonday ? 'Monday Weigh-In' : 'Weigh-In'),
+        label: entry.notes || (isStart ? 'Account Start' : isToday ? 'Nov 18 Checkpoint' : isMonday ? 'Monday Weigh-In' : 'Weigh-In'),
         isMonday
       };
     });

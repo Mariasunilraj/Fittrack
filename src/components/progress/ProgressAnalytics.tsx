@@ -104,25 +104,29 @@ export const ProgressAnalytics: React.FC = () => {
   }, [weightHistory, profile]);
 
   return (
-    <div className="space-y-6 pb-12 animate-fadeIn">
+    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-yellow">
-            Long-Term Fitness Trajectory
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Progress & Recovery
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
+              Long-Term Fitness Trajectory
+            </span>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">CNS & Strength Adaptation</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1 flex items-center gap-2">
+            <TrendingUp className="w-7 h-7 text-[#ccff00]" />
+            <span>Progress & Recovery</span>
           </h1>
-          <p className="text-sm text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1">
             Holistic tracking of strength development, calisthenics records, body trends, and CNS recovery.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 self-start sm:self-auto flex-shrink-0">
           <button
             onClick={() => setShowRecoveryModal(true)}
-            className="py-2.5 px-4 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-200 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl bg-[#141923] hover:bg-[#1a2332] border border-slate-600 text-slate-100 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer active:scale-95 shadow-sm"
           >
             <BatteryCharging className="w-4 h-4 text-emerald-400" />
             <span>Log Daily Recovery</span>
@@ -130,7 +134,7 @@ export const ProgressAnalytics: React.FC = () => {
 
           <button
             onClick={() => setShowPrModal(true)}
-            className="py-2.5 px-4 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-md shadow-brand-yellow/15 transition cursor-pointer"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-md shadow-[#ccff00]/20 transition cursor-pointer active:scale-95"
           >
             <Plus className="w-4 h-4" />
             <span>Add Personal Record</span>
@@ -201,21 +205,21 @@ export const ProgressAnalytics: React.FC = () => {
 
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Last Night's Sleep:</span>
+                <span className="text-slate-300 font-medium">Last Night's Sleep:</span>
                 <span className="font-bold text-white">{latestRec.sleepHours} hours</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Muscle Soreness:</span>
+                <span className="text-slate-300 font-medium">Muscle Soreness:</span>
                 <span className="font-bold text-white">{latestRec.sorenessRating}/10</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Energy Level:</span>
-                <span className="font-bold text-emerald-400">{latestRec.energyRating}/10</span>
+                <span className="text-slate-300 font-medium">Energy Level:</span>
+                <span className="font-black text-emerald-400">{latestRec.energyRating}/10</span>
               </div>
             </div>
 
             {latestRec.notes && (
-              <p className="text-[11px] text-slate-400 italic pt-2 border-t border-brand-border/60">
+              <p className="text-[11px] text-slate-300 italic pt-2 border-t border-brand-border/80">
                 "{latestRec.notes}"
               </p>
             )}
@@ -225,14 +229,14 @@ export const ProgressAnalytics: React.FC = () => {
           <div className="p-4 rounded-2xl bg-brand-surface border border-brand-border text-xs space-y-1.5 shadow-md">
             <div className="flex items-center justify-between font-bold text-white">
               <span className="flex items-center gap-1.5">
-                <Scale className="w-4 h-4 text-brand-yellow" />
-                <span>BMI Estimate: {bmi}</span>
+                <Scale className="w-4 h-4 text-[#ccff00]" />
+                <span className="font-extrabold">BMI Estimate: {bmi}</span>
               </span>
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-brand-dark text-slate-300">
+              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-brand-dark text-slate-200 border border-slate-700">
                 Screening Metric
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 leading-snug">
+            <p className="text-[11px] text-slate-300 leading-snug">
               BMI does not distinguish between muscle mass and fat tissue. FitTrack provides this strictly as a baseline reference without clinical claims.
             </p>
           </div>
@@ -276,20 +280,20 @@ export const ProgressAnalytics: React.FC = () => {
             {personalRecords.map(pr => (
               <div
                 key={pr.id}
-                className="p-4 rounded-xl bg-brand-card border border-brand-border flex flex-col justify-between hover:border-slate-500 transition group relative"
+                className="p-4 rounded-xl bg-[#141923] border border-slate-700 hover:border-slate-500 flex flex-col justify-between transition group relative shadow-sm"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-brand-dark text-brand-yellow">
+                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
                       {pr.recordType}
                     </span>
-                    <div className="flex items-center gap-1">
-                      <span className="text-[10px] text-slate-500">{pr.date}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] text-slate-300 font-medium font-mono">{pr.date}</span>
                       {/* DELETE PERSONAL RECORD BUTTON */}
                       <button
                         type="button"
                         onClick={() => handleDeletePr(pr.id, pr.exerciseName, pr.value)}
-                        className="p-1 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+                        className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-rose-600 transition cursor-pointer"
                         title={`Delete PR for "${pr.exerciseName}" (${pr.value})`}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -297,15 +301,17 @@ export const ProgressAnalytics: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-xl font-black text-white font-mono tracking-tight">{pr.value}</div>
-                  <p className="text-xs text-slate-300 font-semibold mt-1 truncate">{pr.exerciseName}</p>
+                  <h4 className="text-xs text-slate-100 font-bold mt-1 line-clamp-2 leading-snug min-h-[32px]" title={pr.exerciseName}>
+                    {pr.exerciseName}
+                  </h4>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-brand-border/60 flex items-center justify-between text-[10px] uppercase font-bold text-slate-500">
-                  <span>{pr.discipline}</span>
+                <div className="mt-3 pt-2.5 border-t border-slate-700/80 flex items-center justify-between text-[10px] uppercase font-bold">
+                  <span className="text-slate-300">{pr.discipline}</span>
                   <button
                     type="button"
                     onClick={() => handleDeletePr(pr.id, pr.exerciseName, pr.value)}
-                    className="text-slate-500 hover:text-rose-400 font-bold text-[10px] lowercase flex items-center gap-1 hover:underline cursor-pointer"
+                    className="min-h-[28px] px-2 py-0.5 rounded-md text-slate-300 hover:text-white bg-slate-800 hover:bg-rose-600 border border-slate-700 hover:border-rose-500 font-bold text-[10px] lowercase flex items-center gap-1 transition cursor-pointer"
                   >
                     <Trash2 className="w-3 h-3" />
                     <span>delete</span>
