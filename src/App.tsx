@@ -104,7 +104,7 @@ const AppContent: React.FC = () => {
         <Sidebar />
 
         {/* View Switcher Main Content Area */}
-        <main ref={mainRef} className="flex-1 p-3 sm:p-5 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto pb-32 md:pb-10 flex flex-col justify-between">
+        <main ref={mainRef} className="flex-1 p-3 sm:p-5 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto pb-nav-safe flex flex-col justify-between">
           <div>
             {currentView === 'dashboard' && <DashboardView />}
             {currentView === 'training' && <TrainingPlanner />}
@@ -112,13 +112,13 @@ const AppContent: React.FC = () => {
             {currentView === 'nutrition' && <NutritionTracker />}
             {currentView === 'taekwondo' && <TaekwondoTracker />}
             {currentView === 'progress' && <ProgressAnalytics />}
-            {currentView === 'settings' && <SettingsView />}
+            {currentView === 'settings' && (
+              <SettingsView
+                onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)}
+                onOpenCookiePreferences={handleOpenCookiePreferences}
+              />
+            )}
           </div>
-
-          <Footer
-            onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)}
-            onOpenCookiePreferences={handleOpenCookiePreferences}
-          />
         </main>
       </div>
 

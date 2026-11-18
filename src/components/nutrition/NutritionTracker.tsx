@@ -28,7 +28,7 @@ export const NutritionTracker: React.FC = () => {
   const mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'] as const;
 
   return (
-    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn">
+    <div className="space-y-6 pb-nav-safe animate-fadeIn">
       {/* Header with AI Scanner Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

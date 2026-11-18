@@ -116,3 +116,14 @@
 .safe-area-top {
   padding-top: max(0.4rem, env(safe-area-inset-top));
 }
+
+/* Nav clearance: nav height (3.5rem / 56px) + safe-area-inset-bottom + thumb padding */
+.pb-nav-safe {
+  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px) + 1.25rem);
+}
+
+@media (min-width: 768px) {
+  .pb-nav-safe {
+    padding-bottom: 2rem;
+  }
+}

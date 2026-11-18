@@ -12,8 +12,17 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { storageService } from '../../services/storage';
+import { Footer } from '../layout/Footer';
 
-export const SettingsView: React.FC = () => {
+interface SettingsViewProps {
+  onOpenPrivacyPolicy?: () => void;
+  onOpenCookiePreferences?: () => void;
+}
+
+export const SettingsView: React.FC<SettingsViewProps> = ({
+  onOpenPrivacyPolicy = () => {},
+  onOpenCookiePreferences = () => {}
+}) => {
   const { profile, setShowOnboarding, showToast, logoutUser } = useApp();
 
   const handleExportData = () => {
@@ -36,7 +45,7 @@ export const SettingsView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn max-w-4xl mx-auto">
+    <div className="space-y-6 pb-nav-safe animate-fadeIn max-w-4xl mx-auto">
       {/* Settings Header */}
       <div>
         <div className="flex items-center gap-2">
@@ -212,6 +221,14 @@ export const SettingsView: React.FC = () => {
             <span>Reset Local Records</span>
           </button>
         </div>
+      </div>
+
+      {/* 4. FitTrack Legal & Trust Footer (Shown strictly on Settings view) */}
+      <div className="pt-2">
+        <Footer
+          onOpenPrivacyPolicy={onOpenPrivacyPolicy}
+          onOpenCookiePreferences={onOpenCookiePreferences}
+        />
       </div>
     </div>
   );

@@ -104,7 +104,7 @@ export const ProgressAnalytics: React.FC = () => {
   }, [weightHistory, profile]);
 
   return (
-    <div className="space-y-6 pb-28 sm:pb-16 animate-fadeIn">
+    <div className="space-y-6 pb-nav-safe animate-fadeIn">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

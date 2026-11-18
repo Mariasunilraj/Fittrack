@@ -332,7 +332,7 @@ export const TrainingPlanner: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-7 pb-32 sm:pb-24 animate-fadeIn max-w-5xl mx-auto">
+    <div className="space-y-6 sm:space-y-7 pb-nav-safe animate-fadeIn max-w-5xl mx-auto">
       {/* 1. Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-5">
         <div>
