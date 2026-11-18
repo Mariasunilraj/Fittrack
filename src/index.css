@@ -2,12 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Universal border-box box-sizing everywhere */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
     overflow-x: hidden;
     width: 100%;
+    min-height: 100dvh;
   }
 
   body {
@@ -15,6 +21,7 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
     width: 100%;
+    min-height: 100dvh;
     touch-action: manipulation;
   }
 
@@ -68,11 +75,11 @@
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slideUp {
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Hide scrollbar for horizontal chip rails */
@@ -103,9 +110,9 @@
 
 /* Safe area support for phone notches & home indicators */
 .safe-area-bottom {
-  padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
 }
 
 .safe-area-top {
-  padding-top: max(0.5rem, env(safe-area-inset-top));
+  padding-top: max(0.4rem, env(safe-area-inset-top));
 }

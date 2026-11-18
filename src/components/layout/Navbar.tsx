@@ -76,8 +76,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
                 <span className="hidden md:inline">Sign Out</span>
               </button>
             </>
-          ) : (
-            /* Logged Out / Guest View: 44px min tap target */
+          ) : currentView !== 'auth' ? (
+            /* Logged Out / Guest View: Only shown when NOT already on the auth page */
             <button
               onClick={() => setCurrentView('auth')}
               className="min-h-[44px] px-4 py-2 rounded-xl bg-brand-yellow hover:bg-[#cbe034] text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-brand-yellow/20 transition cursor-pointer active:scale-95 touch-manipulation"
@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
               <User className="w-4 h-4" />
               <span>Sign In / Register</span>
             </button>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

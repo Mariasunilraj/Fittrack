@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Cookie, Check, X, Settings2 } from 'lucide-react';
+import { Cookie, X, Settings2 } from 'lucide-react';
 
 const CONSENT_STORAGE_KEY = 'fittrack_cookie_consent_v1';
 
@@ -45,7 +45,7 @@ export const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({ onOpen
       setPreferences(updated);
       setShowBanner(false);
       setShowCustomizer(false);
-    } catch (e) {
+    } catch {
       setShowBanner(false);
     }
   };
@@ -71,114 +71,111 @@ export const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({ onOpen
   if (!showBanner) return null;
 
   return (
-    <aside aria-label="Privacy and Cookie Consent" className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-5 pointer-events-none animate-slideUp">
-      <div className="max-w-3xl mx-auto bg-brand-surface/98 backdrop-blur-xl border border-brand-yellow/30 rounded-2xl p-4 sm:p-5 shadow-2xl pointer-events-auto text-slate-100">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-yellow/15 text-brand-yellow flex items-center justify-center flex-shrink-0 mt-0.5 border border-brand-yellow/20">
-              <Cookie className="w-5 h-5" />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <h3 className="font-extrabold text-sm text-white">Privacy & Cookie Consent</h3>
-                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  GDPR & CCPA Compliant
-                </span>
+    <aside
+      aria-label="Privacy and Cookie Consent"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-[#10141d] border-t border-brand-border/90 px-3 py-2 sm:px-6 shadow-2xl safe-area-bottom max-h-[33dvh] overflow-y-auto animate-slideUp text-slate-100"
+    >
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+        {/* Concise 1-2 line text notice */}
+        <div className="flex items-center gap-2 min-w-0">
+          <Cookie className="w-4 h-4 text-brand-yellow flex-shrink-0" />
+          <p className="text-[11px] sm:text-xs text-slate-300 leading-snug">
+            FitTrack PRO uses essential cookies for secure login and training records. Zero ad tracking.{' '}
+            {onOpenPrivacyPolicy && (
+              <button
+                type="button"
+                onClick={onOpenPrivacyPolicy}
+                className="text-brand-yellow underline hover:text-white font-medium cursor-pointer"
+              >
+                Privacy Policy
+              </button>
+            )}
+          </p>
+          {/* Badge hidden on phones, visible on sm+ screens */}
+          <span className="hidden sm:inline-flex text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex-shrink-0">
+            GDPR & CCPA
+          </span>
+        </div>
+
+        {/* Compact 1-row button controls */}
+        <div className="flex items-center gap-1.5 flex-shrink-0 self-end sm:self-auto">
+          <button
+            onClick={handleAcceptAll}
+            className="py-1 px-3 rounded-lg bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-bold text-xs active:scale-95 transition cursor-pointer min-h-[34px] flex items-center justify-center shadow-sm"
+          >
+            Accept
+          </button>
+          <button
+            onClick={handleEssentialOnly}
+            className="py-1 px-2.5 rounded-lg bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 text-xs font-medium active:scale-95 transition cursor-pointer min-h-[34px] flex items-center justify-center"
+          >
+            Essential
+          </button>
+          <button
+            onClick={() => setShowCustomizer(!showCustomizer)}
+            className="text-[11px] text-slate-400 hover:text-white underline px-1 py-1 cursor-pointer"
+          >
+            Customize
+          </button>
+          <button
+            onClick={() => setShowBanner(false)}
+            className="p-1 text-slate-500 hover:text-white cursor-pointer ml-1"
+            title="Dismiss"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Collapsible customizer accordion */}
+      {showCustomizer && (
+        <div className="mt-2.5 pt-2.5 border-t border-brand-border/70 text-xs space-y-2 animate-fadeIn max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="p-2 rounded-lg bg-brand-dark/80 border border-brand-border/80">
+              <div className="flex items-center justify-between font-bold text-white text-[11px]">
+                <span>Strictly Necessary</span>
+                <span className="text-[9px] text-emerald-400 uppercase">Active</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                FitTrack PRO stores strictly necessary session and authentication state locally to run your training logs and calorie tracking. We never sell personal data or use third-party advertising trackers.
-              </p>
-              {onOpenPrivacyPolicy && (
-                <button
-                  type="button"
-                  onClick={onOpenPrivacyPolicy}
-                  className="text-xs text-brand-yellow hover:underline font-bold inline-block pt-1 cursor-pointer"
-                >
-                  Read our full Privacy Policy & Data Retention terms →
-                </button>
-              )}
+              <p className="text-[10px] text-slate-400 mt-0.5">Authentication & anti-CSRF tokens.</p>
+            </div>
+
+            <div className="p-2 rounded-lg bg-brand-dark/80 border border-brand-border/80">
+              <div className="flex items-center justify-between font-bold text-white text-[11px]">
+                <span>Functional</span>
+                <input
+                  type="checkbox"
+                  checked={preferences.functional}
+                  onChange={e => setPreferences(prev => ({ ...prev, functional: e.target.checked }))}
+                  className="rounded text-brand-yellow focus:ring-0 cursor-pointer"
+                />
+              </div>
+              <p className="text-[10px] text-slate-400 mt-0.5">Workout rest timers & sound cues.</p>
+            </div>
+
+            <div className="p-2 rounded-lg bg-brand-dark/80 border border-brand-border/80">
+              <div className="flex items-center justify-between font-bold text-white text-[11px]">
+                <span>Analytics</span>
+                <input
+                  type="checkbox"
+                  checked={preferences.analytics}
+                  onChange={e => setPreferences(prev => ({ ...prev, analytics: e.target.checked }))}
+                  className="rounded text-brand-yellow focus:ring-0 cursor-pointer"
+                />
+              </div>
+              <p className="text-[10px] text-slate-400 mt-0.5">Anonymous crash reports. No PII.</p>
             </div>
           </div>
 
-          <div className="flex sm:flex-col items-center sm:items-stretch gap-2 flex-shrink-0">
+          <div className="flex justify-end pt-1">
             <button
-              onClick={handleAcceptAll}
-              className="flex-1 sm:flex-none py-2 px-3.5 rounded-xl bg-brand-yellow hover:bg-brand-yellowDark text-slate-950 font-black text-xs transition cursor-pointer shadow-md shadow-brand-yellow/20 text-center"
+              onClick={() => saveConsent(preferences)}
+              className="py-1 px-3 rounded-lg bg-brand-yellow text-slate-950 font-bold text-xs cursor-pointer"
             >
-              Accept All
-            </button>
-            <button
-              onClick={handleEssentialOnly}
-              className="flex-1 sm:flex-none py-2 px-3 rounded-xl bg-brand-card hover:bg-brand-hover border border-brand-border text-slate-300 text-xs font-bold transition cursor-pointer text-center"
-            >
-              Essential Only
-            </button>
-            <button
-              onClick={() => setShowCustomizer(!showCustomizer)}
-              className="py-1.5 px-2 text-[11px] text-slate-400 hover:text-white transition cursor-pointer flex items-center justify-center gap-1"
-            >
-              <Settings2 className="w-3 h-3" />
-              <span>Customize</span>
+              Save Preferences
             </button>
           </div>
         </div>
-
-        {/* Detailed Preferences Accordion */}
-        {showCustomizer && (
-          <div className="mt-4 pt-4 border-t border-brand-border space-y-3 animate-fadeIn text-xs">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="p-3 rounded-xl bg-brand-dark/80 border border-brand-border space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white">Strictly Necessary</span>
-                  <span className="text-[10px] uppercase font-bold text-emerald-400">Always Active</span>
-                </div>
-                <p className="text-[11px] text-slate-400">
-                  Required for user authentication, account security, and anti-CSRF protection.
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-brand-dark/80 border border-brand-border space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white">Functional</span>
-                  <input
-                    type="checkbox"
-                    checked={preferences.functional}
-                    onChange={e => setPreferences(prev => ({ ...prev, functional: e.target.checked }))}
-                    className="rounded border-brand-border text-brand-yellow focus:ring-0 cursor-pointer"
-                  />
-                </div>
-                <p className="text-[11px] text-slate-400">
-                  Stores workout rest timers, audio cues, and display preferences.
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-brand-dark/80 border border-brand-border space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white">Performance Analytics</span>
-                  <input
-                    type="checkbox"
-                    checked={preferences.analytics}
-                    onChange={e => setPreferences(prev => ({ ...prev, analytics: e.target.checked }))}
-                    className="rounded border-brand-border text-brand-yellow focus:ring-0 cursor-pointer"
-                  />
-                </div>
-                <p className="text-[11px] text-slate-400">
-                  Anonymous aggregate app performance and crash telemetry. No PII.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <button
-                onClick={() => saveConsent(preferences)}
-                className="py-1.5 px-4 rounded-xl bg-brand-yellow text-slate-950 font-black text-xs transition cursor-pointer"
-              >
-                Save My Preferences
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </aside>
   );
 };

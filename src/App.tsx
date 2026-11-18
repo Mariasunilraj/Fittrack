@@ -60,9 +60,9 @@ const AppContent: React.FC = () => {
   // If user is not authenticated or explicitly on the auth view, render the focused AuthPage with Footer
   if (!isAuthenticated || currentView === 'auth') {
     return (
-      <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
+      <div className="min-h-[100dvh] bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
         <Navbar onOpenAuth={() => setShowAuthModal(true)} />
-        <main ref={authMainRef} className="flex-1 p-3 sm:p-6 overflow-y-auto max-w-7xl w-full mx-auto">
+        <main ref={authMainRef} className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-y-auto w-full mx-auto">
           <AuthPage onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)} />
         </main>
 
@@ -94,7 +94,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
+    <div className="min-h-[100dvh] bg-[#0c0f14] text-slate-100 flex flex-col font-sans selection:bg-[#e2f163] selection:text-black">
       {/* Top Navbar */}
       <Navbar onOpenAuth={() => setShowAuthModal(true)} />
 
