@@ -1,3 +1,5 @@
+import { storageService } from './storage';
+
 export interface AnalyzedMealData {
   dishName: string;
   regionalCategory: 'South Indian' | 'North Indian' | 'High Protein' | 'Healthy Staple' | 'Millet & Traditional' | 'Global Fitness';
@@ -23,10 +25,10 @@ export interface VaultStatusResponse {
   vaultActive: boolean;
   protectionLevel: string;
   keys: {
-    geminiVision: { configured: boolean; masked: string; service: string; status: string };
-    calisthenics: { configured: boolean; masked: string; service: string; status: string };
-    gym: { configured: boolean; masked: string; service: string; status: string };
-    neonDatabase?: { configured: boolean; connected: boolean; masked: string; service: string; status: string };
+    geminiVision: { configured: boolean; masked?: string; service: string; status: string };
+    calisthenics: { configured: boolean; masked?: string; service: string; status: string };
+    gym: { configured: boolean; masked?: string; service: string; status: string };
+    neonDatabase?: { configured: boolean; connected?: boolean; masked?: string; service: string; status: string };
   };
 }
 
@@ -43,7 +45,10 @@ export const apiClient = {
     try {
       const response = await fetch('/api/nutrition/analyze-photo', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify({ imageBase64, mimeType, userHint })
       });
 

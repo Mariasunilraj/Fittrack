@@ -66,7 +66,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
   const passwordsMismatch = confirmHasTyped && regPassword !== regConfirmPassword;
 
   // Handle Login submission with Rate Limiting & Input Sanitization
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -93,18 +93,24 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
     }
 
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const result = await loginUser(cleanEmail, cleanPassword);
+      if (!result.success) {
+        setErrorMessage(result.error || 'Invalid email or password.');
+      } else {
+        try {
+          confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+        } catch {}
+      }
+    } catch {
+      setErrorMessage('An unexpected error occurred during login. Please try again.');
+    } finally {
       setLoading(false);
-      resetLoginRateLimit(cleanEmail);
-      loginUser(cleanEmail, cleanPassword);
-      try {
-        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-      } catch {}
-    }, 350);
+    }
   };
 
   // Handle Register submission with Input Sanitization & Validation (min 8 chars)
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -148,26 +154,36 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onOpenPrivacyPolicy }) => {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      registerUser({
-        displayName: cleanName,
-        email: cleanEmail,
-        ageBand: regAgeBand,
-        foodPreference: regFoodPreference,
-        preferredDisciplines: [regPrimaryDiscipline, 'mobility'],
-        experienceLevel: regExperienceLevel,
-        region: regRegion,
-        startingWeightKg: currentWeightNum,
-        currentWeightKg: currentWeightNum,
-        targetWeightKg: targetWeightNum,
-        createdAt: new Date().toISOString().split('T')[0]
-      });
+    try {
+      const result = await registerUser(
+        {
+          displayName: cleanName,
+          email: cleanEmail,
+          ageBand: regAgeBand,
+          foodPreference: regFoodPreference,
+          preferredDisciplines: [regPrimaryDiscipline, 'mobility'],
+          experienceLevel: regExperienceLevel,
+          region: regRegion,
+          startingWeightKg: currentWeightNum,
+          currentWeightKg: currentWeightNum,
+          targetWeightKg: targetWeightNum,
+          createdAt: new Date().toISOString().split('T')[0]
+        },
+        cleanPassword
+      );
 
-      try {
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
-      } catch {}
-    }, 450);
+      if (!result.success) {
+        setErrorMessage(result.error || 'Registration failed. Please try again.');
+      } else {
+        try {
+          confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+        } catch {}
+      }
+    } catch {
+      setErrorMessage('An unexpected error occurred during registration.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

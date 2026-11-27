@@ -14,6 +14,15 @@ import { storageService } from '../services/storage';
 import { neonService } from '../services/neonService';
 import { resendService } from '../services/resendService';
 import { DEFAULT_GUEST_PROFILE, DEMO_ATHLETE_PROFILE } from '../data/defaultUserData';
+import {
+  hashPassword,
+  verifyPassword,
+  generateSalt,
+  createSession,
+  checkLoginRateLimit,
+  recordFailedLoginAttempt,
+  resetLoginRateLimit
+} from '../utils/security';
 
 export type AppView = 'dashboard' | 'training' | 'exercises' | 'nutrition' | 'taekwondo' | 'progress' | 'settings' | 'auth';
 
@@ -21,8 +30,11 @@ interface AppContextType {
   currentView: AppView;
   setCurrentView: (view: AppView) => void;
   isAuthenticated: boolean;
-  loginUser: (email: string, password?: string, customName?: string) => void;
-  registerUser: (data: Partial<UserProfile> & { displayName: string; email: string }) => void;
+  loginUser: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  registerUser: (
+    data: Partial<UserProfile> & { displayName: string; email: string },
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
   logoutUser: () => void;
   profile: UserProfile;
   updateProfile: (profile: UserProfile) => void;
@@ -91,48 +103,94 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, 3500);
   };
 
-  const loginUser = (email: string, password?: string, customName?: string) => {
+  const loginUser = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     const cleanEmail = (email || '').trim().toLowerCase();
-    let userProfile: UserProfile;
+    const cleanPassword = (password || '').trim();
 
-    if (
-      cleanEmail === 'mariasunilraj8@gmail.com' ||
-      cleanEmail === 'athlete@fittrack.in' ||
-      cleanEmail === 'demo@fittrack.in'
-    ) {
-      userProfile = { ...DEMO_ATHLETE_PROFILE };
-    } else {
-      const existing = storageService.findRegisteredUser(cleanEmail);
-      if (existing) {
-        userProfile = existing.profile;
-      } else {
-        const name = customName || (cleanEmail ? cleanEmail.split('@')[0] : 'Athlete');
-        userProfile = {
-          ...DEFAULT_GUEST_PROFILE,
-          id: `usr_${Date.now()}`,
-          email: cleanEmail,
-          displayName: name.charAt(0).toUpperCase() + name.slice(1),
-          startingWeightKg: 76.0,
-          currentWeightKg: 74.5,
-          targetWeightKg: 70.0,
-          createdAt: '2026-11-01'
-        };
-        storageService.saveRegisteredUser(cleanEmail, password || 'default', userProfile);
-      }
+    if (!cleanEmail || !cleanPassword) {
+      return { success: false, error: 'Please enter both email and password.' };
     }
 
-    storageService.setAuthenticated(true);
-    storageService.saveProfile(userProfile);
-    setProfile(userProfile);
+    // 1. Rate limiter check (anti-brute force)
+    const rateCheck = checkLoginRateLimit(cleanEmail);
+    if (!rateCheck.allowed) {
+      return {
+        success: false,
+        error: `Account temporarily locked due to too many failed attempts. Please retry in ${rateCheck.remainingSeconds} seconds.`
+      };
+    }
+
+    // 2. Lookup registered user (No hardcoded bypasses)
+    const userRecord = storageService.findRegisteredUser(cleanEmail);
+    if (!userRecord) {
+      const failResult = recordFailedLoginAttempt(cleanEmail);
+      if (failResult.locked) {
+        return {
+          success: false,
+          error: `Too many failed attempts. Account locked for ${failResult.remainingSeconds} seconds.`
+        };
+      }
+      return { success: false, error: 'Invalid email or password.' };
+    }
+
+    // 3. Cryptographic password verification (PBKDF2-SHA256 with user's unique salt)
+    const isValid = await verifyPassword(cleanPassword, userRecord.passwordHash, userRecord.salt);
+    if (!isValid) {
+      const failResult = recordFailedLoginAttempt(cleanEmail);
+      if (failResult.locked) {
+        return {
+          success: false,
+          error: `Too many failed attempts. Account locked for ${failResult.remainingSeconds} seconds.`
+        };
+      }
+      return {
+        success: false,
+        error: `Invalid email or password. (${failResult.remainingAttempts} attempts remaining)`
+      };
+    }
+
+    // 4. Success! Reset rate limit counter
+    resetLoginRateLimit(cleanEmail);
+
+    // 5. Generate secure cryptographically signed session
+    const session = await createSession(userRecord.profile.id, cleanEmail);
+    storageService.setSession(session);
+    storageService.saveProfile(userRecord.profile);
+
+    setProfile(userRecord.profile);
     setIsAuthenticated(true);
-    const userHistory = storageService.getWeightHistory(userProfile.id);
+    const userHistory = storageService.getWeightHistory(userRecord.profile.id);
     setWeightHistory(userHistory);
-    showToast(`Welcome back, ${userProfile.displayName}!`);
+    showToast(`Welcome back, ${userRecord.profile.displayName}!`);
     setCurrentView('dashboard');
+    return { success: true };
   };
 
-  const registerUser = (data: Partial<UserProfile> & { displayName: string; email: string }) => {
+  const registerUser = async (
+    data: Partial<UserProfile> & { displayName: string; email: string },
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
     const cleanEmail = (data.email || '').trim().toLowerCase();
+    const cleanPassword = (password || '').trim();
+
+    if (!cleanEmail || !cleanPassword) {
+      return { success: false, error: 'Email and password are required.' };
+    }
+
+    if (cleanPassword.length < 8) {
+      return { success: false, error: 'Password must be at least 8 characters long.' };
+    }
+
+    // Check if account already exists
+    const existing = storageService.findRegisteredUser(cleanEmail);
+    if (existing) {
+      return { success: false, error: 'An account with this email address already exists. Please sign in.' };
+    }
+
+    // Generate unique salt and PBKDF2 hash for this user
+    const salt = generateSalt(16);
+    const passwordHash = await hashPassword(cleanPassword, salt);
+
     const initialWeight = data.currentWeightKg || 74.5;
     const goalWeight = data.targetWeightKg || 70.0;
     const createdDate = data.createdAt || new Date().toISOString().split('T')[0];
@@ -148,9 +206,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `usr_${Date.now()}`
     };
 
-    storageService.saveRegisteredUser(cleanEmail, 'registered', newProfile);
-    storageService.setAuthenticated(true);
+    // Save with real password hash & salt (NO 'registered' or 'default' placeholder strings!)
+    storageService.saveRegisteredUser(cleanEmail, passwordHash, salt, newProfile);
+
+    // Create secure cryptographic session
+    const session = await createSession(newProfile.id, cleanEmail);
+    storageService.setSession(session);
     storageService.saveProfile(newProfile);
+
     const initialHistory = storageService.seedInitialWeightForUser(newProfile);
     setWeightHistory(initialHistory);
     setProfile(newProfile);
@@ -171,6 +234,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     showToast(`Welcome to FitTrack, ${newProfile.displayName}!`);
     setCurrentView('dashboard');
+    return { success: true };
   };
 
   const logoutUser = () => {

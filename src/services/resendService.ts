@@ -3,6 +3,8 @@
 // Handles Monday weigh-in reminders, onboarding welcomes, and weekly digests
 // ====================================================================
 
+import { storageService } from './storage';
+
 export interface EmailPayload {
   to: string;
   subject: string;
@@ -42,7 +44,10 @@ export const resendService = {
     try {
       const response = await fetch('/api/email/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify({
           from: payload.from || 'FitTrack PRO <coach@fittrack.in>',
           to: payload.to,

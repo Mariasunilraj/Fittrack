@@ -4,6 +4,7 @@
 // ====================================================================
 
 import { UserProfile, WeightLogEntry, WorkoutLogEntry, MealLogItem } from '../types';
+import { storageService } from './storage';
 
 export interface NeonConnectionStatus {
   connected: boolean;
@@ -41,7 +42,10 @@ export const neonService = {
     try {
       const res = await fetch('/api/neon/profile', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify(profile)
       });
       return { success: res.ok };
@@ -55,7 +59,10 @@ export const neonService = {
     try {
       const res = await fetch('/api/neon/weigh-in', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify({
           userId,
           weightKg,
@@ -75,7 +82,10 @@ export const neonService = {
     try {
       const res = await fetch('/api/neon/workout-log', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify(sessionLog)
       });
       return { success: res.ok };
@@ -89,7 +99,10 @@ export const neonService = {
     try {
       const res = await fetch('/api/neon/nutrition-log', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify(meal)
       });
       return { success: res.ok };

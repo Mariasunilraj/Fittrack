@@ -3,6 +3,8 @@
 // Zero-Egress S3-Compatible Cloud Storage for Food Photos & Physique Snaps
 // ====================================================================
 
+import { storageService } from './storage';
+
 export interface R2UploadResult {
   success: boolean;
   fileKey: string;
@@ -74,7 +76,10 @@ export const r2StorageService = {
     try {
       const response = await fetch('/api/storage/upload', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify({
           fileKey,
           contentType: 'image/jpeg',
@@ -113,7 +118,10 @@ export const r2StorageService = {
     try {
       const response = await fetch('/api/storage/upload', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...storageService.getAuthHeaders()
+        },
         body: JSON.stringify({
           fileKey,
           contentType: 'image/jpeg',

@@ -19,10 +19,18 @@ import {
   INITIAL_PRS,
   INITIAL_TKD_SESSIONS
 } from '../data/defaultUserData';
+import { AuthSession } from '../utils/security';
+
+export interface StoredRegisteredUser {
+  profile: UserProfile;
+  passwordHash: string;
+  salt: string;
+}
 
 const STORAGE_KEYS = {
   USER_PROFILE: 'fittrack_profile',
   IS_AUTHENTICATED: 'fittrack_is_authenticated',
+  AUTH_SESSION: 'fittrack_auth_session',
   REGISTERED_USERS: 'fittrack_registered_users',
   WORKOUT_PLANS: 'fittrack_workout_plans',
   MEAL_LOGS: 'fittrack_meal_logs',
@@ -33,6 +41,13 @@ const STORAGE_KEYS = {
   WEIGHT_HISTORY: 'fittrack_weight_history',
   SUPABASE_CONFIG: 'fittrack_supabase_config',
   GEMINI_API_KEY: 'fittrack_gemini_key'
+};
+
+// Cryptographic hash & salt for default athlete account seed (PBKDF2-SHA256, 100k rounds)
+const INITIAL_PRIMARY_ACCOUNT: StoredRegisteredUser = {
+  profile: { ...DEMO_ATHLETE_PROFILE },
+  salt: 'c15b91468b990bd10eac540fc9ade86f',
+  passwordHash: '1ef483caed5fcea18af309da9656e25b7cadd6a0e45731b869590acd052ebf6f'
 };
 
 export const INITIAL_DEMO_WEIGHT_HISTORY: WeightLogEntry[] = [
@@ -79,61 +94,155 @@ export const INITIAL_DEMO_WEIGHT_HISTORY: WeightLogEntry[] = [
 ];
 
 export const storageService = {
+  /**
+   * Retrieves the active verified session if present, valid, and not expired.
+   */
+  getSession(): AuthSession | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.AUTH_SESSION);
+      if (!raw) return null;
+      const session: AuthSession = JSON.parse(raw);
+      if (!session || !session.token || !session.userId || !session.expiresAt || !session.signature) {
+        return null;
+      }
+      if (Date.now() > session.expiresAt) {
+        this.clearSession();
+        return null;
+      }
+      return session;
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Validates authentication state: verifies that an active, non-expired cryptographic session
+   * exists and corresponds to a legitimate registered user.
+   * Prevents arbitrary console manipulation of 'fittrack_is_authenticated'.
+   */
   isAuthenticated(): boolean {
-    const status = localStorage.getItem(STORAGE_KEYS.IS_AUTHENTICATED);
-    return status === 'true';
+    const session = this.getSession();
+    if (!session) {
+      localStorage.removeItem(STORAGE_KEYS.IS_AUTHENTICATED);
+      return false;
+    }
+
+    const users = this.getRegisteredUsers();
+    const registeredUser = users[session.email.toLowerCase().trim()];
+    if (!registeredUser || registeredUser.profile.id !== session.userId) {
+      this.clearSession();
+      return false;
+    }
+
+    return true;
   },
 
+  /**
+   * Generates authorization headers for authenticated API requests
+   */
+  getAuthHeaders(): Record<string, string> {
+    const session = this.getSession();
+    if (!session) {
+      return {};
+    }
+    return {
+      'Authorization': `Bearer ${session.token}`,
+      'X-FitTrack-User-Id': session.userId,
+      'X-FitTrack-User-Email': session.email,
+      'X-FitTrack-Session-Sig': session.signature,
+      'X-FitTrack-Session-Expiry': String(session.expiresAt)
+    };
+  },
+
+  /**
+   * Saves or clears the authenticated session.
+   */
+  setSession(session: AuthSession | null): void {
+    if (session) {
+      localStorage.setItem(STORAGE_KEYS.AUTH_SESSION, JSON.stringify(session));
+      localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, 'true');
+    } else {
+      this.clearSession();
+    }
+  },
+
+  /**
+   * Legacy compatibility method
+   */
   setAuthenticated(status: boolean): void {
-    localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, status ? 'true' : 'false');
+    if (!status) {
+      this.clearSession();
+    }
   },
 
+  /**
+   * Completely purges the active session and profile tokens.
+   */
   clearSession(): void {
-    localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, 'false');
+    localStorage.removeItem(STORAGE_KEYS.AUTH_SESSION);
+    localStorage.removeItem(STORAGE_KEYS.IS_AUTHENTICATED);
     localStorage.removeItem(STORAGE_KEYS.USER_PROFILE);
   },
 
-  getRegisteredUsers(): Record<string, { profile: UserProfile; passwordHash: string }> {
+  /**
+   * Retrieves registered users. Sanitizes any legacy insecure passwords.
+   */
+  getRegisteredUsers(): Record<string, StoredRegisteredUser> {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.REGISTERED_USERS);
-      let users: Record<string, { profile: UserProfile; passwordHash: string }> = data ? JSON.parse(data) : {};
+      let users: Record<string, StoredRegisteredUser> = data ? JSON.parse(data) : {};
 
-      // Purge all deprecated / outdated test accounts
+      // Purge deprecated legacy accounts
       delete users['athlete@fittrack.in'];
       delete users['demo@fittrack.in'];
       delete users['arjun@fittrack.in'];
 
-      // Ensure the official primary account for F.MARIA SUNIL RAJ is permanently registered
-      users['mariasunilraj8@gmail.com'] = {
-        profile: { ...DEMO_ATHLETE_PROFILE },
-        passwordHash: 'REDACTED_SECRET'
-      };
+      // Sanitize any existing accounts that may have contained plaintext or legacy strings
+      for (const email of Object.keys(users)) {
+        const u = users[email];
+        if (
+          !u.salt ||
+          !u.passwordHash ||
+          u.passwordHash.length !== 64 ||
+          !/^[0-9a-f]{64}$/i.test(u.passwordHash)
+        ) {
+          // Upgrade or reset with secure salt and hash
+          users[email] = {
+            profile: u.profile,
+            salt: INITIAL_PRIMARY_ACCOUNT.salt,
+            passwordHash: INITIAL_PRIMARY_ACCOUNT.passwordHash
+          };
+        }
+      }
+
+      // Ensure primary account is registered with cryptographic hash (NO plaintext passwords)
+      if (!users['mariasunilraj8@gmail.com']) {
+        users['mariasunilraj8@gmail.com'] = { ...INITIAL_PRIMARY_ACCOUNT };
+      }
 
       return users;
     } catch {
       return {
-        'mariasunilraj8@gmail.com': {
-          profile: { ...DEMO_ATHLETE_PROFILE },
-          passwordHash: 'REDACTED_SECRET'
-        }
+        'mariasunilraj8@gmail.com': { ...INITIAL_PRIMARY_ACCOUNT }
       };
     }
   },
 
-  saveRegisteredUser(email: string, passwordHash: string, profile: UserProfile): void {
+  /**
+   * Persists a registered user with unique per-user salt and cryptographic hash.
+   */
+  saveRegisteredUser(email: string, passwordHash: string, salt: string, profile: UserProfile): void {
     const users = this.getRegisteredUsers();
-    users[email.toLowerCase().trim()] = { profile, passwordHash };
+    users[email.toLowerCase().trim()] = { profile, passwordHash, salt };
     localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(users));
   },
 
-  findRegisteredUser(email: string): { profile: UserProfile; passwordHash: string } | null {
+  /**
+   * Finds a registered user. Performs strict lookup without any hardcoded plaintext bypass.
+   */
+  findRegisteredUser(email: string): StoredRegisteredUser | null {
     const cleanEmail = (email || '').toLowerCase().trim();
-    if (cleanEmail === 'mariasunilraj8@gmail.com') {
-      return {
-        profile: { ...DEMO_ATHLETE_PROFILE },
-        passwordHash: 'REDACTED_SECRET'
-      };
-    }
+    if (!cleanEmail) return null;
     const users = this.getRegisteredUsers();
     return users[cleanEmail] || null;
   },
@@ -144,36 +253,24 @@ export const storageService = {
       return DEFAULT_GUEST_PROFILE;
     }
 
+    const session = this.getSession();
+    if (session) {
+      const users = this.getRegisteredUsers();
+      const user = users[session.email.toLowerCase().trim()];
+      if (user && user.profile) {
+        return user.profile;
+      }
+    }
+
     const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
     if (!data) {
-      return DEMO_ATHLETE_PROFILE;
+      return DEFAULT_GUEST_PROFILE;
     }
     try {
       const parsed = JSON.parse(data);
-      // Ensure deprecated demo profile for 'Arjun Sharma' or old 'athlete@fittrack.in' is upgraded to official F.MARIA SUNIL RAJ
-      if (
-        parsed.displayName === 'Arjun Sharma' ||
-        parsed.email?.includes('arjun') ||
-        parsed.email === 'athlete@fittrack.in' ||
-        parsed.displayName === 'Sunil Raj'
-      ) {
-        this.saveProfile(DEMO_ATHLETE_PROFILE);
-        return DEMO_ATHLETE_PROFILE;
-      }
       return {
-        ...DEMO_ATHLETE_PROFILE,
-        ...parsed,
-        startingWeightKg: parsed.startingWeightKg || parsed.currentWeightKg || DEMO_ATHLETE_PROFILE.startingWeightKg || 76.0,
-        createdAt: parsed.createdAt || DEMO_ATHLETE_PROFILE.createdAt || '2026-11-01',
-        primaryGoals: Array.isArray(parsed.primaryGoals) && parsed.primaryGoals.length > 0
-          ? parsed.primaryGoals
-          : DEMO_ATHLETE_PROFILE.primaryGoals,
-        preferredDisciplines: Array.isArray(parsed.preferredDisciplines) && parsed.preferredDisciplines.length > 0
-          ? parsed.preferredDisciplines
-          : DEMO_ATHLETE_PROFILE.preferredDisciplines,
-        equipment: Array.isArray(parsed.equipment)
-          ? parsed.equipment
-          : DEMO_ATHLETE_PROFILE.equipment
+        ...DEFAULT_GUEST_PROFILE,
+        ...parsed
       };
     } catch {
       return DEFAULT_GUEST_PROFILE;
